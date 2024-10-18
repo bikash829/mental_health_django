@@ -1,0 +1,21 @@
+<ul class="nav {{ ul_class|default:'nav sidebar-menu flex-column' }}" {% if not ul_class %}data-lte-toggle="treeview" role="menu" data-accordion="false"{% endif %} >
+    {% for item in items %}
+    <li class="nav-item ">
+        <a href="{{ item.url }}" class="nav-link {% if request.path == item.url %}active{% endif %}">
+           
+            <i class="nav-icon {{ item.icon }}"></i>
+            <p>
+                {{ item.name }}
+                {% if item.children %}
+                <i class="nav-arrow bi bi-chevron-right"></i>
+                {% endif %}
+            </p>
+        </a>
+        
+        {% if item.children %}
+        <!-- Recursive call to render nested dropdowns -->
+            {% include 'dashboard/layouts/aside/aside_item.html' with items=item.children ul_class='nav nav-treeview' %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
