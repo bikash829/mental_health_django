@@ -11,7 +11,6 @@ def dashboard(request):
         'sidebar_items' : sidebar_items,
     }
 
-
     return render(request,template_name,context)
 
 
@@ -24,6 +23,7 @@ def noboard(request):
     
     return render(request,template_name,context)
 
+
 def level1(request):
     
     sidebar_items = get_admin_sidebar_items(request)
@@ -35,6 +35,7 @@ def level1(request):
     
     return render(request,template_name,context)
 
+
 def change_mail(request):
     
     sidebar_items = get_admin_sidebar_items(request)
@@ -43,4 +44,5 @@ def change_mail(request):
     context = {
         'sidebar_items': sidebar_items,
     }
+    
     return render(request,template_name,context)
