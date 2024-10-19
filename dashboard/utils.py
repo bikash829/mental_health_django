@@ -15,7 +15,7 @@ def mark_active_sidebar_items(items, current_path):
 
     return items, any_active
 
-def get_admin_sidebar_items(request):
+def get_sidebar_items(request):
     sidebar_items = [
         {
             'name': 'Dashboard',
@@ -49,5 +49,27 @@ def get_admin_sidebar_items(request):
             ]
         }
     ]
+
+    # counselor_sidebar_items = [
+    #     {
+    #         'name': 'Sessions',
+    #         'url': reverse('counselor:sessions'),
+    #         'icon': 'bi bi-chat-dots',
+    #     },
+    #     {
+    #         'name': 'Reports',
+    #         'url': reverse('counselor:reports'),
+    #         'icon': 'bi bi-file-earmark-text',
+    #     }
+    # ]
+
+    # if role == 'admin':
+    #     sidebar_items = admin_sidebar_items
+    # elif role == 'doctor':
+    #     sidebar_items = doctor_sidebar_items
+    # elif role == 'counselor':
+    #     sidebar_items = counselor_sidebar_items
+    # else:
+    #     sidebar_items = []
     sidebar_items, _ = mark_active_sidebar_items(sidebar_items, request.path)
     return sidebar_items
