@@ -1,6 +1,7 @@
 # utils.py
 from django.urls import reverse
 
+# Create sidebar items
 def mark_active_sidebar_items(items, current_path):
     any_active = False
 
