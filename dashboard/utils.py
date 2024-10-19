@@ -29,6 +29,10 @@ def get_sidebar_items(request):
             'icon': 'bi bi-speedometer',
         },
         {
+            'divider_header': 'EXAMPLES',
+            'url': None,
+        },
+        {
             'name': 'Widgets',
             'url': '#',
             'icon': 'nav-icon bi bi-box-seam-fill',
