@@ -1,4 +1,4 @@
-from .utils import get_sidebar_items
+from .aside_items import get_sidebar_items
 
 def sidebar_items(request):
     # if request.user.is_authenticated:

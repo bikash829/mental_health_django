@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .utils import get_sidebar_items
+from .aside_items import get_sidebar_items
 
 
 # Create your views here.
