@@ -1,11 +1,16 @@
 <ul class="nav {{ ul_class|default:'nav sidebar-menu flex-column' }}" {% if not ul_class %}data-lte-toggle="treeview" role="menu" data-accordion="false"{% endif %} >
     {% for item in items %}
-    <li class="nav-item ">
-        <a href="{{ item.url }}" class="nav-link {% if request.path == item.url %}active{% endif %}">
+    
+    {% comment %} <li class="nav-item {% if item.url in request.path %}menu-open{% endif %}"> {% endcomment %}
+    <li class="nav-item  {% if item.children and item.is_active %}menu-open{% endif %}">
+        {% comment %} <a href="{% if item.children %}#{% else %}{{item.url}} {% endif %}" class="nav-link {% if request.path == item.url %}active{% endif %}"> {% endcomment %}
+        <a href="{% if item.children %}#{% else %}{{item.url}} {% endif %}" class="nav-link {% if item.is_active %}active{% endif %}">
            
             <i class="nav-icon {{ item.icon }}"></i>
             <p>
-                {{ item.name }}
+               
+                {% comment %} {{request.path}}<br> {% endcomment %}
+                {{item.name}}
                 {% if item.children %}
                 <i class="nav-arrow bi bi-chevron-right"></i>
                 {% endif %}
