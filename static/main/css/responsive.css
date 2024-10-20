@@ -1,0 +1,253 @@
+/* 320px - Mobile
+375px - Mobile M
+425px - Mobile L
+768px - Tablet
+1024px - Laptop
+1440px - Laptop L
+2560px - 4K */
+
+/* bootstrap screen sizes */
+/* 0–576px
+Small 	sm 	≥576px
+Medium 	md 	≥768px
+Large 	lg 	≥992px
+Extra large 	xl 	≥1200px
+Extra extra large 	xxl 	≥1400 */
+
+/* |==============variable section==============| */
+
+/*|============End variable section============| */
+
+/*  x-large devices (large desktops, less than 1400px) */
+@media (max-width: 1399.98px) {
+  :root {
+    --segment-x-margin: 6.125rem;
+    --segment-y-margin: 2rem;
+
+  }
+  .about-welcome__banner-wrapper {
+    width: 100%;
+  }
+
+  .about-welcome__article {
+    margin-top: 0;
+  }
+
+  .about {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  }
+}
+@media (max-width: 1299.98px) {
+  :root {
+    --segment-x-margin: 2rem;
+    --segment-y-margin: 6.125rem;
+
+    --card-widht: 14rem;
+    --card-gap: 1rem;
+  }
+}
+/* applies to large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+}
+
+/* applies to medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  :root {
+
+    --button-font-medium: 0.95rem;
+  }
+  .nav {
+    grid-template-columns: 1fr 3fr auto;
+    gap: 1.5rem;
+  }
+
+  .nav__menu {
+    display: none;
+  }
+  .nav__menu-button {
+    display: block;
+    justify-self: end;
+  }
+  .appointment__form-container {
+    width: 85%;
+  }
+
+  /* service welcome  */
+  .service__welcome {
+    grid-template-columns: 1fr;
+    gap: var(--segment-y-margin);
+  }
+  .welcome__banner-container {
+    justify-self: auto;
+  }
+  .welcome__banner {
+    width: 100%;
+  }
+  .patient-review {
+    grid-template-columns: 2fr;
+    gap: var(--segment-y-margin);
+  }
+  .patient-review__heading-container {
+    grid-column: auto;
+  }
+
+  .patient-review__heading-container {
+    margin: 0 auto;
+  }
+  .patient-review__details {
+    gap: var(--card-gap);
+  }
+  .patient-review__card,
+  .patient-say {
+    margin: 6rem 0 0 0;
+  }
+  .appointment__form-container {
+    width: 100%;
+    height: 100%;
+    padding: var(--medium-header-margin-free) 0;
+  }
+/* about page  */
+.about {
+   grid-template-columns: 1fr;
+   gap : 1rem;
+ }
+ .about-welcome {
+   grid-template-columns:2fr;
+   gap: var(--segment-y-margin);
+ }
+ .about-who{
+   margin-bottom: 0;
+ }
+ .about-welcome__banner-wrapper {
+   width: 100%;
+ }
+
+ .about-welcome__article {
+   margin-top: 0;
+ }
+ .about-welcome__banner-wrapper{
+   top: 0;
+ }
+
+
+
+
+}
+
+@media (max-width: 799.98px) {
+  :root {
+    --segment-x-margin: 2rem;
+    --segment-y-margin: 4.125rem;
+
+    /* buttons variables  */
+
+    --card-widht: 15rem;
+    --card-gap: 2em 1rem;
+  }
+
+  .f-bdy__segment:nth-child(3) {
+    justify-self: auto;
+  }
+  .f-bdy__segment:nth-child(2) {
+    justify-self: auto;
+  }
+  .contact{
+   flex-direction: column;
+   gap: var(--card-gap);
+  }
+}
+
+/* applies to small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .banner__title{
+    font-size: 1.5rem;
+  }
+  .community{
+    grid-template-columns: 1fr;
+  }
+  .community__aside{
+    display: none;
+  }
+}
+
+/* applies to x-small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+
+   :root {
+      --segment-x-margin: 2rem;
+      --segment-y-margin: 4.125rem;
+
+      /* buttons variables  */
+
+      --card-widht: 15rem;
+      --card-gap: 2em 1rem;
+    }
+
+  .welcome__article .button-large {
+    padding: 0.25rem 1rem;
+    font-size: 1rem;
+  }
+  .main-container {
+    display: block;
+  }
+
+  .header {
+    /* display: none; */
+  }
+  .service__card-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .welcome__article {
+    padding: 5%;
+  }
+
+  .specialist__card-container {
+    grid-template-columns: repeat(1, 2fr);
+    gap: 1rem;
+  }
+
+  .emmergency__content .section-heading__title {
+  }
+
+  .emmergency__contact {
+    font-weight: var(--medium-heading-weight);
+    font-size: var(--medium-heading-size);
+    margin-top: var(--medium-header-margin-free);
+  }
+}
+
+@media (max-width: 470.98px) {
+  :root {
+    --segment-x-margin: 1rem;
+    --segment-y-margin: 4.125rem;
+
+    --card-gap: 2rem;
+  }
+  /* .nav{
+         gap: 1rem;
+      } */
+  .user__register {
+    display: none;
+  }
+
+
+  /* contact us  */
+  .c-block{
+   flex-direction: column;
+  }
+  .c-block .c-block__name{
+   flex-basis: auto;
+  }
+
+  .footer__body {
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .f-bdy__segment * {
+    text-align: center;
+  }
+}

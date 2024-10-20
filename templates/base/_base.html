@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Mental health{% endblock title %}</title>
+
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-5.3.3-dist/css/bootstrap.min.css' %}" type="text/css">
+
+    <!--fontawesome link-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontawesome-free-6.6.0-web/css/all.min.css' %} ">
+
+    <!--custom css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/responsive.css' %}">
+
+    <!--sweet alert-->
+    {% comment %} <link rel="stylesheet" href="{% static 'vendor/sweetalert2/sweetalert2.min.css' %}"> {% endcomment %}
+
+    <!-- fonts and family -->
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One:900" rel="stylesheet">
+
+    {% block push_css %}{% endblock push_css %}
+    <!-- jquery js  -->
+    <script src="{% static 'vendor/jQuery/jquery.min.js' %}"></script>
+    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
+
+</head>
+
+
+<body>
+    <!-- |||||||||||Navigation Menu bar ||||||||||||||||| -->
+    <nav class="mobile-nav">
+        <!-- navigation menu bar  -->
+        <div class="mobile-nav__close"><i class="fa-solid fa-xmark"></i></div>
+    </nav>
+    <!-- ===========header ============= -->
+    <header class="header">
+        <!------ nav menu start ------->
+        <nav class="nav nav--font nav--padding">
+            <!-- site logo  -->
+            <div class="nav__logo-container">
+                <a href="#"><img data-href="#" class="nav__logo" id="nav__logo"
+                        src="{% static 'main/images/logo/logo_.png' %}" alt="Logo"></a>
+                {% comment %} <a href="{{ route('home') }}"><img data-href="{% url 'home' %}" class="nav__logo" id="nav__logo"
+                        src="{% static 'main/images/logo/logo_.png' %}" alt="Logo"></a> {% endcomment %}
+            </div>
+
+            <!-- navigation menu bar  -->
+            <ul class="nav__menu">
+                <li class="nav__item"><a class="nav__link active" href="#">Home</a></li>
+                {% comment %} <li class="nav__item"><a class="nav__link {{ $home ?? '' }}" href="{{ route('home') }}">Home</a></li> {% endcomment %}
+                <li class="nav__item nav__dropdown--item"><a class="nav__link"
+                        href="#">Services <i class="fa-solid fa-caret-down"></i></a>
+                {% comment %} <li class="nav__item nav__dropdown--item"><a class="nav__link {{ $doctor_counselor ?? '' }}"
+                        href="{{ route('doctor_counselor') }}">Services <i class="fa-solid fa-caret-down"></i></a> {% endcomment %}
+
+                    <ul class="nav__dropdown">
+                        <li class="nav__item"><a class="nav__link "
+                                href="#">Doctor & Counselor</a></li>
+                        {% comment %} <li class="nav__item"><a class="nav__link {{ $doctor_counselor ?? '' }}"
+                                href="{{ route('doctor_counselor') }}">Doctor & Counselor</a></li> {% endcomment %}
+                        <li class="nav__item"><a class="nav__link" href="#">Mental Disorder</a></li>
+                        <li class="nav__item"><a class="nav__link" href="#">Appointment</a></li>
+                        <li class="nav__item"><a class="nav__link" href="#">Call Counselor</a></li>
+                    </ul>
+
+                </li>
+                <li class="nav__item"><a class="nav__link"
+                        href="#">Community Forum</a></li>
+                {% comment %} <li class="nav__item"><a class="nav__link {{ $community ?? '' }}"
+                        href="{{ route('community') }}">Community Forum</a></li> {% endcomment %}
+                <li class="nav__item"><a class="nav__link " href="#">About</a>
+                </li>
+                <li class="nav__item"><a class="nav__link "
+                        href="#">Contact</a></li>
+            </ul>
+
+            <!-- user login registration  -->
+            <div class="nav__user user">
+            {% if user.is_autheticated %}
+                <div class="user__logged">
+                    <div class="dropdown">
+                        <li class="dropdown-toggle dropdown-toggle_custom" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa-regular fa-face-smile"></i>
+                            Username
+                        </li>
+                        <ul class="dropdown-menu">
+                            {% comment %} @role('Patient')
+                                <li><a class="dropdown-item" href="{{ route('patient.profile') }}">View Profile</a></li>
+                                <li><a class="dropdown-item" href="./edit_user.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="{{route('patient.patient_appointment')}}">My Appointments</a></li>
+                            @endrole
+                            @role('Doctor')
+                                <li><a class="dropdown-item" href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                            @endrole
+                            @role('Counselor')
+                                <li><a class="dropdown-item" href="{{ route('counselor.dashboard') }}">Dashboard</a></li>
+                            @endrole
+                            @role('Admin')
+                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                            @endrole {% endcomment %}
+                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                <li><a class="dropdown-item" href="./edit_user.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="#">My Appointments</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                    Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                       
+                    </div>
+                </div>
+            {% else %}
+                <div class="user__unlogged">
+                    <a href="{% url 'accounts:login' %}" class="user__login  btn btn-primary ">Login</a>
+                    {% comment %} <a href="#" class="user__login  btn btn-primary <!-- user__login--theme user__login--size button -->"
+                        <!-- data-bs-toggle="modal" data-bs-target="#login" -->>Login</a> {% endcomment %}
+                    <a href="#" class="user__register btn btn-success">Register</a>
+                    {% comment %} <a href="#" class="user__register btn btn-success <!-- user__register--theme user__register--size button -->"
+                        {{-- data-bs-toggle="modal" data-bs-target="#register_popup" --}}>Register</a> {% endcomment %}
+                </div>
+            {% endif %}
+        </div>
+
+
+        <!-- nav menu button  -->
+        <div class="nav__menu-button" id="btnMenu">
+            <span class="nav__menu-open"> <i class="fa-solid fa-bars"></i></span>
+        </div>
+    </nav>
+    <!------- nav menu end --------->
+
+    <!-- ||||||||||||------------Banner Area--------------||||||||||| -->
+    {% block banner %}{% endblock banner %}
+
+</header>
+<!-- =================header end ================ -->
+
+<!-- ||||||||||||Main conent ||||||||||||| -->
+<main class="main">
+    {% block content %}{% endblock content %}
+</main>
+
+<!-- =============footer section ============== -->
+<footer class="footer ">
+    <div class="footer__body f-bdy">
+        <div class="f-bdy__segment">
+            <h3 class="f-bdy__title">Quick Links</h3>
+            <ul class="f-bdy__contents">
+                <li class="f-bdy__content"><a href="./doctor_appointment.php" class="f-bdy__content-link">Get
+                        Help</a></li>
+                <li class="f-bdy__content"><a href="#"
+                        class="f-bdy__content-link">Community</a></li>
+                <li class="f-bdy__content"><a href="#" class="f-bdy__content-link">Contact
+                        Us</a></li>
+                <li class="f-bdy__content"><a href="#" class="f-bdy__content-link">About</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="f-bdy__segment">
+            <h3 class="f-bdy__title">Get Involved</h3>
+            <ul class="f-bdy__contents">
+                <li class="f-bdy__content"><a href="councilor_reg.php" class="f-bdy__content-link">Join as
+                        counselor</a></li>
+                <li class="f-bdy__content"><a href="contact_us.php" class="f-bdy__content-link">Browse and
+                        contact </a></li>
+                <li class="f-bdy__content"><a href="doc_reg.php" class="f-bdy__content-link">Become a doctor </a>
+                </li>
+                <li class="f-bdy__content"><a href="index.php" class="f-bdy__content-link">Work with us</a></li>
+            </ul>
+        </div>
+
+        <div class="f-bdy__segment">
+            <h3 class="f-bdy__title">Social Links</h3>
+            <ul class="f-bdy__contents">
+                <li class="f-bdy__content"><a href="https://www.facebook.com/"
+                        class="f-bdy__content-link">Facebook</a></li>
+                <li class="f-bdy__content"><a href="https://twitter.com/i/flow/login"
+                        class="f-bdy__content-link">Twitter</a></li>
+                <li class="f-bdy__content"><a href="https://www.instagram.com/"
+                        class="f-bdy__content-link">Instagram</a></li>
+                <li class="f-bdy__content"><a href="https://bd.linkedin.com/"
+                        class="f-bdy__content-link">Linkdin</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer__bottom f-btm">
+        <p class="f-btm__content">Copyright ©2022 All rights reserved | This template is made with &#128420; by
+            Bikash Chowdhury</p>
+
+    </div>
+</footer>
+
+<!-- ||||||||||||Modal |||||||||| -->
+
+<!-- imported axios  -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+<script src="{% static 'vendor/axios/axios.min.js' %}"></script>
+<!-- fontawesome -->
+<script src="{% static 'vendor/fontawesome-free-6.6.0-web/js/all.js' %}" type="text/javascript"></script>
+
+<!-- datatable -->
+{% comment %} <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> {% endcomment %}
+{% comment %} <script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>{% endcomment %}
+{% comment %} <script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/dataTables.jqueryui.min.js"></script> {% endcomment %}
+
+{% comment %}     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script> {% endcomment %}
+{% comment %}     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.jqueryui.min.js"></script> {% endcomment %}
+
+<!-- bootstrap -->
+<script type="text/javascript" src="{% static 'vendor/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}">
+</script>
+<!-- packagers --->
+{% comment %} <script type="text/javascript" src="{% static 'packages/jquery-validation-1.19.5/lib/jquery-1.11.1.js' %} "></script> {% endcomment %}
+{% comment %} <script type="text/javascript" src="{% static 'packages/jquery-validation-1.19.5/dist/jquery.validate.js' %} "></script> {% endcomment %}
+
+<!-- custom js -->
+<script src="{% static 'main/js/main.js' %}" type="text/javascript"></script>
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> {% endcomment %}
+<script src="{% static 'vendor/sweetaltert2/sweetalert2@11.min.js' %}"></script>
+
+{% block push_scripts %}{% endblock push_scripts %}
+</body>
+
+</html>

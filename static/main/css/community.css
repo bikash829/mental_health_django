@@ -1,0 +1,157 @@
+/* ==============community section ================= */
+.community {
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    /* gap: 2vw; */
+    background-color: var(--back-color-white);
+    gap: 2rem;
+}
+
+.community__post,
+.post {
+    display: grid;
+    grid-gap: 2rem;
+}
+
+.community__aside,
+.com-aside {
+    background-color: #fff;
+    border-radius: 0.2rem;
+}
+
+.post__card {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: var(--card-radius);
+    padding: 2rem 2rem .8rem 2rem;
+    box-shadow: 0 0 10px rgba(185, 185, 187, .2);
+    transition: linear 600ms;
+}
+
+.post__card:hover {
+    box-shadow: 0 0 10px rgba(185, 185, 187, .9);
+}
+
+.post__title {
+    padding-bottom: .8rem;
+}
+
+.post__author {
+    font-size: var(--card-title-size);
+    font-weight: 600;
+    text-transform: capitalize;
+
+}
+
+.post__upload-info {
+    font-size: 1rem;
+    color: var(--text-color);
+
+}
+
+.p-des__article {
+    line-height: var(--para-line-height);
+}
+
+.p-des__react-info {
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+}
+
+.picon-size {
+    font-size: 1rem;
+}
+
+.p-des__react,
+.p-des__reply-icon {
+    color: lightgray;
+    transition: ease-out 200ms;
+    cursor: pointer;
+}
+
+.p-des__react:hover,
+.p-des__comment:hover {
+    cursor: pointer;
+
+}
+
+.p-des__react:hover,
+.p-des__reply-icon:hover {
+    color: gray;
+}
+
+.p-des__comment {
+    color: rgba(125, 179, 197, 0.9);
+}
+
+/* replay  */
+.p-des__reply * {
+    font-size: .9rem;
+}
+
+.p-des__reply {
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: var(--card-radius);
+    padding: .5rem;
+    box-shadow: 0 0 5px lightblue inset;
+    margin-bottom: .4rem;
+
+}
+
+.p-des__reply-author {
+    font-weight: 600;
+    margin: 0;
+}
+
+.p-des__reply p {
+    margin: 0;
+}
+
+.p-des__reply-author a {
+    text-decoration: none;
+    color: black;
+}
+
+.p-des__reply-author a:hover {
+    color: black;
+}
+
+.p-des__reply p:nth-child(3) {
+    color: var(--text-color);
+    margin: 0;
+
+}
+
+.p-des__reply-info {
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+}
+
+.p-des__reply-time {
+    color: rgba(125, 179, 197, 0.9);
+;
+    margin: 0;
+}
+
+/* post aside  */
+.com-aside {
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(185, 185, 187, .5);
+}
+
+/* .p-des__comments {
+    display: none;
+} */
+
+
+.comments-visible {
+    display: block;
+}
+
+
+
+
+
+
+/* ==============community section end============== */
