@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
 from .models import User,BloodGroup, Education, Address, Training, Experience
 # Register your models here.
@@ -37,6 +38,8 @@ class UserAdmin(admin.ModelAdmin):
         AddressInline,EducationInline, TrainingInline,ExperienceInline
     ]
 
+
+# admin.site.register(Group)
 
 
 
