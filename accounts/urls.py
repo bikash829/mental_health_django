@@ -3,6 +3,8 @@ from . import views
 app_name = 'accounts'
 urlpatterns = [
     path("", include("django.contrib.auth.urls")),
+    path('profile/',views.profile,name="profile"),
+
     # path('sign_up/', views.sign_up,name="sign_up"),
     # path('profile/',views.profile,name="profile"),
 ]

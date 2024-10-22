@@ -50,19 +50,31 @@ class UserAdmin(BaseUserAdmin):
     #     ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
     #     ('Important dates', {'fields': ('last_login', 'date_joined')}),
     # )
+    fieldsets = (
+        (None, {'fields': ('username', 'password', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth', 'is_verified', 'is_staff', 'is_active', 'is_superuser', 'profile_photo')}),
+        ('Permissions', {'fields': ('groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth', 'is_verified', 'is_staff', 'is_active', 'is_superuser', )}
+            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth', 'is_verified', 'is_staff', 'is_active', 'is_superuser','profile_photo' )}
             # 'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth', 'is_verified', 'is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}
         ),
     )
     
     
     inlines = [
-        AddressInline,EducationInline, TrainingInline,ExperienceInline,UserGroupInline
+        AddressInline,EducationInline, TrainingInline,ExperienceInline
     ]
+    
+    def get_inline_instances(self, request, obj=None):
+        inline_instances = super().get_inline_instances(request, obj)
+        if obj is None:  # Adding a new user
+            inline_instances.append(UserGroupInline(self.model, self.admin_site))
+        return inline_instances
+    
 
     def get_groups(self, obj):
         return ", ".join([group.name for group in obj.groups.all()])

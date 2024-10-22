@@ -22,10 +22,12 @@ def profile_photo_directory_path(instance, filename):
 
 # education certificate 
 def education_certificate_directory_path(instance, filename):
+    instance.username = instance.user.username
     return generate_upload_path(instance, filename, 'employee/education_certificates')
 
 # training certificate 
 def training_certificate_directory_path(instance, filename):
+    instance.username = instance.user.username
     return generate_upload_path(instance, filename, 'employee/training_certificates')
 
 # Create your models here.
@@ -100,7 +102,7 @@ class Address(models.Model):
 
 
     def __str__(self):
-        return self.user
+        return self.city
     
 
 # Education info description
