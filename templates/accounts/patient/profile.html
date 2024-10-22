@@ -5,7 +5,7 @@
 
 {% block banner %}
 <div class="banner ">
-    <h1 class="banner__title">Hello, {{user.username}}</h1>
+    <h1 class="banner__title">Hello, {{user.full_name|default:user.username}}</h1>
     <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="User Profile">
 </div>
 {% endblock banner %}
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Sex: </label>
-                                    <span>{{ user.gender }}</span>
+                                    <span>{{ user.get_gender_display }}</span>
                                 </div>
 
                                 <div class="col-md-6 col-lg-6">
@@ -97,30 +97,30 @@
                             <div class="row g-3">
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Address: </label>
-                                    <span>address</span>
+                                    <span>{{user.address.address}}</span>
                                 </div>
 
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Address 2: </label>
-                                    <span>address</span>
+                                    <span>{{user.address2}}</span>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">City :</label>
-                                    <span>{{ 'city' }}</span>
+                                    <span>{{user.address.city}}</span>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">State: </label>
-                                    <span>{{'state' }}</span>
+                                    <span>{{user.address.state }}</span>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Zip-Code: </label>
-                                    <span>{{ 'zip_code' }}</span>
+                                    <span>{{ user.address.zip_code }}</span>
                                 </div>
 
 
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Country: </label>
-                                    <span>{{ 'country' }}</span>
+                                    <span>{{ user.address.country}}</span>
                                 </div>
 
                                 <div class="col-md-6 col-lg-6">

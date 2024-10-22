@@ -44,7 +44,7 @@
         <nav class="nav nav--font nav--padding">
             <!-- site logo  -->
             <div class="nav__logo-container">
-                <a href="#"><img data-href="#" class="nav__logo" id="nav__logo"
+                <a href="{% url 'main:home' %}"><img data-href="#" class="nav__logo" id="nav__logo"
                         src="{% static 'main/images/logo/logo_.png' %}" alt="Logo"></a>
                 {% comment %} <a href="{{ route('home') }}"><img data-href="{% url 'home' %}" class="nav__logo" id="nav__logo"
                         src="{% static 'main/images/logo/logo_.png' %}" alt="Logo"></a> {% endcomment %}
@@ -52,7 +52,7 @@
 
             <!-- navigation menu bar  -->
             <ul class="nav__menu">
-                <li class="nav__item"><a class="nav__link active" href="#">Home</a></li>
+                <li class="nav__item"><a class="nav__link active" href="{% url 'main:home' %}">Home</a></li>
                 {% comment %} <li class="nav__item"><a class="nav__link {{ $home ?? '' }}" href="{{ route('home') }}">Home</a></li> {% endcomment %}
                 <li class="nav__item nav__dropdown--item"><a class="nav__link"
                         href="#">Services <i class="fa-solid fa-caret-down"></i></a>
@@ -82,13 +82,13 @@
 
             <!-- user login registration  -->
             <div class="nav__user user">
-            {% if user.is_autheticated %}
+            {% if user.is_authenticated %}
                 <div class="user__logged">
                     <div class="dropdown">
                         <li class="dropdown-toggle dropdown-toggle_custom" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class="fa-regular fa-face-smile"></i>
-                            Username
+                            {{ user.full_name|default:user.username }}
                         </li>
                         <ul class="dropdown-menu">
                             {% comment %} @role('Patient')
@@ -105,7 +105,7 @@
                             @role('Admin')
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             @endrole {% endcomment %}
-                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">View Profile</a></li>
                                 <li><a class="dropdown-item" href="./edit_user.php">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="#">My Appointments</a></li>
                             <li>

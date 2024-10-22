@@ -89,6 +89,11 @@ class User(AbstractUser):
     blood_group = models.ForeignKey(BloodGroup,on_delete=models.PROTECT,null=True)
     terms = models.BooleanField(default=0)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+
 
 # Address info description 
 class Address(models.Model):
@@ -98,7 +103,12 @@ class Address(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    # user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
 
 
     def __str__(self):
