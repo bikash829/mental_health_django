@@ -216,5 +216,65 @@
         </div>
     </section>
 </div>
+
+<!-- # Modal for upload profile photo  -->
+<div>
+    <!-- Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead -->
+    <!-- Modal -->
+    <div class="modal fade" id="user_profile_image" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Your Photo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'accounts:change_profile_photo' %}" id="frm_profile_picture" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">choose photo</label>
+                            <input class="form-control" name="profile_photo" type="file" accept="image/*" id="formFile">
+                        </div>
+                        <div class="mb-3">
+
+                            <input class="btn btn-primary" value="Upload" name="btn_profile_picture" type="submit">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toaster alert-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% if messages %}
+    {% for message in messages %}
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header ">
+          {% comment %} <img src="..." class="rounded me-2" alt="..."> {% endcomment %}
+          <strong class="me-auto text-{{message.tags}}">{{message.tags}}</strong>
+          {% comment %} <small>11 mins ago</small> {% endcomment %}
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
 {% endblock content %}
 
+{% block push_scripts %}
+<script>
+  $(document).ready(function () {
+    $('.toast').toast({
+        delay: 1000*20,
+    }).toast('show')
+});
+</script>
+{% endblock push_scripts %}
