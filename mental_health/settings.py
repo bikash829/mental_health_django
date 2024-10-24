@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.forms', # to override form template
     'main.apps.MainConfig',
     'patient.apps.PatientConfig',
     'accounts.apps.AccountsConfig',

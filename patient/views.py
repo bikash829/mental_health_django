@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from .forms import BasicInfoForm
+# from django.http import HttpResponseRedirect
+# from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import pprint
+from .forms import BasicInfoForm,AddressForm
+from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
 
 @login_required
@@ -23,3 +24,17 @@ def edit_basic_info(request):
     }
     return render(request,template_name,context)
 
+@login_required
+def edit_address(request):
+    form = AddressForm(instance=request.user.address,error_class=BootstrapErrorList)
+    if request.method == "POST":
+        form = AddressForm(request.POST,instance=request.user.address,error_class=BootstrapErrorList)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"You address has been updated")
+            return redirect('accounts:profile')
+    template_name = 'patient/manage_profile/edit_address.html'
+    context = {
+        'form': form,
+    } 
+    return render(request,template_name,context)

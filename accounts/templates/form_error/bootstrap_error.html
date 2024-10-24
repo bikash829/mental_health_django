@@ -1,0 +1,8 @@
+{% if errors %}
+        {% for error in errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+
+{% endif %}
