@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from accounts.models import User,Address
+from apps.accounts.models import User,Address
 # from mental_health.custom_forms_renderer import CustomFormRenderer
 
 class BasicInfoForm(ModelForm):

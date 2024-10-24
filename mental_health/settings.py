@@ -32,10 +32,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'django.forms', # to override form template
-    'main.apps.MainConfig',
-    'patient.apps.PatientConfig',
-    'accounts.apps.AccountsConfig',
-    'dashboard.apps.DashboardConfig',
+    'apps.main.apps.MainConfig',
+    'apps.patient.apps.PatientConfig',
+    'apps.accounts.apps.AccountsConfig',
+    'apps.dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,7 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'dashboard.context_processors.sidebar_items', # aside items 
+                'apps.dashboard.context_processors.sidebar_items', # aside items 
             ],
         },
     },
