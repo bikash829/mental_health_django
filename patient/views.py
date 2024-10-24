@@ -26,14 +26,16 @@ def edit_basic_info(request):
 
 @login_required
 def edit_address(request):
-    form = AddressForm(instance=request.user.address,error_class=BootstrapErrorList)
+    # form = AddressForm(instance=request.user.address,error_class=BootstrapErrorList)
+    form = AddressForm(instance=request.user.address)
     if request.method == "POST":
-        form = AddressForm(request.POST,instance=request.user.address,error_class=BootstrapErrorList)
+        form = AddressForm(request.POST,instance=request.user.address)
         if form.is_valid():
             form.save()
             messages.success(request,"You address has been updated")
             return redirect('accounts:profile')
     template_name = 'patient/manage_profile/edit_address.html'
+    # rendered_form = form.render("custom_form_template/form_snippet.html")
     context = {
         'form': form,
     } 

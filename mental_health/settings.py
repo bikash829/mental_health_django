@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.forms', # to override form template
+    # 'django.forms', # to override form template
     'main.apps.MainConfig',
     'patient.apps.PatientConfig',
     'accounts.apps.AccountsConfig',
@@ -136,3 +136,13 @@ MEDIA_URL = '/media/'
 
 
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# from django.forms.renderers import TemplatesSetting
+
+# class CustomFormRenderer(TemplatesSetting):
+#     form_template_name = "custom_form_template/form_snippet.html"
+
+
+# FORM_RENDERER = "mental_health.settings.CustomFormRenderer"
+# FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
