@@ -6,7 +6,7 @@ from django.contrib import messages
 # Create your views here.
 @login_required
 def profile(request):
-    template_name = "accounts/patient/profile.html"
+    template_name = "patient/profile.html"
     context  = {
 
     }
