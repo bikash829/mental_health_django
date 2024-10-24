@@ -15,7 +15,7 @@ class BasicInfoForm(ModelForm):
 
 
 class AddressForm(ModelForm):
-    template_name = "custom_form_template/form_snippet.html"
+    template_name = "custom_form/form_snippet.html"
     class Meta:
         model = Address
         exclude = ['user'] 
