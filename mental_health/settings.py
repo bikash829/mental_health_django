@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'django.forms', # to override form template
+    "crispy_forms",
+    "crispy_bootstrap5",
     "phonenumber_field",
     'apps.blog',
     'apps.main.apps.MainConfig',
@@ -148,3 +150,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # FORM_RENDERER = "mental_health.settings.CustomFormRenderer"
 # FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+# CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
+
+# CRISPY_TEMPLATE_PACK = "bulma"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

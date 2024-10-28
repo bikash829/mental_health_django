@@ -1,5 +1,6 @@
 {% extends "base/_base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Edit Contact {% endblock title %}
 
@@ -18,7 +19,7 @@
             <div class="col-md-8 col-lg-8">
                 <form method="POST" action="" class="row g-3" novalidate>
                     {% csrf_token %}
-                        {{form}}
+                        {{form|crispy}}
                     <div class="d-grid col-6 mx-auto">
                         <a class="btn btn-danger" href="{% url 'accounts:profile' %}">Cancel</a>
                     </div>
