@@ -1,8 +1,19 @@
-{% for field in form %}
+{% comment %} {% for field in form %}
     <div class="col-12 col-md-6 col-lg-6">
         <label class="form-label" for="{{ field.id_for_label }}">{{field.label}}</label>
-        <input type="{{field.widget_type}}" name="{{field.name}}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{field.auto_id}}"
-            value="{{ field.value|default_if_none:''}}" required>
+       <input type="{{field.widget_type}}" 
+        name="{{field.name}}" 
+        id="{{field.auto_id}}"
+        {% for key,value in  field.field.widget.attrs.items%}
+            {% if key == 'class' %}
+                class="{{value}} {% if field.errors %}is-invalid{% endif %}"
+            {% else %}
+                {{key}}="{{value}}"
+            {% endif %}
+        {% endfor %}
+        value="{{ field.value|default_if_none:''}}"  
+        required> 
+
         {% if field.errors %}
         <div class="invalid-feedback">
             {% for error in field.errors  %}
@@ -11,4 +22,7 @@
         </div>
         {% endif %}
     </div>
+{% endfor %} {% endcomment %}
+{% for field in form %}
+    {{field}}
 {% endfor %}

@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 # from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import pprint
+from pprint import pprint
 from .forms import BasicInfoForm,AddressForm,PatientContactForm
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
@@ -44,15 +44,21 @@ def edit_address(request):
 
 @login_required
 def edit_contact(request):
-    form = PatientContactForm(instance=request.user)
     if request.method == "POST":
-        form = PatientContactForm(request.POST,instance=request.user)
+        form = PatientContactForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request,"You contact number has been updated")
+            messages.success(request, "Your contact number has been updated")
             return redirect('accounts:profile')
+    else:
+        form = PatientContactForm(instance=request.user)  # Prepopulate form with existing data
+
+   
+    # pprint(form)
     template_name = 'patient/manage_profile/edit_contact_info.html'
     context = {
         'form': form,
     } 
+
+
     return render(request,template_name,context)

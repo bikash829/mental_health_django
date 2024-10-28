@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from django.contrib.auth.models import AbstractUser
 from pprint import pprint
+from phonenumber_field.modelfields import PhoneNumberField
 
 def generate_upload_path(instance, filename, base_dir):
     # Extract the file extension
@@ -75,10 +76,8 @@ class User(AbstractUser):
     marital_status = models.CharField(max_length=2,choices=MARITAL_STATUS)
     nationality = models.CharField(max_length=50,blank=True)
     gender = models.CharField(max_length=1,choices=GENDER)
-    phone_code = models.CharField(max_length=10)
-    phone = models.CharField(max_length=30)
-    additional_phone_code = models.CharField(max_length=10)
-    additional_phone = models.CharField(max_length=30)
+    phone = PhoneNumberField(blank=True)
+    additional_phone = PhoneNumberField(blank=True)
     date_of_birth = models.DateField(null=True)
     religion = models.CharField(max_length=50)
     identity_type = models.IntegerField(choices=IdentityType,null=True)

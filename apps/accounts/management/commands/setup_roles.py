@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from dashboard.models import *  # Replace with actual models you need permissions for
+from apps.dashboard.models import *  # Replace with actual models you need permissions for
 
 class Command(BaseCommand):
     help = 'Setup user roles and permissions'

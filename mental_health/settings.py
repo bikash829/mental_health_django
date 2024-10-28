@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'django.forms', # to override form template
+    "phonenumber_field",
     'apps.blog',
     'apps.main.apps.MainConfig',
     'apps.patient.apps.PatientConfig',
