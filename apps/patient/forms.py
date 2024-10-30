@@ -6,7 +6,7 @@ from apps.accounts.models import User,Address
 
 
 
-PHONE_CODE = get_country_codes().
+
 class BasicInfoForm(ModelForm):
     first_name = forms.CharField(max_length=50,required=True)
     last_name = forms.CharField(max_length=50,required=True)
