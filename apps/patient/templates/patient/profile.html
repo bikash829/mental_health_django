@@ -175,8 +175,6 @@
                                     <label class="text-muted"></label>
                                     <span></span>
                                 </div>
-
-
                             </div>
                             <div class="d-grid pt-2 col-6 mx-auto">
                                 <button
@@ -196,13 +194,32 @@
                     </h2>
                     <div id="medicalCondition" class="accordion-collapse collapse">
                         <div class="accordion-body">
+                            {% for report  in user.vitalsignsreport_set.all %}
                             <div class="row g-2">
+                                <div class="col-md-6 col-lg-6">
+                                    <label class="text-muted">Blood Pressure Level:</label>
+                                    <span>{{report.blood_pressure}}</span>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <label class="text-muted"></label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <label class="text-muted"></label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <label class="text-muted"></label>
+                                    <span></span>
+                                </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted"></label>
                                     <span></span>
                                 </div>
 
                             </div>
+                            {% endfor %}
+
                             <div class="d-grid pt-2 g-3 col-6 mx-auto">
                                 <button class="btn btn-primary"
                                     onclick="window.location.href='#'"
@@ -216,6 +233,7 @@
         </div>
     </section>
 </div>
+
 
 <!-- # Modal for upload profile photo  -->
 <div>
@@ -248,6 +266,11 @@
     </div>
 </div>
 
+{% comment %} {{user.vital_signs_reports.all}}
+{% for report in  user.vital_signs_reports.all %}
+hello
+{{report.blood_pressure}}
+{% endfor %} {% endcomment %}
 <!-- Toaster alert-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
     {% if messages %}

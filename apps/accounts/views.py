@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ChangeProfilePhoto
-import pprint
+from pprint import pprint
 from django.contrib import messages
 # Create your views here.
 @login_required
@@ -10,6 +10,7 @@ def profile(request):
     context  = {
 
     }
+    
     return render(request,template_name,context)
 
 def change_profile_photo(request):
