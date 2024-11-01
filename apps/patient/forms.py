@@ -3,7 +3,8 @@ from django.forms import ModelForm
 from apps.accounts.models import User,Address
 # from mental_health.custom_forms_renderer import CustomFormRenderer
 # from apps.main.utils import get_country_codes
-from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.formfields import PhoneNumberField,SplitPhoneNumberField, PrefixChoiceField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 
@@ -27,11 +28,34 @@ class AddressForm(ModelForm):
 
 class PatientContactForm(ModelForm):
     template_name = "patient/custom_form/contact_form_snippet.html"
-    phone = PhoneNumberField()
-    additional_phone = PhoneNumberField()
+    
+    phone = SplitPhoneNumberField(
+        widget=PhoneNumberPrefixWidget(
+            widgets=[
+                forms.Select(attrs={'class': 'form-select w-25'},choices=PrefixChoiceField().choices),
+                forms.TextInput(attrs={'class': 'form-control w-75'})
+                ],
+        )
+    )
+
+    # additional_phone = PhoneNumberField(
+    #     widget=forms.TextInput(attrs={'class':'form-control'})
+    # )
+    additional_phone=SplitPhoneNumberField(
+        widget=PhoneNumberPrefixWidget(
+            widgets=[
+                forms.Select(attrs={'class': 'form-select w-25'},choices=PrefixChoiceField().choices),
+                forms.TextInput(attrs={'class': 'form-control w-75'})
+                ],
+        )
+    )
     class Meta:
         model = User
         fields = ['phone','additional_phone']
+
+
+
+
 
 
 
