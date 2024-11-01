@@ -28,7 +28,6 @@ class AddressForm(ModelForm):
 
 class PatientContactForm(ModelForm):
     template_name = "patient/custom_form/contact_form_snippet.html"
-    
     phone = SplitPhoneNumberField(
         widget=PhoneNumberPrefixWidget(
             widgets=[
@@ -51,7 +50,10 @@ class PatientContactForm(ModelForm):
     )
     class Meta:
         model = User
-        fields = ['phone','additional_phone']
+        fields = ['email','phone','additional_phone']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'})
+        }
 
 
 
