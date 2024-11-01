@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from apps.accounts.models import User,Address
 # from mental_health.custom_forms_renderer import CustomFormRenderer
 # from apps.main.utils import get_country_codes
-
+from phonenumber_field.formfields import PhoneNumberField
 
 
 
@@ -27,11 +27,11 @@ class AddressForm(ModelForm):
 
 class PatientContactForm(ModelForm):
     template_name = "patient/custom_form/contact_form_snippet.html"
-    # phone_code = forms.ChoiceField(choices=get_country_codes(),required=True,)
-    # additional_phone_code = forms.ChoiceField(choices=get_country_codes,required=False)
+    phone = PhoneNumberField()
+    additional_phone = PhoneNumberField()
     class Meta:
         model = User
-        fields = ['phone_code','phone','additional_phone_code','additional_phone']
+        fields = ['phone','additional_phone']
 
 
 
