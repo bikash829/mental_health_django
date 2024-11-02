@@ -184,6 +184,7 @@
                         </div>
                     </div>
                 </div>
+                <!--Medical Condition-->
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -193,32 +194,120 @@
                         </button>
                     </h2>
                     <div id="medicalCondition" class="accordion-collapse collapse">
-                        <div class="accordion-body">
-                            {% for report  in user.vitalsignsreport_set.all %}
-                            <div class="row g-2">
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted">Blood Pressure Level:</label>
-                                    <span>{{report.blood_pressure}}</span>
+                        <div class="accordion-body row g-2">
+                            <!--vital signs-->
+                            <div class="col-12">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Vital Signs</button>
+                                    <button type="button" class="btn btn-success">Add Recent Test</button>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted"></label>
-                                    <span></span>
+                                <div class="collapse col-12" id="collapseExample">
+                                    <div class="card card-body">
+                                        {% for report  in user.vitalsignsreport_set.all %}
+                                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                                            <div class="col">
+                                              <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <h2 class="col-6">{{report.checkup_date}}</h2>
+                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
+                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
+                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                  {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+                                                  <div class="">
+                                                    <label class="text-muted">Blood Pressure Level:</label>
+                                                    <span>{{report.systolic}}/{{report.diastolic}}</span>
+                                                </div>
+                                                <div class="">
+                                                    <label class="text-muted">Heart Rate: </label>
+                                                    <span>{{report.heart_rate}}</span>
+                                                </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>       
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted"></label>
-                                    <span></span>
-                                </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted"></label>
-                                    <span></span>
-                                </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted"></label>
-                                    <span></span>
-                                </div>
-
                             </div>
-                            {% endfor %}
+                            <!--Blood sugar-->
+                            <div class="col-12">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#blood_sugar" aria-expanded="false" aria-controls="blood_sugar">Blood Sugar Level</button>
+                                    <button type="button" class="btn btn-success">Add Recent Test Report</button>
+                                </div>
+                                <div class="collapse col-12" id="blood_sugar">
+                                    <div class="card card-body">
+                                        {% for report  in user.bloodsugar_set.all %}
+                                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                                            <div class="col">
+                                              <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <h2 class="col-6">{{report.checkup_date}}</h2>
+                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
+                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
+                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                  {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+                                                  <div class="">
+                                                    <label class="text-muted">Blood Sugar Level:</label>
+                                                    <span>{{report.sugar_level}}</span>
+                                                </div>
+                                                
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>       
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Biological Info-->
+                            <div class="col-12">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#biological_info" aria-expanded="false" aria-controls="biological_info">Biological Information</button>
+                                </div>
+                                <div class="collapse col-12" id="biological_info">
+                                    <div class="card card-body">
+                                        {% for report  in user.biologicalinfo_set.all %}
+                                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                                            <div class="col">
+                                              <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <h2 class="col-6">{{'Details'}}</h2>
+                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
+                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
+                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                  {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+                                                  <div class="">
+                                                    <label class="text-muted">Height:</label>
+                                                    <span>{{report.height|floatformat:0 }}cm</span>
+                                                </div>
+                                                <div class="">
+                                                    <label class="text-muted">Weight: </label>
+                                                    <span>{{report.weight|floatformat:0}}kg</span>
+                                                </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>       
+                                        {% endfor %}
+                                    </div>
+                                </div>    
+                            </div>
 
                             <div class="d-grid pt-2 g-3 col-6 mx-auto">
                                 <button class="btn btn-primary"
