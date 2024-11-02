@@ -51,8 +51,8 @@ class UserAdmin(BaseUserAdmin):
     #     ('Important dates', {'fields': ('last_login', 'date_joined')}),
     # )
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth','blood_group',
-                           'phone_code','phone','additional_phone_code','additional_phone','nationality','religion', 'is_verified', 'is_staff', 'is_active', 'is_superuser', 'profile_photo')}),
+        (None, {'fields': ('username',  'email', 'first_name', 'last_name', 'gender', 'date_of_birth','blood_group',
+                           'phone','additional_phone','nationality','religion', 'is_verified', 'is_staff', 'is_active', 'is_superuser', 'profile_photo')}),
         ('Permissions', {'fields': ('groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )# change form
@@ -60,7 +60,8 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth','blood_group', 'is_verified', 'is_staff', 'is_active', 'is_superuser','profile_photo' )}
+            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth','blood_group',
+                        'is_verified', 'is_staff', 'is_active', 'is_superuser','profile_photo' )}
             # 'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'gender', 'date_of_birth', 'is_verified', 'is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}
         ),
     )# add form

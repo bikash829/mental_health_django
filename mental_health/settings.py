@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'django.forms', # to override form template
-    "crispy_forms",
-    "crispy_bootstrap5",
     "phonenumber_field",
     'apps.blog',
     'apps.main.apps.MainConfig',

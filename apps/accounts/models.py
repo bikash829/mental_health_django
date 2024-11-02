@@ -76,7 +76,7 @@ class User(AbstractUser):
     marital_status = models.CharField(max_length=2,choices=MARITAL_STATUS)
     nationality = models.CharField(max_length=50,blank=True)
     gender = models.CharField(max_length=1,choices=GENDER)
-    phone = PhoneNumberField(blank=True)
+    phone = PhoneNumberField()
     additional_phone = PhoneNumberField(blank=True)
     date_of_birth = models.DateField(null=True)
     religion = models.CharField(max_length=50)
