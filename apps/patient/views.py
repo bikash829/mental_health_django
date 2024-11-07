@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pprint import pprint
-from .forms import BasicInfoForm,AddressForm,PatientContactForm
+from .forms import BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
 
@@ -59,5 +59,54 @@ def edit_contact(request):
         'form': form,
     } 
 
-
     return render(request,template_name,context)
+
+@login_required
+def update_vital_sign_info(request):
+    form = AddVitalSignInfo()
+    if request.method == "POST":
+        form = AddVitalSignInfo(request.POST)
+        if form.is_valid():
+            vital_sign  = form.save(commit=False)
+            vital_sign.user = request.user
+            vital_sign.save()
+            messages.success(request, "Your vital sings report has been updated")
+            return redirect('accounts:profile') 
+
+    template_name = "patient/manage_profile/vital_sign_form.html" 
+    context = {
+        'form' : form,
+    }
+    return render(request,template_name,context)
+
+
+def update_blood_sugar_info(request):
+    form = AddBloodSugarInfo
+
+    if request.method == "POST":
+        form = AddBloodSugarInfo(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your blood sugar report has been updated")
+            return redirect('accounts:profile') 
+    template_name = "patient/manage_profile/blood_sugar_form.html" 
+    context = {
+        'form' : form 
+    }
+    return render(request,template_name,context) 
+
+
+def update_biological_info(request):
+    form = UpdateBiologicalInfo
+
+    if request.method == "POST":
+        form = UpdateBiologicalInfo(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your personal info has been updated")
+            return redirect('accounts:profile') 
+    template_name = "patient/manage_profile/biological_info_form.html" 
+    context = {
+        'form': form
+    }
+    return render(request,template_name,context) 

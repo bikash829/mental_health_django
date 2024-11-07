@@ -199,7 +199,13 @@
                             <div class="col-12">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Vital Signs</button>
-                                    <button type="button" class="btn btn-success">Add Recent Test</button>
+                                    
+                                    
+                                    <form id="vital_sign_form" action="{% url 'patient:update_vital_sign_info' %}" method="POST">
+                                        {% csrf_token %}
+                                    </form>
+                                    <button form="vital_sign_form" type="submit" class="btn btn-success">Add Recent Test</button>
+                                    
                                 </div>
                                 <div class="collapse col-12" id="collapseExample">
                                     <div class="card card-body">
@@ -238,7 +244,11 @@
                             <div class="col-12">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#blood_sugar" aria-expanded="false" aria-controls="blood_sugar">Show Blood Sugar Level</button>
-                                    <button type="button" class="btn btn-success">Add Recent Test Report</button>
+                                    
+                                    <form id="blood_sugar_form" action="{% url 'patient:update_blood_sugar_info' %}" method="POST">
+                                        {% csrf_token %}
+                                    </form>
+                                    <button type="submit" form="blood_sugar_form" class="btn btn-success">Add Recent Test Report</button>
                                 </div>
                                 <div class="collapse col-12" id="blood_sugar">
                                     <div class="card card-body">

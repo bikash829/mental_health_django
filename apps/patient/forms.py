@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from apps.accounts.models import User,Address
+from .models import VitalSignsReport,BloodSugar,BiologicalInfo
 # from mental_health.custom_forms_renderer import CustomFormRenderer
 # from apps.main.utils import get_country_codes
 from phonenumber_field.formfields import PhoneNumberField,SplitPhoneNumberField, PrefixChoiceField
@@ -57,6 +58,34 @@ class PatientContactForm(ModelForm):
 
 
 
+class AddVitalSignInfo(ModelForm):
+    template_name = "patient/custom_form/custom_field_template.html"
+    class Meta:
+        model = VitalSignsReport
+        fields = '__all__'
+        exclude = ['user']
+        widgets = {
+            'systolic': forms.NumberInput(attrs={'class': 'form-control'}),
+            'diastolic': forms.NumberInput(attrs={'class': 'form-control'}),
+            'heart_rate': forms.NumberInput(attrs={'class': 'form-control'}),
+            'checkup_date': forms.DateInput(attrs={'class': 'form-control','type':'date'})
+        }
+
+
+
+class AddBloodSugarInfo(ModelForm):
+    class Meta:
+        model = VitalSignsReport
+        fields = '__all__'
+        # exclude = ['user']
+
+
+
+class UpdateBiologicalInfo(ModelForm):
+    class Meta:
+        model = VitalSignsReport
+        fields = '__all__'
+        # exclude = ['user']
 
 
 

@@ -1,0 +1,33 @@
+{% extends "base/_base.html" %}
+{% load static %}
+
+{% block title %}Update Profile{% endblock title %}
+
+{% block banner %}
+<div class="banner ">
+    <h1 class="banner__title">{{'Edit Personal Biological Info'}}</h1>
+    <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="{{'User Profile'}}">
+</div>
+{% endblock banner %}
+
+{% block content %}
+<main class="main">
+    <section class="profile segment-margin">
+
+        <div class="row  justify-content-center">
+            <div class="col-md-8 col-lg-8">
+                <form method="POST" action="" class="row g-3" novalidate>
+                    {% csrf_token %}
+                    {{form}}
+                    <div class="d-grid col-6 mx-auto">
+                        <a class="btn btn-danger" href="{% url 'accounts:profile' %}">Cancel</a>
+                    </div>
+                    <div class="d-grid col-6 mx-auto">
+                        <input value="Update" class="btn btn-primary" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
