@@ -204,13 +204,13 @@
                                     <form id="vital_sign_form" action="{% url 'patient:update_vital_sign_info' %}" method="POST">
                                         {% csrf_token %}
                                     </form>
-                                    <button form="vital_sign_form" type="submit" class="btn btn-success">Add Recent Test</button>
+                                    <button onclick="window.location.href='{% url 'patient:update_vital_sign_info' %}'" type="submit" class="btn btn-success">Add Recent Test</button>
                                     
                                 </div>
                                 <div class="collapse col-12" id="collapseExample">
                                     <div class="card card-body">
-                                        {% for report  in user.vitalsignsreport_set.all %}
                                         <div class="row row-cols-1 row-cols-md-3 g-4">
+                                            {% for report  in user.vitalsignsreport_set.all %}
                                             <div class="col">
                                               <div class="card">
                                                 <div class="card-header">
@@ -235,8 +235,8 @@
                                                 </div>
                                               </div>
                                             </div>
+                                            {% endfor %}
                                         </div>       
-                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
