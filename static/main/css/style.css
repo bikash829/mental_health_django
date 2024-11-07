@@ -1413,3 +1413,8 @@
     font-size: 0.875em;
     color: #dc3545;
 }
+
+.helptext{
+    color: rgb(220, 53, 69);
+    font-size: small;
+}

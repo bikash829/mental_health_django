@@ -74,18 +74,28 @@ class AddVitalSignInfo(ModelForm):
 
 
 class AddBloodSugarInfo(ModelForm):
+    template_name = "patient/custom_form/custom_field_template.html"
     class Meta:
-        model = VitalSignsReport
+        model = BloodSugar
         fields = '__all__'
-        # exclude = ['user']
+        exclude = ['user']
+        widgets = {
+            'sugar_level': forms.NumberInput(attrs={'class': 'form-control'}),
+            'checkup_date': forms.DateInput(attrs={'class': 'form-control','type':'date'})
+        }
 
 
 
 class UpdateBiologicalInfo(ModelForm):
+    template_name = "patient/custom_form/custom_field_template.html"
     class Meta:
-        model = VitalSignsReport
+        model = BiologicalInfo
         fields = '__all__'
-        # exclude = ['user']
+        exclude = ['user']
+        widgets = {
+            'height': forms.NumberInput(attrs={'class': 'form-control'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control'})
+        }
 
 
 

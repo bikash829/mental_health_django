@@ -13,7 +13,7 @@ class VitalSignsReport(models.Model):
         return f"{self.user}, date: {self.checkup_date}"
 
 class BloodSugar(models.Model):
-    sugar_level = models.FloatField(blank=True)
+    sugar_level = models.FloatField()
     checkup_date = models.DateField(default=datetime.date.today)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     

@@ -201,9 +201,6 @@
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Vital Signs</button>
                                     
                                     
-                                    <form id="vital_sign_form" action="{% url 'patient:update_vital_sign_info' %}" method="POST">
-                                        {% csrf_token %}
-                                    </form>
                                     <button onclick="window.location.href='{% url 'patient:update_vital_sign_info' %}'" type="submit" class="btn btn-success">Add Recent Test</button>
                                     
                                 </div>
@@ -244,16 +241,13 @@
                             <div class="col-12">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#blood_sugar" aria-expanded="false" aria-controls="blood_sugar">Show Blood Sugar Level</button>
-                                    
-                                    <form id="blood_sugar_form" action="{% url 'patient:update_blood_sugar_info' %}" method="POST">
-                                        {% csrf_token %}
-                                    </form>
-                                    <button type="submit" form="blood_sugar_form" class="btn btn-success">Add Recent Test Report</button>
+                                 
+                                    <button type="button" onclick="window.location.href='{% url 'patient:update_blood_sugar_info' %}'" class="btn btn-success">Add Recent Test Report</button>
                                 </div>
                                 <div class="collapse col-12" id="blood_sugar">
                                     <div class="card card-body">
-                                        {% for report  in user.bloodsugar_set.all %}
                                         <div class="row row-cols-1 row-cols-md-3 g-4">
+                                            {% for report  in user.bloodsugar_set.all %}
                                             <div class="col">
                                               <div class="card">
                                                 <div class="card-header">
@@ -275,8 +269,8 @@
                                                 </div>
                                               </div>
                                             </div>
+                                            {% endfor %}
                                         </div>       
-                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +289,8 @@
                                                     <div class="row">
                                                         <h2 class="col-6">{{'Details'}}</h2>
                                                         <div class="col-6 justify-content-end d-flex align-items-center ">
-                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
+                                                            {% comment %} <button onclick="window.location.href='{% url 'patient:update_biological_info' %}" class="btn btn-primary btn-sm me-2">Edit</button> {% endcomment %}
+                                                            <button onclick="window.location.href='{% url 'patient:update_biological_info' report.id %}'" class="btn btn-primary btn-sm me-2">Edit</button>
                                                             <button class="btn btn-danger btn-sm">Delete</button>
                                                         </div>
                                                     </div>

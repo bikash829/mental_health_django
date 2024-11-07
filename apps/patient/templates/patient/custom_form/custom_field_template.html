@@ -16,14 +16,21 @@
         {% if field.label %}{{ field.legend_tag }}{% endif %}
   {% else %}
         {% if field.label %}
-        <label class="form-label" id="{{field.id_for_label}}">{{field.label}}</label>
+        <label class="form-label" id="{{field.id_for_label}}">
+          {{field.label}}
+          {% if field.help_text %}
+        <span class="helptext"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>
+            [{{ field.help_text|safe }}]
+          </span>
+          {% endif %}
+        </label>
         {% endif %}
   {% endif %}
-      {% if field.help_text %}
+      {% comment %} {% if field.help_text %}
         <div class="helptext"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>
           {{ field.help_text|safe }}
         </div>
-      {% endif %}
+      {% endif %} {% endcomment %}
       {{ field }}
   {% if field.use_fieldset %}
     </fieldset>

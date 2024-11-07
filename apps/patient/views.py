@@ -4,6 +4,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pprint import pprint
+
+from apps.patient.models import BiologicalInfo
 from .forms import BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
@@ -86,7 +88,10 @@ def update_blood_sugar_info(request):
     if request.method == "POST":
         form = AddBloodSugarInfo(request.POST)
         if form.is_valid():
-            form.save()
+            blood_sugar = form.save(commit=False)
+            blood_sugar.user = request.user
+            blood_sugar.save()
+
             messages.success(request, "Your blood sugar report has been updated")
             return redirect('accounts:profile') 
     template_name = "patient/manage_profile/blood_sugar_form.html" 
@@ -96,13 +101,16 @@ def update_blood_sugar_info(request):
     return render(request,template_name,context) 
 
 
-def update_biological_info(request):
-    form = UpdateBiologicalInfo
+def update_biological_info(request,id):
+    data = BiologicalInfo.objects.get(pk=id)
+    form = UpdateBiologicalInfo(instance=data)
 
     if request.method == "POST":
-        form = UpdateBiologicalInfo(request.POST)
+        form = UpdateBiologicalInfo(request.POST,instance=data)
         if form.is_valid():
-            form.save()
+            bio_info = form.save(commit=False)
+            bio_info.user = request.user
+            bio_info.save()
             messages.success(request, "Your personal info has been updated")
             return redirect('accounts:profile') 
     template_name = "patient/manage_profile/biological_info_form.html" 
