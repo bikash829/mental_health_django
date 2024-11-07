@@ -18,7 +18,6 @@ def edit_basic_info(request):
             messages.success(request,"You profile basic info has been updated")
             return redirect('accounts:profile')
     template_name = 'patient/manage_profile/basic_info.html'
-    pprint.pprint(form)
     context = {
         'form': form,
     }
