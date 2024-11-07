@@ -6,7 +6,7 @@ from .models import VitalSignsReport,BloodSugar,BiologicalInfo
 # from apps.main.utils import get_country_codes
 from phonenumber_field.formfields import PhoneNumberField,SplitPhoneNumberField, PrefixChoiceField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class BasicInfoForm(ModelForm):
@@ -65,11 +65,24 @@ class AddVitalSignInfo(ModelForm):
         fields = '__all__'
         exclude = ['user']
         widgets = {
-            'systolic': forms.NumberInput(attrs={'class': 'form-control'}),
-            'diastolic': forms.NumberInput(attrs={'class': 'form-control'}),
-            'heart_rate': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'systolic': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'diastolic': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'heart_rate': forms.NumberInput(attrs={'class': 'form-control'}),
             'checkup_date': forms.DateInput(attrs={'class': 'form-control','type':'date'})
         }
+
+    systolic = forms.IntegerField(
+    validators=[MinValueValidator(90), MaxValueValidator(180)],
+    widget=forms.NumberInput(attrs={'class': 'form-control', 'min': 20, 'max': 180})
+    )
+    diastolic = forms.IntegerField(
+        validators=[MinValueValidator(60), MaxValueValidator(120)],
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': 40, 'max': 120})
+    )
+    heart_rate = forms.IntegerField(
+        validators=[MinValueValidator(60), MaxValueValidator(120)],
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': 60, 'max': 120})
+    )
 
 
 
