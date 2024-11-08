@@ -113,11 +113,12 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                    Sign Out
-                                </a>
+                                <form method="POST" id="logoutForm" action="{% url 'accounts:logout' %}">
+                                    {% csrf_token %}
+                                </form>
+                                <button type="submit" class="dropdown-item" form="logoutForm">
+                                    Logout
+                                </button>
                             </li>
                         </ul>
                        

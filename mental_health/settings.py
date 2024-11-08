@@ -133,13 +133,18 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
 
 
+
+
 AUTH_USER_MODEL = 'accounts.User'
 
-
+LOGOUT_REDIRECT_URL = "accounts:login"
 # from django.forms.renderers import TemplatesSetting
 
 # class CustomFormRenderer(TemplatesSetting):
