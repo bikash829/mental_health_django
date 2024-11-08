@@ -201,7 +201,7 @@
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Vital Signs</button>
                                     
                                     
-                                    <button onclick="window.location.href='{% url 'patient:update_vital_sign_info' %}'" type="submit" class="btn btn-success">Add Recent Test</button>
+                                    <button onclick="window.location.href='{% url 'patient:add_vital_sign_info' %}'" type="submit" class="btn btn-success">Add Recent Test</button>
                                     
                                 </div>
                                 <div class="collapse col-12" id="collapseExample">
@@ -214,8 +214,8 @@
                                                     <div class="row">
                                                         <h2 class="col-6">{{report.checkup_date}}</h2>
                                                         <div class="col-6 justify-content-end d-flex align-items-center ">
-                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
-                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                            <button class="btn btn-primary btn-sm me-2" disabled>Edit</button>
+                                                            <button onclick="window.location.href='{% url 'patient:delete_vital_sign_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -242,7 +242,7 @@
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#blood_sugar" aria-expanded="false" aria-controls="blood_sugar">Show Blood Sugar Level</button>
                                  
-                                    <button type="button" onclick="window.location.href='{% url 'patient:update_blood_sugar_info' %}'" class="btn btn-success">Add Recent Test Report</button>
+                                    <button type="button" onclick="window.location.href='{% url 'patient:add_blood_sugar_info' %}'" class="btn btn-success">Add Recent Test Report</button>
                                 </div>
                                 <div class="collapse col-12" id="blood_sugar">
                                     <div class="card card-body">
@@ -254,8 +254,8 @@
                                                     <div class="row">
                                                         <h2 class="col-6">{{report.checkup_date}}</h2>
                                                         <div class="col-6 justify-content-end d-flex align-items-center ">
-                                                            <button class="btn btn-primary btn-sm me-2">Edit</button>
-                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                            <button disabled class="btn btn-primary btn-sm me-2">Edit</button>
+                                                            <button onclick="window.location.href='{% url 'patient:delete_blood_sugar_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -291,7 +291,7 @@
                                                         <div class="col-6 justify-content-end d-flex align-items-center ">
                                                             {% comment %} <button onclick="window.location.href='{% url 'patient:update_biological_info' %}" class="btn btn-primary btn-sm me-2">Edit</button> {% endcomment %}
                                                             <button onclick="window.location.href='{% url 'patient:update_biological_info' report.id %}'" class="btn btn-primary btn-sm me-2">Edit</button>
-                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                            <button disabled class="btn btn-danger btn-sm">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>

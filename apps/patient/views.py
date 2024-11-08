@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pprint import pprint
 
-from apps.patient.models import BiologicalInfo
+from apps.patient.models import BiologicalInfo, BloodSugar, VitalSignsReport
 from .forms import BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
@@ -64,7 +64,7 @@ def edit_contact(request):
     return render(request,template_name,context)
 
 @login_required
-def update_vital_sign_info(request):
+def add_vital_sign_info(request):
     form = AddVitalSignInfo()
     if request.method == "POST":
         form = AddVitalSignInfo(request.POST)
@@ -82,7 +82,16 @@ def update_vital_sign_info(request):
     return render(request,template_name,context)
 
 
-def update_blood_sugar_info(request):
+@login_required
+def delete_vital_sign_report(request,id):
+    data = VitalSignsReport.objects.get(pk=id)
+    data.delete()
+    messages.success(request, "Your vital sings report has been deleted")
+    return redirect('accounts:profile') 
+
+
+@login_required
+def add_blood_sugar_info(request):
     form = AddBloodSugarInfo
 
     if request.method == "POST":
@@ -101,6 +110,15 @@ def update_blood_sugar_info(request):
     return render(request,template_name,context) 
 
 
+@login_required
+def delete_blood_sugar_report(request,id):
+    report = BloodSugar.objects.get(id=id)
+    report.delete()
+    messages.info(request, "Your blood sugar report has been deleted")
+    return redirect('accounts:profile') 
+
+
+@login_required
 def update_biological_info(request,id):
     data = BiologicalInfo.objects.get(pk=id)
     form = UpdateBiologicalInfo(instance=data)
