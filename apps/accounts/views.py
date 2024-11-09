@@ -38,14 +38,14 @@ def user_registration(request):
         if form.is_valid():
             # form.save()
             # return redirect('accounts:login')
-            print(form.cleaned_data)
+            pprint(request.POST)
         else:
             error_messages = "\n".join([error for errors in form.errors.values() for error in errors])
             messages.error(request,error_messages)
-
+    # pprint(form)
     template_name = "registration/register.html"
     context = {
         'form': form,
     }
-    pprint(form)
+    print(form)
     return render(request,template_name,context)

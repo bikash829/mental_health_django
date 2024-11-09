@@ -38,17 +38,19 @@
 
                             <div class="col-md-7">
                                 
-                                <input type="radio" required class="btn-check " name="role" value="" id="patient" autocomplete="off" >
+                                <input type="radio" {% if form.role.value == 'patient' %}checked{% endif %} checked  class="btn-check {% if form.role.errors %}is-invalid{% endif %}"  name="role" value="patient" id="patient" autocomplete="off" >
                                 <label class="btn btn-outline-success" for="patient">Patient</label>
 
-                                <input type="radio" required class="btn-check " name="role" value="" id="doctor" >
+                                <input type="radio" {% if form.role.value == 'doctor' %}checked{% endif %}  required class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="role" value="doctor" id="doctor" >
                                 <label class="btn btn-outline-success" for="doctor">Doctor</label>
 
-                                <input type="radio" required class="btn-check " name="role" value="" id="counselor">
+                                <input type="radio" {% if form.role.value == 'counselor' %}checked{% endif %}  required class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="role" value="counselor" id="counselor">
                                 <label class="btn btn-outline-success" for="counselor">Counselor</label>
 
                                 <div class="invalid-feedback">
-                                    Please select an account type.
+                                    {% for error in form.role.errors %}
+                                        {{error}}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -58,7 +60,7 @@
                             <label for="{{form.username.id_for_label}}" class="col-md-4 col-form-label text-md-end">{{ form.username.label }}</label>
 
                             <div class="col-md-7">
-                                <input id="{{form.username.auto_id}}" type="{{form.username.widget_type}}" class="form-control  {% if form.username.errors %}is-invalid{% endif %}" name="{{form.username.name}}" value="{{form.username.value|default_if_none:''}}" required autocomplete="username">
+                                <input placeholder="username" id="{{form.username.auto_id}}" type="{{form.username.widget_type}}" class="form-control  {% if form.username.errors %}is-invalid{% endif %}" name="{{form.username.name}}" value="{{form.username.value|default_if_none:''}}" required autocomplete="username">
                                 <div class="invalid-feedback">
                                     {% for error in form.username.errors %}
                                         {{error}}
@@ -70,7 +72,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ 'Email Address' }}</label>
 
                             <div class="col-md-7">
-                                <input id="email" type="email" class="form-control  {% if form.email.errors %}is-invalid{% endif %}" name="email" value="{{form.email.value|default_if_none:''}}" autocomplete="email" placeholder="Email Address">
+                                <input id="email" type="{{form.email.widget_type}}" class="form-control  {% if form.email.errors %}is-invalid{% endif %}" name="email" value="{{form.email.value|default_if_none:''}}" autocomplete="email" placeholder="Email Address">
                                 <div class="invalid-feedback">
                                     {% for error in form.email.errors %}
                                      {{error}}
