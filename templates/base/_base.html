@@ -129,7 +129,7 @@
                     <a href="{% url 'accounts:login' %}" class="user__login  btn btn-primary ">Login</a>
                     {% comment %} <a href="#" class="user__login  btn btn-primary <!-- user__login--theme user__login--size button -->"
                         <!-- data-bs-toggle="modal" data-bs-target="#login" -->>Login</a> {% endcomment %}
-                    <a href="#" class="user__register btn btn-success">Register</a>
+                    <a href="{% url 'accounts:user_registration' %}" class="user__register btn btn-success">Register</a>
                     {% comment %} <a href="#" class="user__register btn btn-success <!-- user__register--theme user__register--size button -->"
                         {{-- data-bs-toggle="modal" data-bs-target="#register_popup" --}}>Register</a> {% endcomment %}
                 </div>
