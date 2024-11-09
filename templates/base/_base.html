@@ -106,7 +106,7 @@
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             @endrole {% endcomment %}
                             <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">View Profile</a></li>
-                                <li><a class="dropdown-item" href="./edit_user.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
                                 <li><a class="dropdown-item" href="#">My Appointments</a></li>
                             <li>
                                 <hr class="dropdown-divider">
