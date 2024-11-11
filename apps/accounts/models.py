@@ -72,7 +72,7 @@ class User(AbstractUser):
             (4,"Rejected"),
         ]
 
-
+    email=models.EmailField(unique=True)
     marital_status = models.CharField(max_length=2,choices=MARITAL_STATUS)
     nationality = models.CharField(max_length=50,blank=True)
     gender = models.CharField(max_length=1,choices=GENDER)

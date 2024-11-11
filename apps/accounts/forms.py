@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from .models import User
 
 class ChangeProfilePhoto(ModelForm):
-    # your_name = forms.ImageField(label="Choose Photo",)
     class Meta:
         model = User
         fields = ['profile_photo',]
@@ -16,7 +15,18 @@ class ChangeProfilePhoto(ModelForm):
 
 
 class UserRegistrationForm(UserCreationForm):
-    role = forms.CharField(required=True,error_messages={"required": "You must choose you desired role."})
+    ROLE_CHOICES = [
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+        ('counselor', 'Counselor'),
+    ]
+    role = forms.ChoiceField(
+        choices=ROLE_CHOICES,
+        required=True,
+        error_messages={"required": "You must choose your desired role."},
+        widget=forms.RadioSelect()
+        )
+    # role = forms.CharField(required=True,error_messages={"required": "You must choose you desired role."})
     email = forms.EmailField(required=True)
     class Meta:
         model = User

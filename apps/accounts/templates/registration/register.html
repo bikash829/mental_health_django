@@ -33,28 +33,37 @@
                             {% endif %}
                         </div>
                         
-                        <div class="row mb-3">
+                        {% comment %} <div class="row mb-3">
                             <label for="role" class="col-md-4 col-form-label text-md-end">{{ 'Select Account Type' }}</label>
-
                             <div class="col-md-7">
-                                
-                                <input type="radio" {% if form.role.value == 'patient' %}checked{% endif %} checked  class="btn-check {% if form.role.errors %}is-invalid{% endif %}"  name="role" value="patient" id="patient" autocomplete="off" >
-                                <label class="btn btn-outline-success" for="patient">Patient</label>
-
-                                <input type="radio" {% if form.role.value == 'doctor' %}checked{% endif %}  required class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="role" value="doctor" id="doctor" >
-                                <label class="btn btn-outline-success" for="doctor">Doctor</label>
-
-                                <input type="radio" {% if form.role.value == 'counselor' %}checked{% endif %}  required class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="role" value="counselor" id="counselor">
-                                <label class="btn btn-outline-success" for="counselor">Counselor</label>
-
+                                    {% for role in form.role %}
+                                        <input type="radio" class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="{{ role.data.name }}" value="{{role.data.value }}" id="{{ role.data.attrs.id }}" autocomplete="off" {% if form.role.value == role.data.value %}checked{% endif %}>
+                                        <label class="btn btn-outline-success" for="{{role.data.attrs.id}}">{{role.data.label}}</label>
+                                    {% endfor %}
                                 <div class="invalid-feedback">
                                     {% for error in form.role.errors %}
                                         {{error}}
                                     {% endfor %}
                                 </div>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
 
+                        <div class="row mb-3">
+                                <label id="{{ 'role' }}" class="col-md-4 col-form-label text-md-end">{{ form.role.label }}</label>
+                                <div class="col-md-7">
+                                    {% for radio in form.role %}
+                                        {% comment %} {{radio.tag}} {% endcomment %}
+                                        <input type="radio" class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="{{ radio.data.name }}" value="{{radio.data.value }}" id="{{ radio.id_for_label }}" autocomplete="off" {% if form.role.value == radio.data.value %}checked{% endif %}>
+                                        <label class="btn btn-outline-success" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                    {% endfor %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.role.errors %}
+                                            {{error}}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                        </div>
 
                         <div class="row mb-3">
                             <label for="{{form.username.id_for_label}}" class="col-md-4 col-form-label text-md-end">{{ form.username.label }}</label>
