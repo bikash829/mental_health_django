@@ -1,0 +1,22 @@
+{% extends "base/_base.html" %}
+
+{% load static %}
+
+{% block banner %}
+<div class="banner ">
+    <h1 class="banner__title">Email Verification Code Sent</h1>
+    <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="Login ">
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-success">Verification Status</h5>
+                <p class="card-text text-muted">The account verification link has been sent to your email inbox or spam please check and active/verify your account.</p>
+                <a href="{% url 'main:home' %}" class="btn btn-primary">Go to Home</a>
+            </div>
+    </div>
+</div>
+{% endblock %}
