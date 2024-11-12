@@ -13,7 +13,7 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="card my-5 col-lg-8 col-md-10 col-12 px-5 py-4">
+        <div class="card my-5 col-lg-6 col-md-8 col-12 px-5 py-4">
             <h3 class="text-center">Login</h3>
             <form class="row g-3" method="post" novalidate>
                 {% csrf_token %}
@@ -30,7 +30,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                    <input type="text" name="{{ form.username.name }}" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="{{ form.username.id_for_label }}" required>
+                    <input type="text" name="{{ form.username.name }}" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="{{ form.username.id_for_label }}" required placeholder="username">
                     {% if form.username.errors %}
                         {% for error in form.username.errors %}
                             <div class="invalid-feedback">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-                    <input type="password" name="{{ form.password.name }}" class="form-control {% if form.password.errors %}is-invalid{% endif %}" id="{{ form.password.id_for_label }}" required>
+                    <input type="password" name="{{ form.password.name }}" class="form-control {% if form.password.errors %}is-invalid{% endif %}" id="{{ form.password.id_for_label }}" required placeholder="password">
                     {% if form.password.errors %}
                         {% for error in form.password.errors %}
                             <div class="invalid-feedback">
