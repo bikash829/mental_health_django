@@ -42,13 +42,20 @@ class PatientContactForm(ModelForm):
     #     widget=forms.TextInput(attrs={'class':'form-control'})
     # )
     additional_phone=SplitPhoneNumberField(
+        required=False,  # Make this field optional,
         widget=PhoneNumberPrefixWidget(
             widgets=[
                 forms.Select(attrs={'class': 'form-select w-25'},choices=PrefixChoiceField().choices),
                 forms.TextInput(attrs={'class': 'form-control w-75'})
                 ],
-        )
+        ),
+        
     )
+    def clean_additional_phone(self):
+        additional_phone = self.cleaned_data.get('additional_phone')
+        if isinstance(additional_phone, list) and not additional_phone:
+            return ''
+        return additional_phone
     class Meta:
         model = User
         fields = ['email','phone','additional_phone']

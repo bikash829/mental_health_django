@@ -5,18 +5,26 @@
 
 {% block banner %}
 <div class="banner ">
-    <h1 class="banner__title">Hello, {{user.full_name|default:user.username}}</h1>
+    <h1 class="banner__title">Hello, {{user.full_name|default_if_none:user.username}}</h1>
     <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="User Profile">
 </div>
 {% endblock banner %}
 
 {% block content %}
 <div class="main">
-    <section class="profile segment-margin">
+    
+    <section class="profile container py-5">
+        <div class="pb-5">
+            
+            <h2>Account Completion Progress</h2>
+            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="{{user.profile_completion}}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success" style="width: {{user.profile_completion}}%">{{user.profile_completion}}%</div>
+              </div>
+        </div>
 
         <div class="row justify-content-center">
             <div class="col-md-3 col-lg-3 align-self-center">
-                <img src="{{user.profile_photo.url}}" class="img-fluid rounded"
+                <img src="{% if user.profile_photo %}{{user.profile_photo.url}} {% else %} {% static 'main/images/avatar/blank-profile-picture.png' %} {% endif %} " class="img-fluid rounded"
                     alt="...">
                 <p class="text-center"><a href="#" data-bs-toggle="modal"
                         data-bs-target="#user_profile_image">Change Photo</a></p>
@@ -163,7 +171,7 @@
                                 </div>
                                 <div class="col-md-12 col-lg-12">
                                     <label class="text-muted">Emmergency Contact No: </label>
-                                    <span>{{user.additional_phone}}</span>
+                                    <span>{{user.additional_phone|default_if_none:""}}</span>
                                 </div>
 
                                 <div class="col-md-6 col-lg-6">

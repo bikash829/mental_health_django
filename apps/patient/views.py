@@ -48,7 +48,18 @@ def edit_contact(request):
     if request.method == "POST":
         form = PatientContactForm(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
+            print(form.cleaned_data['additional_phone'])
+            additional_phone = form.cleaned_data.get('additional_phone')
+            # if isinstance(additional_phone, list):
+            #     print('checked list or not')
+            #     if not additional_phone:  # Check if the list is empty
+            #         form.cleaned_data['additional_phone'] = ""
+            #         print('assigned empty value')
+            additional_phone = form.cleaned_data.get('additional_phone')
+            if isinstance(additional_phone, list) and not additional_phone:  # Check if the list is empty
+                form.cleaned_data['additional_phone'] = None
+            print(form.cleaned_data)
+            form.save(commit=True)
             messages.success(request, "Your contact number has been updated")
             return redirect('accounts:profile')
     else:

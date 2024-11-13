@@ -83,7 +83,7 @@ class User(AbstractUser):
     identity_type = models.IntegerField(choices=IdentityType,null=True)
     identity_no = models.CharField(max_length=100)
     identity_proof = models.FileField(upload_to=identity_type_directory_path)
-    profile_photo = models.ImageField(upload_to=profile_photo_directory_path)
+    profile_photo = models.ImageField(upload_to=profile_photo_directory_path,default=None)
     is_verified = models.IntegerField(choices=IS_VERIFIED,null=True)
     blood_group = models.ForeignKey(BloodGroup,on_delete=models.PROTECT,null=True)
     terms = models.BooleanField(default=0)
@@ -92,7 +92,53 @@ class User(AbstractUser):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    # account completion progress 
+    REQUIRED_FIELDS_BY_GROUP = {
+        # "patient": [
+        #     "username","first_name","last_name","email","marital_status","nationality","gender",
+        #     "date_of_birth","religion","profile_photo",
+        #     "blood_group","phone"
+        # ],
+        "patient": [
+            "username","first_name","last_name","email","nationality","gender",
+            "date_of_birth","religion","profile_photo",
+            "blood_group","phone"
+        ],
+        "doctor": [
+            "username","first_name","last_name","email","marital_status","nationality","gender",
+            "date_of_birth","religion","identity_type","identity_no","identity_proof","profile_photo",
+            "terms","blood_group","phone"
+        ],
+        "counselor": [
+            "email", "phone", "profile_photo", "date_of_birth", 
+            "religion", "is_verified", "terms",
+        ],
+    }
 
+    # RELATED_MODELS_FOR_COMPLETION = [
+    #     "address", "education_set", "experience_set", "training_set"
+    # ]
+    
+    def get_user_type(self):
+        """Returns the user's group as a type identifier."""
+        groups = self.groups.values_list('name', flat=True)
+        for group_name in self.REQUIRED_FIELDS_BY_GROUP.keys():
+            if group_name in groups:
+                return group_name
+        return None  # No recognized user group
+    
+    
+    def profile_completion(self):
+        user_type = self.get_user_type()
+        if not user_type:
+            return 0  # No group assigned or unrecognized group
+
+        required_fields = self.REQUIRED_FIELDS_BY_GROUP.get(user_type, [])
+        total_fields = len(required_fields)
+        completed_fields = sum(1 for field in required_fields if getattr(self, field))
+
+        # Calculate percentage
+        return int((completed_fields / total_fields) * 100) if total_fields else 100
 
 # Address info description 
 class Address(models.Model):
