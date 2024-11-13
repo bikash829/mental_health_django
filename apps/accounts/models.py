@@ -46,7 +46,9 @@ class User(AbstractUser):
     """ choices """
     # marital status
     MARITAL_STATUS = [
-        ("M", "Unmarried"),
+        # ("W", "Widow"),
+        ("S", "Single"),
+        ("IR", "In a Relationship"),
         ("M", "Married"),
         ("D", "Divorced"),
         ("W", "Widow"),
@@ -100,7 +102,7 @@ class User(AbstractUser):
         #     "blood_group","phone"
         # ],
         "patient": [
-            "username","first_name","last_name","email","nationality","gender",
+            "username","first_name","last_name","email","nationality","gender","marital_status",
             "date_of_birth","religion","profile_photo",
             "blood_group","phone"
         ],

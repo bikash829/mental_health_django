@@ -14,7 +14,7 @@ class BasicInfoForm(ModelForm):
     last_name = forms.CharField(max_length=50,required=True)
     class Meta:
         model = User
-        fields = ['first_name','last_name','date_of_birth','gender','blood_group','religion','nationality']
+        fields = ['first_name','last_name','date_of_birth','gender','blood_group','religion','marital_status','nationality']
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'})  # Use RadioSelect widget for the gender field
         }
@@ -51,11 +51,15 @@ class PatientContactForm(ModelForm):
         ),
         
     )
+
+    
     def clean_additional_phone(self):
         additional_phone = self.cleaned_data.get('additional_phone')
         if isinstance(additional_phone, list) and not additional_phone:
             return ''
         return additional_phone
+    
+
     class Meta:
         model = User
         fields = ['email','phone','additional_phone']

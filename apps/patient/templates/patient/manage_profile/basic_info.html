@@ -112,6 +112,24 @@
                     </div>
 
                     <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.marital_status.id_for_label }}">{{form.marital_status.label}}</label>
+                        {% comment %} <input type="{{form.marital_status.widget_type}}" name="marital_status" class="form-control {% if form.marital_status.errors %}is-invalid{% endif %}" id="{{form.marital_status.auto_id}}"
+                            value="{{ form.marital_status.value}}" required> {% endcomment %}
+                        <select class="form-select {% if form.marital_status.errors %}is-invalid{% endif %}" name="{{'marital_status'}}" aria-label="Default select example" >
+                            {% for marital_status in form.marital_status %}
+                            {{marital_status}}
+                            {% endfor %}
+                        </select>
+                        {% if form.marital_status.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.marital_status.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
                         <label class="form-label" for="{{ form.nationality.id_for_label }}">{{form.nationality.label}}</label>
                         <input type="{{form.nationality.widget_type}}" name="nationality" class="form-control {% if form.nationality.errors %}is-invalid{% endif %}" id="{{form.nationality.auto_id}}"
                             value="{{ form.nationality.value}}" required>
@@ -128,6 +146,9 @@
                         <label for="religion" class="form-label">Language</label>
                         <input readonly type="text" name="" class="form-control" id="religion"
                             value="English">
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        
                     </div>
 
                     <div class="d-grid col-6 mx-auto">
