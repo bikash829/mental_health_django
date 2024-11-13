@@ -24,6 +24,7 @@ class AddressForm(ModelForm):
     template_name = "patient/custom_form/form_snippet.html"
     class Meta:
         model = Address
+        fields = '__all__'
         exclude = ['user'] 
 
 

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pprint import pprint
 
+from apps.accounts.models import Address
 from apps.patient.models import BiologicalInfo, BloodSugar, VitalSignsReport
 from .forms import BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
@@ -28,6 +29,8 @@ def edit_basic_info(request):
 @login_required
 def edit_address(request):
     # form = AddressForm(instance=request.user.address,error_class=BootstrapErrorList)
+    if not hasattr(request.user, 'address'):
+        Address.objects.create(user=request.user)
     form = AddressForm(instance=request.user.address)
     if request.method == "POST":
         form = AddressForm(request.POST,instance=request.user.address)
