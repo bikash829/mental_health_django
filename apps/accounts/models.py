@@ -136,8 +136,18 @@ class User(AbstractUser):
             return 0  # No group assigned or unrecognized group
 
         required_fields = self.REQUIRED_FIELDS_BY_GROUP.get(user_type, [])
-        total_fields = len(required_fields)
+        
+        address_fields = ['address', 'zip_code', 'city', 'state', 'country']
+        
+        total_fields = len(required_fields) + len(address_fields)
+
         completed_fields = sum(1 for field in required_fields if getattr(self, field))
+
+        # Check Address fields
+        if hasattr(self, 'address'):
+            address = self.address
+            completed_fields += sum(1 for field in address_fields if getattr(address, field))
+        
 
         # Calculate percentage
         return int((completed_fields / total_fields) * 100) if total_fields else 100
