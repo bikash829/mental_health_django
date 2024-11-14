@@ -13,9 +13,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import views as auth_views
 
 
 # Create your views here.
+class CustomLoginView(auth_views.LoginView):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('accounts:profile')
+        return super().dispatch(request, *args, **kwargs)
+
+
 @login_required
 def profile(request):
     template_name = "patient/profile.html"
@@ -38,6 +46,9 @@ def change_profile_photo(request):
 
 
 def user_registration(request):
+    if request.user.is_authenticated:
+        return redirect('accounts:profile')
+    
     form = UserRegistrationForm()
 
     if request.method == "POST":

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'apps.patient.apps.PatientConfig',
     'apps.accounts.apps.AccountsConfig',
     'apps.dashboard.apps.DashboardConfig',
+    'apps.doctor_dashboard.apps.DoctorDashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
