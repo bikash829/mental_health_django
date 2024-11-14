@@ -1,0 +1,9 @@
+1.https://www.freecodecamp.org/news/js-type-coercion-explained-27ba3d9a2839/
+2.https://wtfjs.com/
+3.codewars.com
+
+video : academin data type
+
+book : https://eloquentjavascript.net/
+js.zonayed.me
+youdont know java script

@@ -1,0 +1,31 @@
+{% extends "base/_base.html" %}
+{% load static %}
+
+
+{% block title %}{{"Sign-Up Page"}}{% endblock title %}
+{% block banner %}
+<div class="banner ">
+    <h1 class="banner__title">User Registration</h1>
+    <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="Login ">
+</div>
+{% endblock banner %}
+{% block content %}
+<div class="container">
+
+<div class="row justify-content-center">
+    <div class="card my-5 col-lg-8 col-md-10 col-12 pb-3">
+        <h3 class="py-3">Sign Up page</h3>
+        <form class="row g-3" method="post" novalidate>
+            {% csrf_token %}
+            {{form}}
+            <div class="col-12">
+              <input class="btn btn-success" type="submit" class="form-control" value="Sign Up">
+            </div>
+            
+        </form>
+    </div>    
+</div>
+
+</div>
+
+{% endblock content %}

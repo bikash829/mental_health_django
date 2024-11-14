@@ -31,8 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts.apps.AccountsConfig',
-    'dashboard.apps.DashboardConfig',
+    # 'django.forms', # to override form template
+    "phonenumber_field",
+    'apps.blog',
+    'apps.main.apps.MainConfig',
+    'apps.patient.apps.PatientConfig',
+    'apps.accounts.apps.AccountsConfig',
+    'apps.dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -64,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.dashboard.context_processors.sidebar_items', # aside items 
             ],
         },
     },
@@ -127,8 +133,29 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
+
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
 
 
+
+
 AUTH_USER_MODEL = 'accounts.User'
+
+LOGOUT_REDIRECT_URL = "accounts:login"
+# from django.forms.renderers import TemplatesSetting
+
+# class CustomFormRenderer(TemplatesSetting):
+#     form_template_name = "custom_form_template/form_snippet.html"
+
+
+# FORM_RENDERER = "mental_health.settings.CustomFormRenderer"
+# FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+# CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
+
+# CRISPY_TEMPLATE_PACK = "bulma"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

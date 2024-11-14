@@ -1,0 +1,165 @@
+{% extends "base/_base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock title %}
+
+{% block banner %}
+<div class="banner ">
+    <h1 class="banner__title">{{'Edit Basic Info'}}</h1>
+    <img class="banner__img" src="{% static 'main/images/banner/banner3.jpg' %}" alt="{{'User Profile'}}">
+</div>
+{% endblock banner %}
+
+{% block content %}
+<main class="main">
+    <section class="profile segment-margin">
+
+        <div class="row  justify-content-center">
+            <div class="col-md-8 col-lg-8">
+                <form method="POST" action="" class="row g-3" novalidate>
+                    {% csrf_token %}
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.first_name.id_for_label }}">{{form.first_name.label}}</label>
+                        <input type="{{form.first_name.widget_type}}" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" id="{{form.first_name.auto_id}}"
+                            value="{{form.first_name.value}}" required>
+                        {% if form.first_name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.first_name.errors  %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.last_name.id_for_label }}">{{form.last_name.label}}</label>
+                        <input type="{{form.last_name.widget_type}}" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" id="{{form.last_name.auto_id}}"
+                            value="{{ form.last_name.value}}" required>
+                        {% if form.last_name.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.last_name.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6  col-lg-6">
+                        <label class="form-label" for="{{ 'gender' }}">Sex</label>
+                        <div id="gender" class="">
+                            {% for value, label in form.gender.field.choices %}
+                                {% if value != "" %}
+                                    <!-- Render the radio button -->
+                                    <input type="radio" name="gender" 
+                                        class="form-check-input" 
+                                        value="{{ value }}" 
+                                        id="gender_{{ value }}" 
+                                        {% if form.gender.value == value %} checked {% endif %} required>
+                                    <!-- Render the label -->
+                                    <label class="form-check-label" for="gender_{{ value }}">{{ label }}</label>
+                                {% endif %}
+                            {% endfor %}
+                            {% if form.gender.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.gender.errors  %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.date_of_birth.id_for_label }}">{{form.date_of_birth.label}}</label>
+                        <input type="{{form.date_of_birth.widget_type}}" name="date_of_birth" class="form-control {% if form.date_of_birth.errors %}is-invalid{% endif %}" id="{{form.date_of_birth.auto_id}}"
+                            value="{{ form.date_of_birth.value|date:'Y-m-d'|default:form.date_of_birth.value}}" required>
+                        {% if form.date_of_birth.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_of_birth.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.blood_group.id_for_label }}">{{form.blood_group.label}}</label>
+                        <select class="form-select {% if form.blood_group.errors %}is-invalid{% endif %}" name="{{'blood_group'}}" aria-label="Default select example" >
+                            {% for blood_group in form.blood_group %}
+                            {{blood_group}}
+                            {% endfor %}
+                        </select>
+                        {% if form.blood_group.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.blood_group.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.religion.id_for_label }}">{{form.religion.label}}</label>
+                        <input type="{{form.religion.widget_type}}" name="religion" class="form-control {% if form.religion.errors %}is-invalid{% endif %}" id="{{form.religion.auto_id}}"
+                            value="{{ form.religion.value}}" required>
+                        {% if form.religion.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.religion.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.marital_status.id_for_label }}">{{form.marital_status.label}}</label>
+                        {% comment %} <input type="{{form.marital_status.widget_type}}" name="marital_status" class="form-control {% if form.marital_status.errors %}is-invalid{% endif %}" id="{{form.marital_status.auto_id}}"
+                            value="{{ form.marital_status.value}}" required> {% endcomment %}
+                        <select class="form-select {% if form.marital_status.errors %}is-invalid{% endif %}" name="{{'marital_status'}}" aria-label="Default select example" >
+                            {% for marital_status in form.marital_status %}
+                            {{marital_status}}
+                            {% endfor %}
+                        </select>
+                        {% if form.marital_status.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.marital_status.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label class="form-label" for="{{ form.nationality.id_for_label }}">{{form.nationality.label}}</label>
+                        <input type="{{form.nationality.widget_type}}" name="nationality" class="form-control {% if form.nationality.errors %}is-invalid{% endif %}" id="{{form.nationality.auto_id}}"
+                            value="{{ form.nationality.value}}" required>
+                        {% if form.nationality.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.nationality.errors  %}
+                            {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <label for="religion" class="form-label">Language</label>
+                        <input readonly type="text" name="" class="form-control" id="religion"
+                            value="English">
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        
+                    </div>
+
+                    <div class="d-grid col-6 mx-auto">
+                        <a class="btn btn-danger" href="{% url 'accounts:profile' %}">Cancel</a>
+                    </div>
+                    <div class="d-grid col-6 mx-auto">
+                        <input value="Update" class="btn btn-primary" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

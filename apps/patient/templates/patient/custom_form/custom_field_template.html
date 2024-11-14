@@ -1,0 +1,52 @@
+{% comment %} {% if field.use_fieldset %}
+  <fieldset{% if field.help_text and field.auto_id and "aria-describedby" not in field.field.widget.attrs %} aria-describedby="{{ field.auto_id }}_helptext"{% endif %}>
+  {% if field.label %}{{ field.legend_tag }}{% endif %}
+{% else %}
+  {% if field.label %}{{ field.label_tag }}{% endif %}
+{% endif %}
+{% if field.help_text %}<div class="helptext"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>{{ field.help_text|safe }}</div>{% endif %}
+{{ field }}{% if field.use_fieldset %}</fieldset>{% endif %}
+{{ field.errors }} {% endcomment %}
+
+{% for field, errors in fields %}
+<div{% with classes=field.css_classes %}{% if classes %} class="{{ classes }}"{% endif %}{% endwith %}>
+  {% comment %} {{ field.as_field_group }} {% endcomment %}
+  {% if field.use_fieldset %}
+    <fieldset{% if field.help_text and field.auto_id and "aria-describedby" not in field.field.widget.attrs %} aria-describedby="{{ field.auto_id }}_helptext"{% endif %}>
+        {% if field.label %}{{ field.legend_tag }}{% endif %}
+  {% else %}
+        {% if field.label %}
+        <label class="form-label" id="{{field.id_for_label}}">
+          {{field.label}}
+          {% if field.help_text %}
+        <span class="helptext"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>
+            [{{ field.help_text|safe }}]
+          </span>
+          {% endif %}
+        </label>
+        {% endif %}
+  {% endif %}
+      {% comment %} {% if field.help_text %}
+        <div class="helptext"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>
+          {{ field.help_text|safe }}
+        </div>
+      {% endif %} {% endcomment %}
+      {{ field }}
+  {% if field.use_fieldset %}
+    </fieldset>
+  {% endif %}
+  {% comment %} {{ field.errors }} {% endcomment %}
+  {% if field.errors %}
+    <div class="error-feedback">
+        {% for error in field.errors  %}
+        {{error}}
+        {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if forloop.last %}
+    {% for field in hidden_fields %}{{ field }}{% endfor %}
+  {% endif %}
+</div>
+
+{% endfor %}

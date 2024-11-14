@@ -1,0 +1,23 @@
+<!-- accounts/templates/accounts/account_activation_email.html -->
+{% comment %} <p>Hi {{ user.username }},</p>
+<p>Please click the link below to confirm your email and complete your registration:</p>
+<a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">
+<a href="{{ protocol}}://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">
+    Activate your account
+</a> {% endcomment %}
+
+
+{% autoescape off %}
+To verify your account {{ user.get_username }} TestSite Account,
+click the link below:
+
+Someone asked for verify your account {{ email }}. Please click the link below to confirm your email and complete your registration:
+{{ 'http'}}://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+{% comment %} {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %} {% endcomment %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+The TestSite Team
+{% endautoescape %}
