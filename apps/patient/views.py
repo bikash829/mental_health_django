@@ -7,7 +7,7 @@ from pprint import pprint
 
 from apps.accounts.models import Address
 from apps.patient.models import BiologicalInfo, BloodSugar, VitalSignsReport
-from .forms import BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
+from .forms import AddBiologicalInfoForm, BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
 
@@ -148,5 +148,25 @@ def update_biological_info(request,id):
     template_name = "patient/manage_profile/biological_info_form.html" 
     context = {
         'form': form
+    }
+    return render(request,template_name,context) 
+
+
+
+@login_required
+def add_biological_info(request):
+    form = AddBiologicalInfoForm()
+    if request.method == "POST":
+        form = AddBiologicalInfoForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.save()
+            messages.success(request, "Your personal info has been updated")
+            return redirect('accounts:profile') 
+    template_name = "patient/manage_profile/biological_info_form.html" 
+    context = {
+        'form': form,
+        'banner_title': 'Add Info',
     }
     return render(request,template_name,context) 

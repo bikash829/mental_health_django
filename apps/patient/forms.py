@@ -123,6 +123,18 @@ class UpdateBiologicalInfo(ModelForm):
         }
 
 
+class AddBiologicalInfoForm(ModelForm):
+    template_name = "patient/custom_form/custom_field_template.html"
+    class Meta:
+        model = BiologicalInfo
+        fields = '__all__'
+        exclude = ['user']
+        widgets = {
+            'height': forms.NumberInput(attrs={'class': 'form-control'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control'})
+        }
+
+
 
 
     

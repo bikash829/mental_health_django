@@ -88,7 +88,7 @@
                         <li class="dropdown-toggle dropdown-toggle_custom" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class="fa-regular fa-face-smile"></i>
-                            {{ user.full_name|default:user.username }}
+                            {{ user.full_name|default_if_none:'Update Your Name' }}
                         </li>
                         <ul class="dropdown-menu">
                             {% comment %} @role('Patient')

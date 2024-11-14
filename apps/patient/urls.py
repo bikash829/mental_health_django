@@ -10,5 +10,6 @@ urlpatterns = [
     path('delete_vital_sign_report/<int:id>/',views.delete_vital_sign_report,name="delete_vital_sign_report"),
     path('add_blood_sugar_info/',views.add_blood_sugar_info,name="add_blood_sugar_info"),
     path('delete_blood_sugar_report/<int:id>/',views.delete_blood_sugar_report,name="delete_blood_sugar_report"),
+    path('add_biological_info/',views.add_biological_info,name="add_biological_info"),
     path('update_biological_info/<int:id>/',views.update_biological_info,name="update_biological_info"),
 ]

@@ -45,10 +45,14 @@
                         <div class="accordion-body">
                            <!--<strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow. -->
                             <div class="row g-3">
-                                <div class="col-12">
+                                <div class="col-6">
                                     <label class="text-muted">Full Name: </label>
-                                    <span><strong> {{ user.full_name }}</strong></span>
+                                    <span><strong> {{ user.full_name|default_if_none:'' }}</strong></span>
                                    
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <label class="text-muted">Language Preference: </label>
+                                    <span>English</span>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <label class="text-muted">Date Of Birth: </label>
@@ -80,10 +84,7 @@
                                     <span>{{user.nationality }}</span>
                                 </div>
 
-                                <div class="col-md-6 col-lg-6">
-                                    <label class="text-muted">Language Preference: </label>
-                                    <span>English</span>
-                                </div>
+                                
 
                             </div>
                             <div class="d-grid pt-2 col-6 mx-auto">
@@ -167,8 +168,10 @@
                             <div class="row g-3">
                                 <div class="col-md-12 col-lg-12">
                                     <label class="text-muted">Email Address: </label>
-                                    <span><a data-bs-toggle="tooltip" data-bs-title="Click to change the email"
-                                            id="changeEmail" href="">{{ user.email }}</a></span>
+                                    <span>
+                                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                    </span>
+                                    {% comment %} <button type="submit" class="btn btn-sm btn-link">Change Email</button> {% endcomment %}
                                 </div>
                                 <div class="col-md-12 col-lg-12">
                                     <label class="text-muted">Contact No: </label>
@@ -212,41 +215,42 @@
                             <div class="col-12">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Vital Signs</button>
-                                    
-                                    
                                     <button onclick="window.location.href='{% url 'patient:add_vital_sign_info' %}'" type="submit" class="btn btn-success">Add Recent Test</button>
-                                    
                                 </div>
                                 <div class="collapse col-12" id="collapseExample">
                                     <div class="card card-body">
-                                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                                            {% for report  in user.vitalsignsreport_set.all %}
-                                            <div class="col">
-                                              <div class="card">
-                                                <div class="card-header">
-                                                    <div class="row">
-                                                        <h2 class="col-6">{{report.checkup_date}}</h2>
-                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
-                                                            <button class="btn btn-primary btn-sm me-2" disabled>Edit</button>
-                                                            <button onclick="window.location.href='{% url 'patient:delete_vital_sign_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
+                                        {% if not user.vitalsignsreport_set.exists %}
+                                            <h2 class="text-center text-muted">No data</h2>
+                                        {% else %}
+                                            <div class="row row-cols-1 row-cols-md-3 g-4">
+                                                {% for report  in user.vitalsignsreport_set.all %}
+                                                <div class="col">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row">
+                                                            <h5 class="col-8">{{report.checkup_date}}</h5>
+                                                            <div class="col-4 justify-content-end d-flex align-items-center ">
+                                                                <button class="btn btn-primary btn-sm me-2" disabled>Edit</button>
+                                                                <button onclick="window.location.href='{% url 'patient:delete_vital_sign_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="card-body">
+                                                    {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+                                                    <div class="">
+                                                        <label class="text-muted">Blood Pressure Level:</label>
+                                                        <span>{{report.systolic}}/{{report.diastolic}}</span>
+                                                    </div>
+                                                    <div class="">
+                                                        <label class="text-muted">Heart Rate: </label>
+                                                        <span>{{report.heart_rate}}</span>
+                                                    </div>
+                                                    </div>
                                                 </div>
-                                                <div class="card-body">
-                                                  {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
-                                                  <div class="">
-                                                    <label class="text-muted">Blood Pressure Level:</label>
-                                                    <span>{{report.systolic}}/{{report.diastolic}}</span>
                                                 </div>
-                                                <div class="">
-                                                    <label class="text-muted">Heart Rate: </label>
-                                                    <span>{{report.heart_rate}}</span>
-                                                </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>       
+                                                {% endfor %}
+                                            </div>       
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -259,31 +263,35 @@
                                 </div>
                                 <div class="collapse col-12" id="blood_sugar">
                                     <div class="card card-body">
-                                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                                            {% for report  in user.bloodsugar_set.all %}
-                                            <div class="col">
-                                              <div class="card">
-                                                <div class="card-header">
-                                                    <div class="row">
-                                                        <h2 class="col-6">{{report.checkup_date}}</h2>
-                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
-                                                            <button disabled class="btn btn-primary btn-sm me-2">Edit</button>
-                                                            <button onclick="window.location.href='{% url 'patient:delete_blood_sugar_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
+                                        {% if not user.bloodsugar_set.exists %}
+                                            <h2 class="text-center text-muted">No data</h2>
+                                        {% else %}
+                                            <div class="row row-cols-1 row-cols-md-3 g-4">
+                                                {% for report  in user.bloodsugar_set.all %}
+                                                <div class="col">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row">
+                                                            <h5 class="col-8">{{report.checkup_date}}</h5>
+                                                            <div class="col-4 justify-content-end d-flex align-items-center ">
+                                                                <button disabled class="btn btn-primary btn-sm me-2">Edit</button>
+                                                                <button onclick="window.location.href='{% url 'patient:delete_blood_sugar_report' report.id %}'" class="btn btn-danger btn-sm">Delete</button>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="card-body">
+                                                    {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+                                                    <div class="">
+                                                        <label class="text-muted">Blood Sugar Level:</label>
+                                                        <span>{{report.sugar_level}}</span>
+                                                    </div>
+                                                    
+                                                    </div>
                                                 </div>
-                                                <div class="card-body">
-                                                  {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
-                                                  <div class="">
-                                                    <label class="text-muted">Blood Sugar Level:</label>
-                                                    <span>{{report.sugar_level}}</span>
                                                 </div>
-                                                
-                                                </div>
-                                              </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>       
+                                                {% endfor %}
+                                            </div>       
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -291,17 +299,25 @@
                             <div class="col-12">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-success active" data-bs-toggle="collapse" data-bs-target="#biological_info" aria-expanded="false" aria-controls="biological_info">Show Biological Information</button>
+                                    
+                                    {% if not user.biologicalinfo_set.exists %}
+                                    <button type="button" onclick="window.location.href='{% url 'patient:add_biological_info' %}'" class="btn btn-success">Add Info</button>               
+                                    {% endif %}
                                 </div>
                                 <div class="collapse col-12" id="biological_info">
                                     <div class="card card-body">
+                                        {% if not user.biologicalinfo_set.exists %}
+                                            <h2 class="text-center text-muted">No data</h2>
+                                        {% endif %}
+
                                         {% for report  in user.biologicalinfo_set.all %}
                                         <div class="row row-cols-1 row-cols-md-3 g-4">
                                             <div class="col">
                                               <div class="card">
                                                 <div class="card-header">
                                                     <div class="row">
-                                                        <h2 class="col-6">{{'Details'}}</h2>
-                                                        <div class="col-6 justify-content-end d-flex align-items-center ">
+                                                        <h5 class="col-8">{{'Details'}}</h5>
+                                                        <div class="col-4 justify-content-end d-flex align-items-center ">
                                                             {% comment %} <button onclick="window.location.href='{% url 'patient:update_biological_info' %}" class="btn btn-primary btn-sm me-2">Edit</button> {% endcomment %}
                                                             <button onclick="window.location.href='{% url 'patient:update_biological_info' report.id %}'" class="btn btn-primary btn-sm me-2">Edit</button>
                                                             <button disabled class="btn btn-danger btn-sm">Delete</button>
@@ -399,6 +415,10 @@ hello
     $('.toast').toast({
         delay: 1000*20,
     }).toast('show')
+
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 });
 </script>
 {% endblock push_scripts %}
