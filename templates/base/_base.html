@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 {% load static %}
+{% load custom_tags %}
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -105,9 +107,13 @@
                             @role('Admin')
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             @endrole {% endcomment %}
-                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">View Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
-                                <li><a class="dropdown-item" href="#">My Appointments</a></li>
+                            {% if not user|has_group:"patient" %}
+                            <li><a class="dropdown-item" href="{% url 'patient:profile' %}">Dashboard</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'patient:profile' %}">View Profile</a></li>
+                            <li><a class="dropdown-item" href="#">My Appointments</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

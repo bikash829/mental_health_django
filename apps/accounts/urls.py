@@ -16,7 +16,7 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
         success_url=reverse_lazy('accounts:password_reset_complete')), name='password_reset_confirm'),
-    path('profile/',views.profile,name="profile"),
+ 
     path('change_profile_photo/',views.change_profile_photo,name='change_profile_photo'),
     path('user_registration/',views.user_registration,name='user_registration'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),

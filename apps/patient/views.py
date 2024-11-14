@@ -10,6 +10,15 @@ from apps.patient.models import BiologicalInfo, BloodSugar, VitalSignsReport
 from .forms import AddBiologicalInfoForm, BasicInfoForm,AddressForm,PatientContactForm,AddBloodSugarInfo,AddVitalSignInfo,UpdateBiologicalInfo
 from mental_health.custom_forms_renderer import BootstrapErrorList
 # Create your views here.
+@login_required
+def profile(request):
+    template_name = "patient/profile.html"
+    context  = {
+
+    }
+    
+    return render(request,template_name,context)
+
 
 @login_required
 def edit_basic_info(request):
@@ -25,6 +34,7 @@ def edit_basic_info(request):
         'form': form,
     }
     return render(request,template_name,context)
+
 
 @login_required
 def edit_address(request):
@@ -76,6 +86,7 @@ def edit_contact(request):
     } 
 
     return render(request,template_name,context)
+
 
 @login_required
 def add_vital_sign_info(request):
@@ -150,7 +161,6 @@ def update_biological_info(request,id):
         'form': form
     }
     return render(request,template_name,context) 
-
 
 
 @login_required

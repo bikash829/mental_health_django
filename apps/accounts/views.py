@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ChangeProfilePhoto
 from pprint import pprint
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model,login
 from .forms import UserRegistrationForm
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
@@ -15,7 +15,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import views as auth_views
 
-
 # Create your views here.
 class CustomLoginView(auth_views.LoginView):
     def dispatch(self, request, *args, **kwargs):
@@ -23,15 +22,21 @@ class CustomLoginView(auth_views.LoginView):
             return redirect('accounts:profile')
         return super().dispatch(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        login(self.request, form.get_user())
 
-@login_required
-def profile(request):
-    template_name = "patient/profile.html"
-    context  = {
+        # Custom redirection logic based on user group
+        user = self.request.user
+        if user.groups.filter(name='doctor').exists():
+            return redirect('doctor:index')
+        elif user.groups.filter(name='patient').exists():
+            return redirect('patient:profile')
+        else:
+            return redirect(self.get_success_url())
+   
 
-    }
-    
-    return render(request,template_name,context)
+
 
 @login_required
 def change_profile_photo(request):
