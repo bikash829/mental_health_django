@@ -1,5 +1,6 @@
 # utils.py
 from django.urls import reverse
+from django.contrib.auth.models import Group
 
 # Create sidebar items
 def mark_active_sidebar_items(items, current_path):
@@ -109,49 +110,118 @@ def get_sidebar_items(request):
             'url' : None,
             'icon': 'fa-solid fa-envelope',
         },
-        # {
-        #     'name': 'Widgets',
-        #     'url': '#',
-        #     'icon': 'nav-icon bi bi-box-seam-fill',
-        #     'children': [
-        #         {
-        #             'name': 'Small Box',
-        #             'url': reverse('dashboard:level1'),
-        #             'icon': 'bi bi-circle',
-        #         },
-        #         {
-        #             'name': 'Info Box',
-        #             'url': '#',
-        #             'icon': 'bi bi-circle',
-        #             'children': [
-        #                 {'name': 'Change Email', 'url': reverse('dashboard:change_mail'), 'icon': 'bi bi-record-circle-fill'},
-        #                 {'name': 'Two Factor Auth', 'url': '#', 'icon': 'bi bi-record-circle-fill'},
-        #             ]
-        #         }
-        #     ]
-        # }
     ]
 
-    # counselor_sidebar_items = [
-    #     {
-    #         'name': 'Sessions',
-    #         'url': reverse('counselor:sessions'),
-    #         'icon': 'bi bi-chat-dots',
-    #     },
-    #     {
-    #         'name': 'Reports',
-    #         'url': reverse('counselor:reports'),
-    #         'icon': 'bi bi-file-earmark-text',
-    #     }
-    # ]
 
-    # if role == 'admin':
-    #     sidebar_items = admin_sidebar_items
-    # elif role == 'doctor':
-    #     sidebar_items = doctor_sidebar_items
-    # elif role == 'counselor':
-    #     sidebar_items = counselor_sidebar_items
+    # Doctor sidebar
+    doctor_sidebar_items = [
+        {
+            'name': 'Dashboard',
+            'url': reverse('dashboard:dashboard'),
+            'icon': 'bi bi-speedometer',
+        },{
+            'divider_header': 'Appointments',
+            'url': None,
+        },
+        {
+            'name': 'Active Patient Appointments',
+            'url': None,
+            'icon': 'fa-solid fa-calendar-check',
+        },
+        {
+            'name': 'Past Appointments',
+            'url': None,
+            'icon': 'fa-solid fa-hourglass-end',
+        },
+        {
+            'name': 'Noboard',
+            'url': reverse('dashboard:noboard'),
+            'icon': 'bi bi-speedometer',
+        },
+        {
+            'divider_header': 'Doctor Schedules',
+            'url': None,
+        },
+        {
+            'name': 'Doctor Appointment Schedules',
+            'url': None,
+            'icon': 'fa-solid fa-calendar-check',
+        },
+        {
+            'divider_header': 'Users',
+            'url': None,
+        },
+        {
+            'divider_header': 'Community',
+            'url': None,
+        },
+        {
+            'name': 'Community Forum',
+            'url': None,
+            'icon': 'fa-solid fa-users'
+        },
+       
+
+    ]
+    # counselor sidebar
+    counselor_sidebar_items = [
+        {
+            'name': 'Dashboard',
+            'url': reverse('dashboard:dashboard'),
+            'icon': 'bi bi-speedometer',
+        },{
+            'divider_header': 'Appointments',
+            'url': None,
+        },
+        {
+            'name': 'Active Patient Appointments',
+            'url': None,
+            'icon': 'fa-solid fa-calendar-check',
+        },
+        {
+            'name': 'Past Appointments',
+            'url': None,
+            'icon': 'fa-solid fa-hourglass-end',
+        },
+        {
+            'name': 'Noboard',
+            'url': reverse('dashboard:noboard'),
+            'icon': 'bi bi-speedometer',
+        },
+        {
+            'divider_header': 'Doctor Schedules',
+            'url': None,
+        },
+        {
+            'name': 'Doctor Appointment Schedules',
+            'url': None,
+            'icon': 'fa-solid fa-calendar-check',
+        },
+        {
+            'divider_header': 'Users',
+            'url': None,
+        },
+        {
+            'divider_header': 'Community',
+            'url': None,
+        },
+        {
+            'name': 'Community Forum',
+            'url': None,
+            'icon': 'fa-solid fa-users'
+        },
+       
+
+    ]
+
+    if request.user.groups.filter(name='doctor').exists():
+        sidebar_items, _ = mark_active_sidebar_items(doctor_sidebar_items, request.path)
+    elif request.user.groups.filter(name='counselor').exists():
+        sidebar_items, _ = mark_active_sidebar_items(counselor_sidebar_items, request.path)
+    elif request.user.groups.filter(name='admin').exists():
+        sidebar_items, _ = mark_active_sidebar_items(sidebar_items, request.path)
     # else:
-    #     sidebar_items = []
-    sidebar_items, _ = mark_active_sidebar_items(sidebar_items, request.path)
+    #     sidebar_items, _ = []
+
+    
     return sidebar_items

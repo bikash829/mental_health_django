@@ -4,5 +4,5 @@ from apps.doctor_dashboard import views
 app_name = 'doctor'
 
 urlpatterns = [
-    path('',views.index,name='index'),
+    path('',views.index,name='dashboard'),
 ]

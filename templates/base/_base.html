@@ -108,7 +108,7 @@
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             @endrole {% endcomment %}
                             {% if not user|has_group:"patient" %}
-                            <li><a class="dropdown-item" href="{% url 'patient:profile' %}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{% url 'doctor:dashboard' %}">Dashboard</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'patient:profile' %}">View Profile</a></li>
                             <li><a class="dropdown-item" href="#">My Appointments</a></li>

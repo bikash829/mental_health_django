@@ -19,7 +19,13 @@ from django.contrib.auth import views as auth_views
 class CustomLoginView(auth_views.LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('accounts:profile')
+            user = self.request.user
+            if user.groups.filter(name='doctor').exists():
+                return redirect('doctor:dashboard')
+            elif user.groups.filter(name='patient').exists():
+                return redirect('patient:profile')
+            else:
+                return redirect(self.get_success_url())
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -29,7 +35,7 @@ class CustomLoginView(auth_views.LoginView):
         # Custom redirection logic based on user group
         user = self.request.user
         if user.groups.filter(name='doctor').exists():
-            return redirect('doctor:index')
+            return redirect('doctor:dashboard')
         elif user.groups.filter(name='patient').exists():
             return redirect('patient:profile')
         else:
