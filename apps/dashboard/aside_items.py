@@ -23,7 +23,8 @@ def get_sidebar_items(request):
             'name': 'Dashboard',
             'url': reverse('dashboard:dashboard'),
             'icon': 'bi bi-speedometer',
-        },{
+        },
+        {
             'divider_header': 'Appointments',
             'url': None,
         },
@@ -117,7 +118,7 @@ def get_sidebar_items(request):
     doctor_sidebar_items = [
         {
             'name': 'Dashboard',
-            'url': reverse('dashboard:dashboard'),
+            'url': reverse('doctor:dashboard'),
             'icon': 'bi bi-speedometer',
         },{
             'divider_header': 'Appointments',
@@ -160,8 +161,6 @@ def get_sidebar_items(request):
             'url': None,
             'icon': 'fa-solid fa-users'
         },
-       
-
     ]
     # counselor sidebar
     counselor_sidebar_items = [

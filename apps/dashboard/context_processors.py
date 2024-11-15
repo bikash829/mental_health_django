@@ -1,4 +1,6 @@
 from .aside_items import get_sidebar_items
+from django.urls import reverse
+
 
 def sidebar_items(request):
     # if request.user.is_authenticated:
@@ -8,4 +10,4 @@ def sidebar_items(request):
     #     sidebar_items = []
     sidebar_items = get_sidebar_items(request)
     
-    return {'sidebar_items': sidebar_items}
+    return {'sidebar_items': sidebar_items,'dashboard_url':''}

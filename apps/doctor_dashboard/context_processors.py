@@ -16,6 +16,7 @@ def nav_assets_processor(request):
             'messages':[
                 {
                     'divider': False,
+                    'url': None,
                     'user_avatar': 'dashboard/assets/img/user8-128x128.jpg',
                     'avatar_alt': 'something alternet',
                     'user_name': 'John Pierce',
@@ -35,6 +36,7 @@ def nav_assets_processor(request):
                 'total_notifications': 15,
                 'notification_list':[
                     {
+                        'url': None,
                         'icon': 'bi bi-envelope',
                         'notification_count': 5,
                         'notification_from': 'new messages',
@@ -42,6 +44,7 @@ def nav_assets_processor(request):
 
                     },
                     {
+                        'url': None,
                         'icon': 'bi bi-people-fill',
                         'notification_count': 8,
                         'notification_from': 'friend requests',
@@ -49,6 +52,7 @@ def nav_assets_processor(request):
 
                     },
                     {
+                        'url': None,
                         'icon': 'bi bi-people-fill',
                         'notification_count': 3,
                         'notification_from': 'new reports',
@@ -62,8 +66,8 @@ def nav_assets_processor(request):
             'photo': 'dashboard/assets/img/user2-160x160.jpg',
             'photo_alt': 'something user',
             'designation': 'Web Developer',
-            'member_from': 'Member since Nov. 2023',
-            'profile_link': '#',
+            'member_from': 'Nov. 2023',
+            'profile_link': None,
         }
      
     }
