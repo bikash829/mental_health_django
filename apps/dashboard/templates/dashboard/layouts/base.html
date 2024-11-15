@@ -25,7 +25,8 @@
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary"> <!--begin::App Wrapper-->
     <div class="app-wrapper"> 
         <!--begin::Header-->
-        {% include 'dashboard/layouts/nav.html' %}
+        {% block top_navigation_bar %}{% include 'dashboard/layouts/nav.html' %}{% endblock top_navigation_bar %}
+        
         <!--end::Header-->
 
         <!--begin::Sidebar-->
