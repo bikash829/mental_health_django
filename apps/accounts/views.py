@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render,redirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import ChangeProfilePhoto
@@ -53,12 +54,21 @@ def change_profile_photo(request):
         else:
             error_messages = "\n".join([error for errors in form.errors.values() for error in errors])
             messages.error(request,error_messages)
-        return redirect('accounts:profile')
+        return redirect('patient:profile')
 
 
 def user_registration(request):
     if request.user.is_authenticated:
-        return redirect('accounts:profile')
+        if user.groups.filter(name='patient').exists():
+            return redirect('patient:profile')
+        elif user.groups.filter(name='doctor').exists():
+            return redirect('doctor:dashboard')
+        elif user.groups.filter(name='counselor').exists():
+            return HttpResponse("Didn't create yet.")
+        elif user.groups.filter(name="admin").exists():
+            return HttpResponse("Didn't create yet.")
+        else:
+            raise Http404("Role doesn't exist")
     
     form = UserRegistrationForm()
 

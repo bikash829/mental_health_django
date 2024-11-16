@@ -28,7 +28,7 @@ def edit_basic_info(request):
         if form.is_valid():
             form.save()
             messages.success(request,"You profile basic info has been updated")
-            return redirect('accounts:profile')
+            return redirect('patient:profile')
     template_name = 'patient/manage_profile/basic_info.html'
     context = {
         'form': form,
@@ -47,7 +47,7 @@ def edit_address(request):
         if form.is_valid():
             form.save()
             messages.success(request,"You address has been updated")
-            return redirect('accounts:profile')
+            return redirect('patient:profile')
     template_name = 'patient/manage_profile/edit_address.html'
     # rendered_form = form.render("custom_form_template/form_snippet.html")
     context = {
@@ -74,7 +74,7 @@ def edit_contact(request):
             print(form.cleaned_data)
             form.save(commit=True)
             messages.success(request, "Your contact number has been updated")
-            return redirect('accounts:profile')
+            return redirect('patient:profile')
     else:
         form = PatientContactForm(instance=request.user)  # Prepopulate form with existing data
 
@@ -98,7 +98,7 @@ def add_vital_sign_info(request):
             vital_sign.user = request.user
             vital_sign.save()
             messages.success(request, "Your vital sings report has been updated")
-            return redirect('accounts:profile') 
+            return redirect('patient:profile') 
 
     template_name = "patient/manage_profile/vital_sign_form.html" 
     context = {
@@ -112,7 +112,7 @@ def delete_vital_sign_report(request,id):
     data = VitalSignsReport.objects.get(pk=id)
     data.delete()
     messages.success(request, "Your vital sings report has been deleted")
-    return redirect('accounts:profile') 
+    return redirect('patient:profile') 
 
 
 @login_required
@@ -127,7 +127,7 @@ def add_blood_sugar_info(request):
             blood_sugar.save()
 
             messages.success(request, "Your blood sugar report has been updated")
-            return redirect('accounts:profile') 
+            return redirect('patient:profile') 
     template_name = "patient/manage_profile/blood_sugar_form.html" 
     context = {
         'form' : form 
@@ -140,7 +140,7 @@ def delete_blood_sugar_report(request,id):
     report = BloodSugar.objects.get(id=id)
     report.delete()
     messages.info(request, "Your blood sugar report has been deleted")
-    return redirect('accounts:profile') 
+    return redirect('patient:profile') 
 
 
 @login_required
@@ -155,7 +155,7 @@ def update_biological_info(request,id):
             bio_info.user = request.user
             bio_info.save()
             messages.success(request, "Your personal info has been updated")
-            return redirect('accounts:profile') 
+            return redirect('patient:profile') 
     template_name = "patient/manage_profile/biological_info_form.html" 
     context = {
         'form': form
@@ -173,7 +173,7 @@ def add_biological_info(request):
             form.user = request.user
             form.save()
             messages.success(request, "Your personal info has been updated")
-            return redirect('accounts:profile') 
+            return redirect('patient:profile') 
     template_name = "patient/manage_profile/biological_info_form.html" 
     context = {
         'form': form,

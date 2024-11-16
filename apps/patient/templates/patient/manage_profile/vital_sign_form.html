@@ -20,7 +20,7 @@
                     {% csrf_token %}
                     {{form}}
                     <div class="d-grid col-6 mx-auto">
-                        <a class="btn btn-danger" href="{% url 'accounts:profile' %}">Cancel</a>
+                        <a class="btn btn-danger" href="{% url 'patient:profile' %}">Cancel</a>
                     </div>
                     <div class="d-grid col-6 mx-auto">
                         <input value="Update" class="btn btn-primary" type="submit">

@@ -73,3 +73,4 @@ def nav_assets_processor(request):
     }
 
     return {'top_nav': nav_assets}
+
