@@ -21,3 +21,15 @@ def index(request):
 
     }
     return render(request,template_name,context)
+
+
+@login_required
+@group_required('doctor',login_url='accounts:login')
+def profile_update(request):
+    form = None 
+
+    template_name = "doctor/manage_profile/wiz_form.html"
+    context = {
+        'form': form,
+    }
+    return render(request,template_name,context)

@@ -44,7 +44,6 @@ class CustomLoginView(auth_views.LoginView):
    
 
 
-
 @login_required
 def change_profile_photo(request):
     if request.method == "POST":

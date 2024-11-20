@@ -1,0 +1,613 @@
+{% extends "dashboard/layouts/base.html" %}
+{% block title %} Doctor Update{% endblock title %}
+{% load static %}
+
+{% block push_css %}
+<link rel="stylesheet" href="{% static 'dashboard/wizard_form/css/style.css' %}">
+{% endblock push_css %}
+
+
+{% block content %}
+
+    <!-- Start toaster -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                <strong class="me-auto text-danger">Warning!</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div id="toastContent">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- toast success -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Alert!</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div id="toastContentSuccess">
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- end  toaster -->
+    
+    <div class="row justify-content-center" id="">
+        <!-- tab area  -->
+        <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 my-4">
+            <div class="tab_container">
+                <div class="tab_list" id="tab_personal_info"><span>Personal Info</span></div>
+                <div class="tab_list" id="tab_education"><span>Education</span></div>
+                <div class="tab_list" id="tab_training"><span>Training</span></div>
+                <div class="tab_list" id="tab_xp"><span>Experience</span></div>
+            </div>
+        </div>
+        <!--form start -->
+        <!-- personal information step  -->
+        <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 form-container" id="personal_info_container">
+            <form id="form_personal_info" method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                <div class="col-12">
+                    <label for="doc_title" class="form-label">Title</label>
+
+                    <select id="doc_title" name="doc_title" required class="form-select"
+                        aria-label="Default select example">
+                        <!-- '1=Professor Dr. ,2=Assistant Professor Dr., 3=Associate Professor Dr., 4 = Distinguished Professor Dr., 5 = Dr. ' -->
+
+                        <option value="" disabled >Select title</option>
+                        {% comment %} <option @selected($user?->expert?->doc_title == 1) value="1">Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 2) value="2">Assistant Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 3) value="3">Associate Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 4) value="4">Distinguished Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 5) value="5">Dr.</option> {% endcomment %}
+                    </select>
+                </div>
+
+                <!-- name  -->
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" value="" name="first_name"
+                        id="first_name" placeholder="First Name" required min="1" max="50">
+                    {% if first_name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in first_name.errors  %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" value="{{ user.last_name }}" name="last_name"
+                        id="last_name" placeholder="Last Name" min="1" max="50" required>
+                    {% if last_name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in last_name.errors  %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- gender  -->
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="" class="form-label">Gender</label>
+                    <div class="input-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="male" value="male" required>
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="other" value="other" required>
+                            <label class="form-check-label" for="other">Other</label>
+                        </div>
+                        {% if gender.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in gender.errors  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- end gender -->
+
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="date_of_birth" class="form-label">Date Of Birth</label>
+                    <input type="date" class="form-control" name="date_of_birth"
+                        value="{{ user.date_of_birth }}" id="date_of_birth" placeholder="" required>
+                    {% if date_of_birth.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in date_of_birth.errors  %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <label for="marital_status" class="form-label">Martial Status(Optional)</label>
+                    <select name="marital_status" id="marital_status" required class="form-select"
+                        aria-label="Default select example">
+                        <option disabled >Select One</option>
+                        {% comment %} <option @selected($user?->marital_status == 1) value="1">Unmarried</option>
+                        <option @selected($user?->marital_status == 2) value="2">Married</option>
+                        <option @selected($user?->marital_status == 3) value="3">Divorced</option> {% endcomment %}
+                    </select>
+
+                </div>
+
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="nationality" class="form-label">Nationality</label>
+                    <select name="nationality" id="nationality" required class="form-select"
+                        aria-label="Default select example">
+                        <option value="" disabled >Select One</option>
+                        {% comment %} @foreach ($country_phone as $data)
+                            <option @selected($user?->nationality == $data['nationality']) value="{{ $data['nationality'] }}">
+                                {{ $data['nationality'] }}</option>
+                        @endforeach {% endcomment %}
+                        <option >Select one</option>
+
+                    </select>
+                </div>
+
+                <!-- start address  -->
+                <div class="col-12 ">
+                    <label for="address" class="form-label">Address Line 1</label>
+                    <input type="text" class="form-control" value='{{ user.address.address }}' name="address" id="address" placeholder="Street address" max="255" required>
+                    {% if user.address.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user.address.errors  %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+                <div class="col-12 ">
+                    <label for="address_line_2" class="form-label">Address Line 2</label>
+                    <input type="text" class="form-control" name="address2"
+                        value="{{ user.address.address2 }}" id="address_line_2" max="255"
+                        placeholder="Appartment, Unit, Building, Floor etc">
+                    {% if user.address.address2 %}
+                    <div class="invalid-feedback">
+                        {% for error in user.address.address2  %}
+                            {{error}}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" value="{{ user.address.city }}" name="city"
+                        id="city" placeholder="City" max="50" required>
+                        {% if user.address.city %}
+                        <div class="invalid-feedback">
+                            {% for error in user.address.city  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                </div>
+                <div class="col-12 col-lg-6">
+                    <label for="state" class="form-label">State/Division </label>
+                    <input type="text" class="form-control" value="{{ user.address.state }}" name="state"
+                        id="state" placeholder="District/Region/Province" max="50" required>
+                        {% if user.address.state %}
+                        <div class="invalid-feedback">
+                            {% for error in user.address.state  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <label for="zip_code" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control" value="{{ user.address.zip_code }}"
+                        name="zip_code" id="zip_code" placeholder="Postal/Zip Code" max="20" required>
+                        {% if user.address.zip_code %}
+                        <div class="invalid-feedback">
+                            {% for error in user.address.zip_code  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <label for="country" class="form-label">Country</label>
+                    <select class="form-select" aria-label="Default select example" name="country" id="country"
+                        required>
+                        <option value="" disabled >Select One</option>
+
+                        {% comment %} @foreach ($country_phone as $data)
+                            <option @selected($user?->address?->country == $data['en_short_name']) value="{{ $data['en_short_name'] }}">
+                                {{ $data['en_short_name'] }}</option>
+                        @endforeach {% endcomment %}
+                        <option value="">Select Country</option>
+                    </select>
+                    {% if user.address.zip_code %}
+                        <div class="invalid-feedback">
+                            {% for error in user.address.zip_code  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                </div>
+                <!-- end address  -->
+                <!-- contact no  -->
+                
+                <div class="col-12 col-lg-6">
+                    <label for="phone" class="form-label">Contact No.</label>
+                    <input type="number" class="form-control" value="{{ user.phone }}" min="8"
+                        name="phone" id="phone" data-contact="phone" placeholder="01XXXXXXXXX" required>
+                    {% if user.phone %}
+                        <div class="invalid-feedback">
+                            {% for error in user.phone  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <label for="additional_phone" class="form-label">Additional Number</label>
+                    <input type="number" class="form-control" value="{{ user.additional_phone }}"
+                        name="additional_phone" id="additional_phone" data-contact="additional_phone"
+                        placeholder="01XXXXXXXXX">
+                    {% if user.additional_phone %}
+                        <div class="invalid-feedback">
+                            {% for error in user.additional_phone  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- identity -->
+                <div class="col-12 col-lg-2">
+                    <label for="identity" class="form-label">Identity</label>
+                    <select name="identity_type" id="" required class="form-select">
+                        <option  value="" disabled>Select Type</option>
+                        {% comment %} <option @selected($user->identity_type == null) value="" disabled>Select Type</option>
+                        <option @selected($user->identity_type == 1) value="1">Passport</option>
+                        <option @selected($user->identity_type == 2) value="2">Residential Card</option> {% endcomment %}
+                    </select>
+                    {% if user.identity_type %}
+                        <div class="invalid-feedback">
+                            {% for error in user.identity_type  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-4 ">
+                    <label for="identity" class="form-label">Identity no.</label>
+                    <input type="text" class="form-control" value="{{ user.identity_no }}" name="identity_no"
+                        id="identity" placeholder="854XXXXXXXXXXXXXXXX" max="20" min="6" required>
+                    {% if user.identity_no %}
+                        <div class="invalid-feedback">
+                            {% for error in user.identity_no  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% if user.identity_proof %}
+                    <div class="col-12 col-lg-6">
+                        <label for="identity_proof" class="form-label">Identity Proof(image/pdf)</label>
+                        <div>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a href="#" class="btn btn-outline-secondary btn-sm text-primary">View
+                                    attachment</a>
+                                <input value="change file" id="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                    name="identity_proof" type="file" class="btn btn-outline-secondary btn-sm"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Change current attachment">
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="identity_proof" class="form-label">Identity Proof(img,pdf)</label>
+                        <input class="form-control" type="file" name="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
+                            id="identity_proof" required>
+                        
+                        {% if user.identity_proof %}
+                            <div class="invalid-feedback">
+                                {% for error in user.identity_proof  %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <!-- license  -->
+                <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                    <label for="license_no" class="form-label">License Number</label>
+                    <input type="text" class="form-control" value="{{ user.expert.license_no }}"
+                        name="license_no" id="license_no" placeholder="1245XXXXXX" max="50" minlength="6"
+                        required>
+                        {% if user.expert.license_no %}
+                            <div class="invalid-feedback">
+                                {% for error in user.expert.license_no  %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                </div>
+
+                {% if user.expert.license_attachment %}
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="license_attachment" class="form-label">License Attachment</label>
+                        <div>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a href="#" class="btn btn-outline-secondary btn-sm text-primary">View uploaded license</a>
+                                <input id="license_attachment" name="license_attachment" accept=".pdf,.jpg,.jpeg,.png"
+                                    type="file" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" data-bs-title="Change current attachment">
+                            </div>
+                        </div>
+
+                    </div>
+                {% else %}
+                        <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="license_attachment" class="form-label">License Attachment</label>
+                            <input type="file" class="form-control" name="license_attachment"
+                                accept=".pdf,.jpg,.jpeg,.png" id="license_attachment" placeholder="" required>
+                                {% if  user.expert.license_attachment %}
+                                    <div class="invalid-feedback">
+                                        {% for error in  user.expert.license_attachment  %}
+                                            {{error}}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                        </div>
+                {% endif %}
+                <div class="col-12 my-4">
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary" id="btnPersonalInfo" name="btnSaveForm"
+                            value="personalInfo" type="submit">Next</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- educational information step   -->
+
+        <div class="col-12 col-lg-8 col-xl-8 col-xxl-8 form-container" id="education_info_container">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Institute</th>
+                            <th>Specialization</th>
+                            <th>Duration</th>
+                            <th>Passing Year</th>
+                            <th>Course Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% comment %} @foreach ($user?->education as $edu)
+                            <tr>
+                                <td>{{ $edu?->institute }}</td>
+                                <td>{{ $edu?->specialization }}</td>
+                                <td>{{ $edu?->duration }} Hour</td>
+                                <td>{{ $edu?->passing_year }}</td>
+                                <td>{{ $edu?->edu_doc_title }}</td>
+                                {{-- <td><a class="btn btn-danger" href="{{route('doctor.profile.delete_education')}}"></i></a></td> --}}
+                                <td><button class="btn btn-danger" name="edu_id" value="{{ $edu?->id }}"><i
+                                            class="fa-regular fa-trash-can"></button></td>
+                            </tr>
+                        @endforeach {% endcomment %}
+                        {% comment %} <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><button class="btn btn-danger" name="edu_id" value="{{ edu.id }}"><i
+                                        class="fa-regular fa-trash-can"></button></td>
+                        </tr> {% endcomment %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Educational Information-->
+            <form id="form_education" class="needs-validation my-5" enctype="multipart/form-data" novalidate>
+                <div class="input-edu-container row gy-3 ">
+                    <div class="col-12 group-input">
+                        <label for="institute" class="form-label">Institute</label>
+                        <input type="text" class="form-control form-field" name="institute" id="institute"
+                            placeholder="Institute Name" required>
+
+                        {% if  user.education.institute%}
+                        <div class="invalid-feedback">
+                            {% for error in user.education.institute  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 group-input">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <select id="specialization" name="specialization" required class="form-select form-field"
+                            aria-label="Default select example">
+                            <option value="" disabled selected>Select One</option>
+                            {% comment %} @foreach ($specializations as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach {% endcomment %}
+                        </select>
+                        {% if  user.education.specialization%}
+                        <div class="invalid-feedback">
+                            {% for error in user.education.specialization  %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 col-lg-6 group-input">
+                        <label for="duration" class="form-label">Duration(Total Hour)</label>
+                        <input type="number" class="form-control form-field" name="duration" id="duration"
+                            min="1" placeholder="Total Month" required>
+                    </div>
+
+                    <div class="col-12 col-lg-6 group-input">
+                        <label for="passing_year" class="form-label">Passing Year</label>
+                        <input type="date" class="form-control form-field" name="passing_year" id="passing_year"
+                            placeholder="" required>
+                    </div>
+
+                    <div class="col-12 col-lg-6 group-input">
+                        <label for="education_certificate" class="form-label">Upload certificate(image/pdf)</label>
+                        <input type="file" class="form-control form-field" accept=".pdf,.jpg,.jpeg,.png"
+                            name="education_certificate" id="education_certificate" placeholder="" required>
+                    </div>
+                    <div class="col-12 col-lg-6 group-input">
+                        <label for="edu_doc_title" class="form-label">Certificate Title</label>
+                        <input type="text" class="form-control form-field" name="edu_doc_title"
+                            id="edu_doc_title" placeholder="" required>
+                    </div>
+                </div>
+
+                <div class="col-6 my-3 d-grid mx-auto">
+                    <button type="submit" id="btnAddMoreEdu" name="btnSaveForm" value="saveEdu"
+                        class="btn btn-outline-success"><span><i class="fa-solid fa-plus"></i> Save & add
+                            more</span></button>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="text-center">
+                        <button class="btn btn-outline-info" type="button" name="back">Previous</button>
+                        <button class="btn btn-outline-primary" id="btnEduNextPage" name="btnSaveEducationInfo"
+                            type="button">Next</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- end education section-->
+
+        <!--Start Training information step   -->
+        <div class="col-12 col-lg-8 form-container" id="training_info_container">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableTraining" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Institute</th>
+                            <th>Specialization</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Course Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% comment %} @foreach ($user?->training as $traingInfo)
+                            <tr>
+                                <td>{{ $traingInfo?->institute }}</td>
+                                <td>{{ $traingInfo?->specialization }}</td>
+                                <td>{{ $traingInfo?->from_date }}</td>
+                                <td>{{ $traingInfo?->to_date }}</td>
+                                <td>{{ $traingInfo?->training_title }}</td>
+                                {{-- <td><a class="btn btn-danger" href="{{route('doctor.profile.delete_education')}}"></i></a></td> --}}
+                                <td><button class="btn btn-danger" name="training_id"
+                                        value="{{ $traingInfo?->id }}"><i
+                                            class="fa-regular fa-trash-can"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach {% endcomment %}
+                    </tbody>
+                </table>
+            </div>
+            <form id="form_training" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+                <div class="input-train-container row g-3">
+                    <div class="col-12">
+                        <label for="institute" class="form-label">Institute</label>
+                        <input type="text" class="form-control form-field" name="institute" id="institute"
+                            placeholder="Institute Name" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <select id="specialization" name="specialization" required class="form-select form-field"
+                            aria-label="Default select example">
+                            <option value="" disabled selected>Select One</option>
+                            {% comment %} @foreach ($specializations as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach {% endcomment %}
+                                {% comment %} <option value="">{{ $value }}</option> {% endcomment %}
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="from_date" class="form-label">From</label>
+                        <input type="date" class="form-control form-field" name="from_date" id="from_date"
+                            placeholder="" required>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="to_date" class="form-label">To</label>
+                        <input type="date" class="form-control form-field" name="to_date" id="to_date"
+                            placeholder="" required>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="training_certificate" class="form-label">Upload certificate(image/pdf)</label>
+                        <input type="file" class="form-control form-field" name="training_certificate"
+                            id="training_certificate" placeholder="" required accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="training_title" class="form-label">Certificate Title</label>
+                        <input type="text" class="form-control form-field" name="training_title"
+                            id="training_title" placeholder="" required>
+                    </div>
+                </div>
+
+                <div class="col-6 my-3 d-grid mx-auto">
+                    <button type="submit" id="btnAddMoreTrain" name="btnSaveForm" value="AddTraining"
+                        class="btn btn-outline-success"><span><i class="fa-solid fa-plus"></i> Save & Add
+                            More</span></button>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="text-center">
+                        <button class="btn btn-outline-info" type="button" name="back">Previous</button>
+                        <button class="btn btn-outline-primary" id="btnTrainingNextPage" name="btnSaveTraining"
+                            type="button">Next</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--end Training information step -->
+
+
+
+{% endblock content %}
+
+{% block push_scripts %}
+
+{% endblock push_scripts %}

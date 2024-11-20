@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="{% static 'vendor/fontawesome-free-6.6.0-web/css/all.min.css' %}">
 
+
     {% block push_css %}{% endblock push_css %}
 </head> <!--end::Head--> <!--begin::Body-->
 
@@ -26,7 +27,6 @@
     <div class="app-wrapper"> 
         <!--begin::Header-->
         {% block top_navigation_bar %}{% include 'dashboard/layouts/nav.html' %}{% endblock top_navigation_bar %}
-        
         <!--end::Header-->
 
         <!--begin::Sidebar-->
@@ -34,7 +34,7 @@
         <!--end::Sidebar-->
        
         <!--begin::App Main-->
-        <main class="app-main"> <!--begin::App Content Header-->
+        <main class="app-main container-fluid"> <!--begin::App Content Header-->
             {% block content %}{% endblock content %}
         </main> <!--end::App Main--> <!--begin::Footer-->
         

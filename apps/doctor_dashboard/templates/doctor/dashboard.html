@@ -7,6 +7,22 @@
     <div class="app-content-header"> 
         <!--begin::Container-->
         <div class="container-fluid"> 
+            <div class="py-3">
+                <div class="row">
+                    <div class="col-md-6 col">
+                        <h4>Account completion progress</h4>
+                    </div>
+                    <div class="col-md-6 col">
+                        <div class="text-end">
+                            <button onclick="window.location.href='{% url 'doctor:profile_update' %}'" class="btn btn-primary btn-sm">Update Profile</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress mb-2" role="progressbar" aria-label="Success example" aria-valuenow="{{user.profile_completion}}" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar bg-success" style="width: {{user.profile_completion}}%; border-radius: 0.375rem;">{{user.profile_completion}}%</div>
+                </div>
+            </div>
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">

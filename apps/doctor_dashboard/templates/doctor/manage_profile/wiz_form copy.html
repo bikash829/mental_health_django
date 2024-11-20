@@ -1,0 +1,84 @@
+{% extends "dashboard/layouts/base.html" %}
+{% comment %} {% block title %} Doctor|Dashboard {% endblock title %} {% endcomment %}
+{% load static %}
+{% block title %} Doctor Form Update {% endblock title %}
+
+
+
+{% block push_css %}
+<link rel="stylesheet" href="{% static 'dashboard/wizard_form/css/style.css' %} ">
+<link rel="stylesheet" href="{% static 'dashboard/wizard_form/css/responsive.css' %}">
+{% endblock push_css %}
+
+{% block content %}
+    welcome to doctor form
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                <strong class="me-auto text-danger">Warning!</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div id="toastContent">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- toast success -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Alert!</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div id="toastContentSuccess">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center " id="doctor_register_container">
+        <!-- tab area  -->
+        <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 my-4">
+            <div class="tab_container">
+                <div class="tab_list" id="tab_personal_info"><span>Personal Info</span></div>
+                <div class="tab_list" id="tab_education"><span>Education</span></div>
+                <div class="tab_list" id="tab_training"><span>Training</span></div>
+                <div class="tab_list" id="tab_xp"><span>Experience</span></div>
+            </div>
+        </div>
+        <!--form start -->
+        <!-- personal information step  -->
+        <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 form-container" id="personal_info_container">
+            <form id="form_personal_info" method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                <div class="col-12">
+                    <label for="doc_title" class="form-label">Title</label>
+
+                    <select id="doc_title" name="doc_title" required class="form-select"
+                        aria-label="Default select example">
+                        {{-- '1=Professor Dr. ,2=Assistant Professor Dr., 3=Associate Professor Dr., 4 = Distinguished Professor Dr., 5 = Dr. ' --}}
+
+                        <option value="" disabled @selected($user?->expert?->doc_title == null)>Select title</option>
+                        <option @selected($user?->expert?->doc_title == 1) value="1">Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 2) value="2">Assistant Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 3) value="3">Associate Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 4) value="4">Distinguished Professor Dr.</option>
+                        <option @selected($user?->expert?->doc_title == 5) value="5">Dr.</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+
+{% endblock content %}
+
+
+{% block push_scripts %}
+    <script src="{% static 'dashboard/wizard_form/js/wizard_step.js' %}"></script>
+{% endblock push_scripts %}

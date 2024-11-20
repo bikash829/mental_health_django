@@ -139,33 +139,23 @@ class User(AbstractUser):
             return 0  # No group assigned or unrecognized group
 
         required_fields = self.REQUIRED_FIELDS_BY_GROUP.get(user_type, [])
-
-        # print(user_type)
-        
-        # address_fields = ['address', 'zip_code', 'city', 'state', 'country']
-        
-        # total_fields = len(required_fields) + len(address_fields)
-
         completed_fields = sum(1 for field in required_fields if getattr(self, field))
-
-        # # Check Address fields
-        # if hasattr(self, 'address'):
-        #     address = self.address
-        #     completed_fields += sum(1 for field in address_fields if getattr(address, field))
         total_fields = len(required_fields)
 
         # check if patient
         if user_type is 'patient':
             address_fields = ['address', 'zip_code', 'city', 'state', 'country']
             total_fields+=len(address_fields)
-
             # Check Address fields
             if hasattr(self, 'address'):
                 address = self.address
                 completed_fields += sum(1 for field in address_fields if getattr(address, field))
-            
+        elif user_type is 'doctor':
+            pass    
+
         # Calculate percentage
         return int((completed_fields / total_fields) * 100) if total_fields else 100
+
 
 # Address info description 
 class Address(models.Model):
@@ -230,3 +220,11 @@ class Training(models.Model):
     def __str__(self):
         return self.institute
 
+
+# class Expert(models.Model):
+#             doc_title = models.
+#             $table->integer('doc_title',)->nullable()->comment('1=Professor Dr. ,2=Assistant Professor Dr., 3=Associate Professor Dr., 4 = Distinguished Professor Dr., 5 = Dr. ');
+#             $table->string('license_no', 50)->nullable();
+#             $table->string('license_attachment')->nullable();
+#             $table->string('license_attachment_location')->nullable();
+#             $table->foreignId('user_id')->constrained();
