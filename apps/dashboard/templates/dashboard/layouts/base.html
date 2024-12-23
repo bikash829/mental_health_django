@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{% static 'vendor/fontawesome-free-6.6.0-web/css/all.min.css' %}">
+    <script src="{% static 'vendor/jQuery/jquery.min.js' %}"></script>
 
 
     {% block push_css %}{% endblock push_css %}
@@ -261,7 +262,8 @@
             option_sparkline3,
         );
         sparkline3.render();
-    </script> <!--end::Script-->
+    </script> 
+    <!--end::Script-->
 
     {% block push_scripts %}{% endblock push_scripts %}
 </body><!--end::Body-->

@@ -32,21 +32,6 @@
                                 </div>
                             {% endif %}
                         </div>
-                        
-                        {% comment %} <div class="row mb-3">
-                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ 'Select Account Type' }}</label>
-                            <div class="col-md-7">
-                                    {% for role in form.role %}
-                                        <input type="radio" class="btn-check {% if form.role.errors %}is-invalid{% endif %}" name="{{ role.data.name }}" value="{{role.data.value }}" id="{{ role.data.attrs.id }}" autocomplete="off" {% if form.role.value == role.data.value %}checked{% endif %}>
-                                        <label class="btn btn-outline-success" for="{{role.data.attrs.id}}">{{role.data.label}}</label>
-                                    {% endfor %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.role.errors %}
-                                        {{error}}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div> {% endcomment %}
 
                         <div class="row mb-3">
                                 <label id="{{ 'role' }}" class="col-md-4 col-form-label text-md-end">{{ form.role.label }}</label>
@@ -128,5 +113,37 @@
     </div>
 </div>
 <div class="container">
+
+
+<!-- Toaster alert-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% if messages %}
+    {% for message in messages %}
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header ">
+          {% comment %} <img src="..." class="rounded me-2" alt="..."> {% endcomment %}
+          <strong class="me-auto text-{{message.tags}}">{{message.tags}}</strong>
+          {% comment %} <small>11 mins ago</small> {% endcomment %}
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+    {% endif %}
+</div>
 {% endblock content %}
 <!--End Main Container-->
+
+
+{% block push_scripts %}
+<script>
+    $(document).ready(function () {
+        $('.toast').toast({
+            delay: 1000*20,
+        }).toast('show')
+    });
+</script>
+
+{% endblock push_scripts %}

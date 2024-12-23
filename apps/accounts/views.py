@@ -68,9 +68,7 @@ def user_registration(request):
             return HttpResponse("Didn't create yet.")
         else:
             raise Http404("Role doesn't exist")
-    
     form = UserRegistrationForm()
-
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         
@@ -79,7 +77,6 @@ def user_registration(request):
             user.is_active = False
             user.is_verified = 2
             role = form.cleaned_data.get('role')
-            
             try: 
                 group = Group.objects.get(name=role)
                 user.save()
@@ -104,6 +101,9 @@ def user_registration(request):
         #     error_messages = "\n".join([error for errors in form.errors.values() for error in errors])
         #     messages.error(request,error_messages)
     
+
+
+
     template_name = "registration/register.html"
     context = {
         'form': form,
