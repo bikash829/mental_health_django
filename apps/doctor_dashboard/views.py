@@ -38,6 +38,11 @@ def profile_update(request):
     form = UpdateDoctorProfile(instance=request.user) 
     expert_info_form = ExpertForm(instance=request.user.expert)
     address_form = AddressForm(instance=request.user.address)
+
+    # pprint.pprint(address_form)
+    # pprint.pprint(form)
+    # pprint.pprint(expert_info_form)
+    # pprint.pprint(form.first_name)
     
 
     template_name = "doctor/manage_profile/wiz_form.html"
@@ -49,27 +54,35 @@ def profile_update(request):
     return render(request,template_name,context)
 
 from django.http import JsonResponse
-import pprint
+from pprint import pprint 
 from django.db import transaction
 
 @login_required
 @group_required('doctor',login_url='accounts:login')
 def update_initial_info(request):
+    pprint(request)
     if request.method == 'POST':
         # Bind both forms with POST data and files
         form = UpdateDoctorProfile(request.POST, request.FILES, instance=request.user)
         expert_info_form = ExpertForm(request.POST, request.FILES, instance=request.user.expert)
         address_form = AddressForm(request.POST, instance=request.user.address)
 
-        print(request.POST)
+        # print('general info')
+        # pprint.pprint(form)
+        # print('expert info')
+        # pprint.pprint(expert_info_form)
+        # print('address info')
+        # pprint.pprint(address_form)
+        # pprint.pprint(request.POST)
+
 
         if form.is_valid() and expert_info_form.is_valid() and address_form.is_valid(): 
-            print('clean form')
-            pprint.pprint(form.cleaned_data)
-            print('clean expert data')
-            pprint.pprint(expert_info_form.cleaned_data)
-            print('clean address data')
-            pprint.pprint(address_form.cleaned_data)
+            # print('clean form')
+            # pprint.pprint(form.cleaned_data)
+            # print('clean expert data')
+            # pprint.pprint(expert_info_form.cleaned_data)
+            # print('clean address data')
+            # pprint.pprint(address_form.cleaned_data)
 
             with transaction.atomic():
                 form.save()  # Save the changes for the first form

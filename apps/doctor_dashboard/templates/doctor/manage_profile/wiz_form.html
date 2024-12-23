@@ -54,19 +54,17 @@
         <!-- personal information step  -->
         <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 form-container" id="personal_info_container">
             <form id="form_personal_info" method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                {% comment %} {{form}}
+                {{form_address}}
+                {{form_expert_info}} {% endcomment %}
+                {% csrf_token %}
+                
+                
                 <div class="col-12">
                     <label for="doc_title" class="form-label">Title</label>
 
                     <select id="doc_title" name="doc_title" required class="form-select"
                         aria-label="Default select example">
-                        <!-- '1=Professor Dr. ,2=Assistant Professor Dr., 3=Associate Professor Dr., 4 = Distinguished Professor Dr., 5 = Dr. ' -->
-
-                        {% comment %} <option value="" selected disabled >Select title</option>
-                        <option value="1">Professor Dr.</option>
-                        <option value="2">Assistant Professor Dr.</option>
-                        <option value="3">Associate Professor Dr.</option>
-                        <option value="4">Distinguished Professor Dr.</option>
-                        <option value="5">Dr.</option> {% endcomment %}
                         {% for item in form_expert_info.doc_title %}
                         {{item}}
                         {% endfor %}
@@ -76,11 +74,11 @@
                 <!-- name  -->
                 <div class="col-12 col-lg-6">
                     <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" class="form-control" value="" name="first_name"
+                    <input type="text" class="form-control" value="{{form.first_name.value}}" name="first_name"
                         id="first_name" placeholder="First Name" required min="1" max="50">
-                    {% if first_name.errors %}
+                    {% if form.first_name.errors %}
                     <div class="invalid-feedback">
-                        {% for error in first_name.errors  %}
+                        {% for error in form.first_name.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -88,11 +86,11 @@
                 </div>
                 <div class="col-12 col-lg-6">
                     <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" value="{{ user.last_name }}" name="last_name"
+                    <input type="text" class="form-control" value="{{ form.last_name.value }}" name="last_name"
                         id="last_name" placeholder="Last Name" min="1" max="50" required>
-                    {% if last_name.errors %}
+                    {% if form.last_name.errors %}
                     <div class="invalid-feedback">
-                        {% for error in last_name.errors  %}
+                        {% for error in form.last_name.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -104,15 +102,16 @@
                     <label for="" class="form-label">Gender</label>
                     <div class="input-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="male" name="gender"  value="M" required>
+                            
+                            <input class="form-check-input" type="radio" id="male" {% if form.gender.value == 'M' %}checked{% endif %}  name="gender"  value="M" required>
                             <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="female" value="F" required>
+                            <input class="form-check-input" type="radio" {% if form.gender.value == 'F' %}checked{% endif %} name="gender" id="female" value="F" required>
                             <label class="form-check-label" for="female">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="other" value="O" required>
+                            <input class="form-check-input" type="radio" {% if form.gender.value == 'O' %}checked{% endif %} name="gender" id="other" value="O" required>
                             <label class="form-check-label" for="other">Other</label>
                         </div>
                         {% if gender.errors %}
@@ -128,11 +127,13 @@
 
                 <div class="col-12 col-lg-6">
                     <label for="date_of_birth" class="form-label">Date Of Birth</label>
+                   {% comment %} {{form.date_of_birth.value}} {% endcomment %}
+                   
                     <input type="date" class="form-control" name="date_of_birth"
-                        value="{{ user.date_of_birth }}" id="date_of_birth" placeholder="" required>
+                        value="{{ form.date_of_birth.value|date:'Y-m-d' }}" id="date_of_birth" placeholder="" required>
                     {% if date_of_birth.errors %}
                     <div class="invalid-feedback">
-                        {% for error in date_of_birth.errors  %}
+                        {% for error in form.date_of_birth.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -152,10 +153,10 @@
 
                 <div class="col-12 col-lg-6">
                     <label for="nationality" class="form-label">Nationality</label>
-                    <input type="text" class="form-control" value='{{ user.nationality }}' name="nationality" id="nationality" placeholder="Nationality" max="255" required>
+                    <input type="text" class="form-control" value='{{ form.nationality.value }}' name="nationality" id="nationality" placeholder="Nationality" max="255" required>
                     {% if user.nationality %}
                     <div class="invalid-feedback">
-                        {% for error in user.nationality  %}
+                        {% for error in form.nationality.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -165,10 +166,10 @@
                 <!-- start address  -->
                 <div class="col-12 ">
                     <label for="address" class="form-label">Address Line 1</label>
-                    <input type="text" class="form-control" value='{{ user.address.address }}' name="address" id="address" placeholder="Street address" max="255" required>
-                    {% if user.address.errors %}
+                    <input type="text" class="form-control" value='{{ form_address.address.value }}' name="address" id="address" placeholder="Street address" max="255" required>
+                    {% if form_address.errors %}
                     <div class="invalid-feedback">
-                        {% for error in user.address.errors  %}
+                        {% for error in form_address.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -178,11 +179,11 @@
                 <div class="col-12 ">
                     <label for="address_line_2" class="form-label">Address Line 2</label>
                     <input type="text" class="form-control" name="address2"
-                        value="{{ user.address.address2 }}" id="address_line_2" max="255"
+                        value="{{ form_address.address2.value }}" id="address_line_2" max="255"
                         placeholder="Appartment, Unit, Building, Floor etc">
-                    {% if user.address.address2 %}
+                    {% if form_address.address2.errors %}
                     <div class="invalid-feedback">
-                        {% for error in user.address.address2  %}
+                        {% for error in form_address.address2.errors  %}
                             {{error}}
                         {% endfor %}
                     </div>
@@ -191,11 +192,11 @@
 
                 <div class="col-12 col-lg-6">
                     <label for="city" class="form-label">City</label>
-                    <input type="text" class="form-control" value="{{ user.address.city }}" name="city"
+                    <input type="text" class="form-control" value="{{ form_address.city.value }}" name="city"
                         id="city" placeholder="City" max="50" required>
-                        {% if user.address.city %}
+                        {% if form_address.city %}
                         <div class="invalid-feedback">
-                            {% for error in user.address.city  %}
+                            {% for error in form_address.city.errors  %}
                                 {{error}}
                             {% endfor %}
                         </div>
@@ -203,11 +204,11 @@
                 </div>
                 <div class="col-12 col-lg-6">
                     <label for="state" class="form-label">State/Division </label>
-                    <input type="text" class="form-control" value="{{ user.address.state }}" name="state"
+                    <input type="text" class="form-control" value="{{ form_address.state.value }}" name="state"
                         id="state" placeholder="District/Region/Province" max="50" required>
-                        {% if user.address.state %}
+                        {% if form_address.state %}
                         <div class="invalid-feedback">
-                            {% for error in user.address.state  %}
+                            {% for error in form_address.state.errors  %}
                                 {{error}}
                             {% endfor %}
                         </div>
@@ -216,11 +217,11 @@
 
                 <div class="col-12 col-lg-6">
                     <label for="zip_code" class="form-label">Zip Code</label>
-                    <input type="text" class="form-control" value="{{ user.address.zip_code }}"
+                    <input type="text" class="form-control" value="{{ form_address.zip_code.value }}"
                         name="zip_code" id="zip_code" placeholder="Postal/Zip Code" max="20" required>
-                        {% if user.address.zip_code %}
+                        {% if form_address.zip_code %}
                         <div class="invalid-feedback">
-                            {% for error in user.address.zip_code  %}
+                            {% for error in form_address.zip_code.errors  %}
                                 {{error}}
                             {% endfor %}
                         </div>
@@ -230,11 +231,11 @@
                 <div class="col-12 col-lg-6">
                     <label for="country" class="form-label">Country</label>
                      
-                    <input type="text" class="form-control" value="{{ user.address.country }}"
+                    <input type="text" class="form-control" value="{{ form_address.country.value }}"
                     name="country" id="country" placeholder="Country" max="20" required>
-                    {% if user.address.country %}
+                    {% if form_address.country %}
                         <div class="invalid-feedback">
-                            {% for error in user.address.country  %}
+                            {% for error in form_address.country.errors  %}
                                 {{error}}
                             {% endfor %}
                         </div>
@@ -249,13 +250,6 @@
                     <div class="input-group">
                         {{form.phone}}
                     </div>
-                    {% comment %} {% if user.phone %}
-                        <div class="invalid-feedback">
-                            {% for error in user.phone  %}
-                                {{error}}
-                            {% endfor %}
-                        </div>
-                    {% endif %} {% endcomment %}
                 </div>
 
                 <div class="col-12 col-lg-6">
@@ -263,13 +257,6 @@
                     <div class="input-group">
                         {{form.additional_phone}}
                     </div>
-                    {% comment %} {% if user.additional_phone %}
-                        <div class="invalid-feedback">
-                            {% for error in user.additional_phone  %}
-                                {{error}}
-                            {% endfor %}
-                        </div>
-                    {% endif %} {% endcomment %}
                 </div>
 
                 <!-- identity -->
@@ -282,7 +269,7 @@
                             {% endfor %}
                         </select>
 
-                        <input type="text" class="form-control w-75" value="" name="identity_no"
+                        <input type="text" class="form-control w-75" value="{{form.identity_no.value}}" name="identity_no"
                         id="identity_no" placeholder="Identity Number" required min="1" max="50">
                     </div>
 
@@ -335,7 +322,7 @@
                 <!-- license  -->
                 <div class="col-12 col-lg-6">
                     <label for="license_no" class="form-label">License Number</label>
-                    <input type="text" class="form-control" value="{{ user.expert.license_no }}"
+                    <input type="text" class="form-control" value="{{ form_expert_info.license_no.value }}"
                         name="license_no" id="license_no" placeholder="1245XXXXXX" max="50" minlength="6"
                         required>
                         {% if form_expert_info.license_no.errors %}
@@ -1079,19 +1066,22 @@
                 toastBootstrap.show()
             }
 
+
             //=============================form validation
             (() => {
                 'use strict'
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 const forms = document.querySelectorAll('.needs-validation')
-
+                console.log('here you are')
                 // Loop over them and prevent submission
                 Array.from(forms).forEach(form => {
                     form.addEventListener('submit', event => {
                         if (!form.checkValidity()) {
                             event.preventDefault()
                             event.stopPropagation()
+                            console.log("here you are ")
                         } else { // ============ validated
+                            console.log("there you go")
                             event.preventDefault();
 
                             let formDataTransport = new FormData();
@@ -1103,12 +1093,18 @@
                                 const rawPersonalInfo = new FormOperation(event.target.elements,
                                     personalInfoContainer);
                                 formData["personalInfo"] = rawPersonalInfo.formDataPack;
-
+                                console.log('raw data')
+                                console.log(rawPersonalInfo)
+                                console.log("form data ")
+                                console.log(formData)
+                                console.log("form data ")
                                 // assigning data
                                 formData["personalInfo"].repackedData.forEach(function(value,
                                     key) {
                                     formDataTransport.append(key, value);
                                 })
+
+                                console.log(formDataTransport)
 
 
                                 const identityProofInput = $('#identity_proof')[0];
@@ -1128,13 +1124,14 @@
                                         licenseAttachment);
                                 }
 
+                               
 
 
                                 axios.post("{% url 'doctor:update_initial_info' %}",
                                     formDataTransport,{
                                         headers: {
                                             'Content-Type': 'multipart/form-data',
-                                            'X-CSRFToken': '{{ csrf_token }}'
+                                            
                                         }
                                     })
                                   .then(function (response) {
