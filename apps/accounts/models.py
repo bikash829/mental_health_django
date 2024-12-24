@@ -13,6 +13,7 @@ def generate_upload_path(instance, filename, base_dir):
     # Get the current date
     current_date = datetime.now().strftime('%Y/%m/%d')
     # Construct the upload path
+    
     return f'{base_dir}/{instance.username}/{current_date}/{unique_filename}'
 
 def identity_type_directory_path(instance, filename):

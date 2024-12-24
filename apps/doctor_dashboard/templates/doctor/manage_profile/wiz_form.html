@@ -217,7 +217,7 @@
 
                 <div class="col-12 col-lg-6">
                     <label for="zip_code" class="form-label">Zip Code</label>
-                    <input type="text" class="form-control" value="{{ form_address.zip_code.value }}"
+                    <input type="text" class="form-control {% if form_address.zip_code.errors %}is-invalid{% endif %}" value="{{ form_address.zip_code.value }}"
                         name="zip_code" id="zip_code" placeholder="Postal/Zip Code" max="20" required>
                         {% if form_address.zip_code %}
                         <div class="invalid-feedback">
@@ -1093,18 +1093,12 @@
                                 const rawPersonalInfo = new FormOperation(event.target.elements,
                                     personalInfoContainer);
                                 formData["personalInfo"] = rawPersonalInfo.formDataPack;
-                                console.log('raw data')
-                                console.log(rawPersonalInfo)
-                                console.log("form data ")
-                                console.log(formData)
-                                console.log("form data ")
+                               
                                 // assigning data
                                 formData["personalInfo"].repackedData.forEach(function(value,
                                     key) {
                                     formDataTransport.append(key, value);
                                 })
-
-                                console.log(formDataTransport)
 
 
                                 const identityProofInput = $('#identity_proof')[0];
@@ -1135,12 +1129,60 @@
                                         }
                                     })
                                   .then(function (response) {
-                                    console.log("success response")
                                     console.log(response);
-                                  })
-                                  .catch(function (error) {
-                                    console.log("error response")
+                                    toastContentSuccess.empty();
+                                    toastContainer = toastContainer.text(response.data[
+                                        'message']);
+
+                                    toastContentSuccess.append(toastContainer);
+                                    const toastBootstrap = bootstrap.Toast
+                                        .getOrCreateInstance(toastSuccess)
+                                    toastBootstrap.show()
+                                    // alert(response.data['message']);
+                                    personalInfoContainer.hide(0, e => {
+                                        educationInfoContainer.show();
+                                        tabActiveList.set('tabPersonal',
+                                            tabPersonalInfo);
+                                        tabActiveList.set('tabEdu',
+                                            tabEducation);
+
+                                        if (!formActive.get('personalInfo')) {
+                                            formActive.set('personalInfo',
+                                                personalInfoContainer);
+                                            formActive.set('educationInfo',
+                                                educationInfoContainer);
+                                            tabActiveList.set('tabPersonal',
+                                                tabPersonalInfo);
+                                            tabActiveList.set('tabEdu',
+                                                tabEducation);
+                                        }
+                                        tabActivate();
+
+                                    })
+                                }).catch(function(error) {
                                     console.log(error);
+                                    if (error.response.status > 399) {
+                                        let errors = error.response.data.errors;
+                                        // Clear previous error messages
+                                        toastContent.empty();
+
+                                        let ul = $("<ul>");
+                                        Object.entries(errors).forEach((value) => {
+                                            let fieldName = value[0],
+                                                errorMessage = value[1][0],
+                                                li = $("<li>").text(
+                                                    errorMessage);
+                                            console.log(fieldName,
+                                                errorMessage);
+                                            ul.append(li);
+                                        })
+
+                                        toastContent.append(ul);
+                                        const toastBootstrap = bootstrap.Toast
+                                            .getOrCreateInstance(toastLiveExample)
+                                        toastBootstrap.show()
+
+                                    }
                                   });
                                 /*
                                 axios.post('#',

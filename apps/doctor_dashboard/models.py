@@ -1,11 +1,16 @@
+from datetime import datetime
+from pprint import pprint
+import uuid
 from django.db import models
 from django.conf import settings
 from apps.accounts.models import User
-from apps.accounts import models as account_models
+from apps.accounts import models as accounts_models
 
 
 def license_directory_path(instance, filename):
-    return account_models.generate_upload_path(instance, filename, 'license_attachment')
+    instance = instance.user
+    return accounts_models.generate_upload_path(instance, filename, 'license_attachment')
+
 
 class Expert(models.Model):
     DOC_TITLE_CHOICES = [
@@ -19,6 +24,7 @@ class Expert(models.Model):
     doc_title = models.IntegerField(choices=DOC_TITLE_CHOICES,null=True,blank=True,default=0 )
     license_no = models.CharField(max_length=50, )
     license_attachment = models.FileField(upload_to=license_directory_path)
+    
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,

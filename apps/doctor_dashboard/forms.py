@@ -8,6 +8,7 @@ from apps.accounts.models import Address
 from phonenumber_field.formfields import SplitPhoneNumberField, PrefixChoiceField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from django.forms import ModelForm
+from django.core.validators import RegexValidator, MaxLengthValidator
 
 
 class UpdateDoctorProfile(UserChangeForm):
@@ -37,7 +38,7 @@ class UpdateDoctorProfile(UserChangeForm):
         fields = [
             'first_name', 'last_name', 'gender', 'date_of_birth', 
             'marital_status', 'nationality', 'phone', 'additional_phone', 
-            'identity_type', 'identity_no', 
+            'identity_type','identity_proof', 'identity_no', 
         ]
     #  'identity_proof',
 
@@ -46,11 +47,18 @@ class ExpertForm(ModelForm):
         model= Expert
         fields= "__all__"
         # fields = ['doc_title', 'license_no', 'license_attachment_file',]
-        exclude = ['user','license_attachment'] 
+        exclude = ['user'] 
 
 
 
 class AddressForm(ModelForm):
+    zip_code = forms.CharField(
+        validators=[
+            RegexValidator(regex='^[0-9]*$', message='Zip code must contain only digits from 0-9'),
+            MaxLengthValidator(8, message='Zip code must be at most 8 digits long')
+        ]
+    )
+
     class Meta:
         model = Address
         fields = '__all__'

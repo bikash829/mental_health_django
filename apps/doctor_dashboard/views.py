@@ -60,7 +60,8 @@ from django.db import transaction
 @login_required
 @group_required('doctor',login_url='accounts:login')
 def update_initial_info(request):
-    pprint(request)
+    pprint(request.POST)
+    pprint(request.FILES)
     if request.method == 'POST':
         # Bind both forms with POST data and files
         form = UpdateDoctorProfile(request.POST, request.FILES, instance=request.user)
