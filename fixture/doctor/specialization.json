@@ -1,0 +1,129 @@
+[
+    {"model": "doctor_dashboard.specialization",
+        "pk": 1,
+        "fields": {
+            "title": "Clinical Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 2,
+        "fields": {
+            "title": "Counseling Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 3,
+        "fields": {
+            "title": "School Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 4,
+        "fields": {
+            "title": "Industrial-Organizational Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 5,
+        "fields": {
+            "title": "Health Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 6,
+        "fields": {
+            "title": "Forensic Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 7,
+        "fields": {
+            "title": "Sports Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 8,
+        "fields": {
+            "title": "Neuropsychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 9,
+        "fields": {
+            "title": "Social Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 10,
+        "fields": {
+            "title": "Developmental Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 11,
+        "fields": {
+            "title": "Experimental Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 12,
+        "fields": {
+            "title": "Cognitive Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 13,
+        "fields": {
+            "title": "Positive Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 14,
+        "fields": {
+            "title": "Environmental Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 15,
+        "fields": {
+            "title": "Consumer Psychology",
+            "note": ""
+        }
+    },
+    {
+        "model": "doctor_dashboard.specialization",
+        "pk": 16,
+        "fields": {
+            "title": "Others",
+            "note": ""
+        }
+    }
+]

@@ -5,6 +5,10 @@ from django.contrib.auth.models import AbstractUser
 from pprint import pprint
 from phonenumber_field.modelfields import PhoneNumberField
 
+from apps.doctor_dashboard.models import Specialization
+
+# from apps.doctor_dashboard.models import Specialization
+
 def generate_upload_path(instance, filename, base_dir):
     # Extract the file extension
     ext = filename.split('.')[-1]
@@ -24,8 +28,8 @@ def profile_photo_directory_path(instance, filename):
 
 # education certificate 
 def education_certificate_directory_path(instance, filename):
-    instance.username = instance.user.username
-    return generate_upload_path(instance, filename, 'employee/education_certificates')
+    # instance.username = instance.user.username
+    return generate_upload_path(instance.user, filename, 'employee/education_certificates')
 
 # training certificate 
 def training_certificate_directory_path(instance, filename):
@@ -181,7 +185,8 @@ class Address(models.Model):
 # Education info description
 class Education(models.Model):
     institute = models.CharField(max_length=200)
-    specialization = models.CharField(max_length=100)
+    # specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
+    specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE,default=0)
     duration = models.CharField(max_length=20)
     passing_year = models.DateField()
     certificate = models.FileField(upload_to=education_certificate_directory_path)

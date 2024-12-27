@@ -294,9 +294,9 @@
                         <label for="identity_proof" class="form-label">Identity Proof(image/pdf)</label>
                         <div>
                             <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                <a href="#" class="btn btn-outline-secondary btn-sm text-primary">View
+                                <a href="{{user.identity_proof.url}}" class="btn btn-outline-secondary btn-sm text-primary">View
                                     attachment</a>
-                                <input value="change file" id="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                <input id="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
                                     name="identity_proof" type="file" class="btn btn-outline-secondary btn-sm"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                     data-bs-title="Change current attachment">
@@ -306,7 +306,7 @@
                 {% else %}
                     <div class="col-12 col-lg-6">
                         <label for="identity_proof" class="form-label">Identity Proof(img,pdf)</label>
-                        <input class="form-control" type="file" name="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
+                        <input class="form-control" value="{{user.identity_proof.name}}" type="file" name="identity_proof" accept=".pdf,.jpg,.jpeg,.png"
                             id="identity_proof" required>
                         
                         {% if user.identity_proof %}
@@ -339,10 +339,9 @@
                         <label for="license_attachment" class="form-label">License Attachment</label>
                         <div>
                             <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                <a href="#" class="btn btn-outline-secondary btn-sm text-primary">View uploaded license</a>
+                                <a href="{{user.expert.license_attachment.url}}" class="btn btn-outline-secondary btn-sm text-primary">View uploaded license</a>
                                 <input id="license_attachment" name="license_attachment" accept=".pdf,.jpg,.jpeg,.png"
-                                    type="file" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-title="Change current attachment">
+                                    type="file" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="Change current attachment">
                             </div>
                         </div>
 
@@ -367,6 +366,7 @@
                             value="personalInfo" type="submit">Next</button>
                     </div>
                 </div>
+                 
             </form>
         </div>
         <!-- end general information step -->
@@ -382,65 +382,60 @@
                             <th>Specialization</th>
                             <th>Duration</th>
                             <th>Passing Year</th>
+                            <th>Certificate</th>
                             <th>Course Title</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {% comment %} @foreach ($user?->education as $edu)
-                            <tr>
-                                <td>{{ $edu?->institute }}</td>
-                                <td>{{ $edu?->specialization }}</td>
-                                <td>{{ $edu?->duration }} Hour</td>
-                                <td>{{ $edu?->passing_year }}</td>
-                                <td>{{ $edu?->edu_doc_title }}</td>
-                                {{-- <td><a class="btn btn-danger" href="{{route('doctor.profile.delete_education')}}"></i></a></td> --}}
-                                <td><button class="btn btn-danger" name="edu_id" value="{{ $edu?->id }}"><i
-                                            class="fa-regular fa-trash-can"></button></td>
-                            </tr>
-                        @endforeach {% endcomment %}
-                        {% comment %} <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="btn btn-danger" name="edu_id" value="{{ edu.id }}"><i
-                                        class="fa-regular fa-trash-can"></button></td>
-                        </tr> {% endcomment %}
+                        {% for item in user.education_set.all %}
+                        <tr>
+                            <td>{{item.institute}}</td>
+                            <td>{{item.specialization}}</td>
+                            <td>{{item.duration}}</td>
+                            <td>{{item.passing_year}}</td>
+                            <td><a href="{{item.certificate.url}}">View File</a> </td>
+                            <td>{{item.certificate_title}}</td>
+                            <td>
+                                <button class="btn btn-danger" name="edu_id" value="{{item.id}}"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr> 
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
             <!-- Educational Information-->
             <form id="form_education" class="needs-validation my-5" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
                 <div class="input-edu-container row gy-3 ">
                     <div class="col-12 group-input">
                         <label for="institute" class="form-label">Institute</label>
                         <input type="text" class="form-control form-field" name="institute" id="institute"
                             placeholder="Institute Name" required>
 
-                        {% if  user.education.institute%}
+                        {% if  formEducation.institute.errors %}
                         <div class="invalid-feedback">
-                            {% for error in user.education.institute  %}
+                            {% for error in formEducation.institute.errors  %}
                                 {{error}}
                             {% endfor %}
                         </div>
                         {% endif %}
                     </div>
+                   
+                    
 
                     <div class="col-12 group-input">
                         <label for="specialization" class="form-label">Specialization</label>
                         <select id="specialization" name="specialization" required class="form-select form-field"
                             aria-label="Default select example">
-                            <option value="" disabled selected>Select One</option>
-                            {% comment %} @foreach ($specializations as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach {% endcomment %}
+                            {% for item in formEducation.specialization %}
+                            {{item}}
+                            {% endfor %}
                         </select>
-                        {% if  user.education.specialization%}
+                        {% if  formEducation.specialization.errors %}
                         <div class="invalid-feedback">
-                            {% for error in user.education.specialization  %}
+                            {% for error in formEducation.specialization.errors   %}
                                 {{error}}
                             {% endfor %}
                         </div>
@@ -451,25 +446,57 @@
                         <label for="duration" class="form-label">Duration(Total Hour)</label>
                         <input type="number" class="form-control form-field" name="duration" id="duration"
                             min="1" placeholder="Total Month" required>
+
+                        {% if  formEducation.duration.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in formEducation.duration.errors   %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-12 col-lg-6 group-input">
                         <label for="passing_year" class="form-label">Passing Year</label>
                         <input type="date" class="form-control form-field" name="passing_year" id="passing_year"
                             placeholder="" required>
+
+                        {% if  formEducation.passing_year.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in formEducation.passing_year.errors   %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-12 col-lg-6 group-input">
                         <label for="education_certificate" class="form-label">Upload certificate(image/pdf)</label>
                         <input type="file" class="form-control form-field" accept=".pdf,.jpg,.jpeg,.png"
                             name="education_certificate" id="education_certificate" placeholder="" required>
+                        {% if  formEducation.education_certificate.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in formEducation.education_certificate.errors   %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="col-12 col-lg-6 group-input">
                         <label for="edu_doc_title" class="form-label">Certificate Title</label>
-                        <input type="text" class="form-control form-field" name="edu_doc_title"
+                        <input type="text" class="form-control form-field" name="certificate_title"
                             id="edu_doc_title" placeholder="" required>
                     </div>
+                    {% if  formEducation.certificate_title.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in formEducation.certificate_title.errors   %}
+                                {{error}}
+                            {% endfor %}
+                        </div>
+                    {% endif %} 
+                    
                 </div>
+                <input type="hidden" name="user" value="{{request.user.id}}">
 
                 <div class="col-6 my-3 d-grid mx-auto">
                     <button type="submit" id="btnAddMoreEdu" name="btnSaveForm" value="saveEdu"
@@ -682,6 +709,34 @@
 {% block push_scripts %}
     <script src="{% static 'dashboard/wizard_form/js/wizard_step.js' %}"></script>
     <script src="{% static 'vendor/axios/axios.min.js' %}"></script>
+
+    <!--begin::Bootstrap Tooltips-->
+    <script>
+        const tooltipTriggerList = document.querySelectorAll(
+            '[data-bs-toggle="tooltip"]',
+        );
+        const tooltipList = [...tooltipTriggerList].map(
+            (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl),
+        );
+    </script> 
+    <!--end::Bootstrap Tooltips--> 
+    <!--begin::Bootstrap Toasts-->
+    <script>
+        const toastTriggerList = document.querySelectorAll(
+            '[data-bs-toggle="toast"]',
+        );
+        toastTriggerList.forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                const toastEle = document.getElementById(
+                    btn.getAttribute("data-bs-target"),
+                );
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEle);
+                toastBootstrap.show();
+            });
+        });
+    </script> 
+    <!--end::Bootstrap Toasts-->
 
 
     <script type="text/javascript">
@@ -973,13 +1028,20 @@
 
             function deleteEducation() { // delete information from education
                 $("#dataTable button").click((e) => {
-                    console.log(e.currentTarget.value);
-
                     let currentRow = $(e.currentTarget).parent().parent();
                     let formDataTransport = new FormData();
-
+                    
                     formDataTransport.append('id', e.currentTarget.value);
-                    axios.post('#', formDataTransport)
+
+                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    axios.post("{% url 'doctor:delete_education' %}", 
+                    formDataTransport,
+                    {
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        }
+                    }
+                    )
                         .then(function(response) {
                             currentRow.remove();
                             toastSuccessShow(response.data.message);
@@ -1161,7 +1223,7 @@
                                     })
                                 }).catch(function(error) {
                                     console.log(error);
-                                    if (error.response.status > 399) {
+                                    if (error.response.status > 400) {
                                         let errors = error.response.data.errors;
                                         // Clear previous error messages
                                         toastContent.empty();
@@ -1256,10 +1318,6 @@
 
                                 formData["educationInfo"] = rawEducationInfo.formDataPack;
 
-
-                                // const rawPersonalInfo = new FormOperation(event.target.elements,personalInfoContainer);
-                                // formData["personalInfo"] = rawPersonalInfo.formDataPack;
-
                                 // assigning data
                                 formData["educationInfo"].repackedData.forEach(function(value,
                                     key) {
@@ -1267,20 +1325,19 @@
                                 })
 
                                 const education_certificate = $('#education_certificate')[0];
-                                const education_certificate_file = education_certificate.files[
-                                    0];
+                                const education_certificate_file = education_certificate.files[0];
 
-                                formDataTransport.append('education_certificate_file',
+                                formDataTransport.append('certificate',
                                     education_certificate_file);
 
-                                axios.post('#',
+                                console.log(formDataTransport)
+
+                                axios.post("{% url 'doctor:update_education_info' %}",
                                     formDataTransport, {
                                         headers: {
                                             'Content-Type': 'multipart/form-data',
                                         }
                                     }).then(function(response) {
-                                    console.log(response.data.educations);
-
                                     toastContentSuccess.empty();
                                     toastContainer = toastContainer.text(response.data[
                                         'message']);
@@ -1289,22 +1346,38 @@
                                     const toastBootstrap = bootstrap.Toast
                                         .getOrCreateInstance(toastSuccess)
                                     toastBootstrap.show()
+                                    
                                     // form reset
                                     frmEducation[0].reset();
                                     $('#dataTable tbody tr').remove();
 
-                                    (response.data.educations).forEach((value, key) => {
+                                    // const educations = JSON.parse(response.data.educations);
+                                    const educations = response.data.educations
+
+                                    console.log(educations)
+
+                                    educations.forEach((data, key) => {
+
+                                        // Parse and format the passing year
+                                        const passingYear = new Date(data.passing_year);
+                                        const formattedDate = passingYear.toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        });
+                                        
                                         $('#dataTable').append(
                                             `<tr>
-                                            <td>${value.institute}</td>
-                                            <td>${value.specialization}</td>
-                                            <td>${value.duration}</td>
-                                            <td>${value.passing_year}</td>
-                                            <td>${value.edu_doc_title}</td>
+                                                <td>${data.institute}</td>
+                                                <td>${data.specialization__title}</td>
+                                                <td>${data.duration}</td>
+                                                <td>${formattedDate}</td>
+                                                <td><a href="/media/${data.certificate}">View Certificate</a></td>
+                                                <td>${data.certificate_title}</td>
 
-                                            <td><button class="btn btn-danger" name="edu_id" value="${value.id}"><i class="fa-regular fa-trash-can"></button></td>
+                                                <td><button class="btn btn-danger" name="edu_id" value="${data.id}"><i class="fa-regular fa-trash-can"></button></td>
 
-                                        </tr>`
+                                            </tr>`
                                         );
                                     })
                                     educationNextPage();

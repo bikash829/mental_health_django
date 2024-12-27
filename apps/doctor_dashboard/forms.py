@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models import User
-from apps.doctor_dashboard.models import Expert
+from apps.accounts.models import User, Education
+from apps.doctor_dashboard.models import Expert, Specialization
 from apps.accounts.models import Address
 from phonenumber_field.formfields import SplitPhoneNumberField, PrefixChoiceField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
@@ -63,3 +63,33 @@ class AddressForm(ModelForm):
         model = Address
         fields = '__all__'
         exclude = ['user'] 
+
+SPECIALIZATIONS_CHOICES = [
+    "Clinical Psychology",
+    "Counseling Psychology",
+    "School Psychology",
+    "Industrial-Organizational Psychology",
+    "Health Psychology",
+    "Forensic Psychology",
+    "Sports Psychology",
+    "Neuropsychology",
+    "Social Psychology",
+    "Developmental Psychology",
+    "Experimental Psychology",
+    "Cognitive Psychology",
+    "Positive Psychology",
+    "Environmental Psychology",
+    "Consumer Psychology",
+    "Others"
+    ]
+
+class FormEducation(ModelForm):
+    specialization = forms.ModelChoiceField(
+        queryset=Specialization.objects.all(),
+        empty_label="Select Specialization",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    class Meta:
+        model = Education
+        fields="__all__"
+        # exclude = ['user']

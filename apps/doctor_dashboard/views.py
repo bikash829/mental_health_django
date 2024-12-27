@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
-from apps.accounts.models import Address
+from apps.accounts.models import Address, Education
 from apps.doctor_dashboard.models import Expert
-from .forms import AddressForm, UpdateDoctorProfile,ExpertForm
+from .forms import AddressForm, FormEducation, UpdateDoctorProfile,ExpertForm
 
 from django.contrib.auth.decorators import user_passes_test,login_required
 
@@ -38,6 +38,7 @@ def profile_update(request):
     form = UpdateDoctorProfile(instance=request.user) 
     expert_info_form = ExpertForm(instance=request.user.expert)
     address_form = AddressForm(instance=request.user.address)
+    formEducation = FormEducation()
 
     # pprint.pprint(address_form)
     # pprint.pprint(form)
@@ -50,6 +51,7 @@ def profile_update(request):
         'form': form,
         'form_expert_info': expert_info_form,
         'form_address' : address_form,
+        'formEducation' : formEducation,
     }
     return render(request,template_name,context)
 
@@ -60,39 +62,62 @@ from django.db import transaction
 @login_required
 @group_required('doctor',login_url='accounts:login')
 def update_initial_info(request):
-    pprint(request.POST)
-    pprint(request.FILES)
     if request.method == 'POST':
         # Bind both forms with POST data and files
         form = UpdateDoctorProfile(request.POST, request.FILES, instance=request.user)
         expert_info_form = ExpertForm(request.POST, request.FILES, instance=request.user.expert)
         address_form = AddressForm(request.POST, instance=request.user.address)
 
-        # print('general info')
-        # pprint.pprint(form)
-        # print('expert info')
-        # pprint.pprint(expert_info_form)
-        # print('address info')
-        # pprint.pprint(address_form)
-        # pprint.pprint(request.POST)
-
 
         if form.is_valid() and expert_info_form.is_valid() and address_form.is_valid(): 
-            # print('clean form')
-            # pprint.pprint(form.cleaned_data)
-            # print('clean expert data')
-            # pprint.pprint(expert_info_form.cleaned_data)
-            # print('clean address data')
-            # pprint.pprint(address_form.cleaned_data)
-
             with transaction.atomic():
                 form.save()  # Save the changes for the first form
                 expert_info_form.save()  # Save the changes for the second form
                 address_form.save()  # Save the changes for the second form
-            return JsonResponse({'message': 'Success'})
+            return JsonResponse({'message': 'You personal information has been updated'})
         else:
             # Collect errors from both forms
             errors = {**form.errors, **expert_info_form.errors, **address_form.errors}
             return JsonResponse({'errors': errors}, status=400)
 
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+from django.db.models import F
+from django.core import serializers
+@login_required
+@group_required('doctor',login_url='accounts:login')
+def update_education_info(request):
+    if request.method == 'POST':
+        # Bind both forms with POST data and files
+        formEducation = FormEducation(request.POST, request.FILES)
+        if formEducation.is_valid():
+            formEducation.save()
+            
+            # education_set = request.user.education_set.all()
+            # education_set = serializers.serialize('json', education_set)
+
+            # django orm 
+            education_set = request.user.education_set.select_related('specialization').values(
+                'id', 'institute', 'specialization__title', 'duration', 'passing_year', 'certificate','certificate_title'
+            )
+            educations = list(education_set)
+            return JsonResponse({'message': 'Education information has been updated','educations':educations})
+        else:
+            # Collect errors from both forms
+            errors = formEducation.errors
+            return JsonResponse({'errors': errors}, status=400)
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@login_required
+@group_required('doctor',login_url='accounts:login')
+def delete_education(request):
+    if request.method == 'POST':
+        education_id = request.POST.get('id')
+        try:
+            education = Education.objects.get(id=education_id, user=request.user)
+            education.delete()
+            return JsonResponse({'message': 'Education information has been deleted successfully'})
+        except Education.DoesNotExist:
+            return JsonResponse({'error': 'Education information not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
