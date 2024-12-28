@@ -542,7 +542,7 @@
                             <td>{{item.to_date}}</td>
                             <td>{{item.training_title}}</td>
                             <td><a href="/media/{{item.training_certificate}}">View Certificate</a></td>
-                            <td><button class="btn btn-danger" name="training_id" value=""><i class="fa-regular fa-trash-can"></i></button></td>
+                            <td><button class="btn btn-danger" name="training_id" value="{{item.id}}"><i class="fa-regular fa-trash-can"></i></button></td>
                         </tr>
                         {% endfor %}
                         {% comment %} @foreach ($user?->training as $traingInfo)
@@ -1043,8 +1043,8 @@
                 })
             })
 
-
-            function deleteEducation() { // delete information from education
+            // delete information from education
+            function deleteEducation() { 
                 $("#dataTable button").click((e) => {
                     let currentRow = $(e.currentTarget).parent().parent();
                     let formDataTransport = new FormData();
@@ -1084,14 +1084,24 @@
                 })
             })
 
-
-            function deleteTraining() { // delete information from training
+            // delete information from training
+            function deleteTraining() { 
                 $("#dataTableTraining button").click((e) => {
                     let currentRow = $(e.currentTarget).parent().parent();
                     let formDataTransport = new FormData();
 
                     formDataTransport.append('id', e.currentTarget.value);
-                    axios.post('{{ #', formDataTransport)
+                    console.log(formDataTransport)
+                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    axios.post("{% url 'doctor:delete_training' %}", 
+                        formDataTransport,
+                        {
+                            headers: {
+                                'X-CSRFToken': csrftoken
+                            }
+                        }
+                    
+                    )
                         .then(function(response) {
                             currentRow.remove();
                             toastSuccessShow(response.data.message);
@@ -1165,10 +1175,10 @@
                             event.preventDefault();
 
                             let formDataTransport = new FormData();
-
+                            // ==========================personal information
                             if (event.currentTarget.id ===
                                 'form_personal_info'
-                            ) { // ==========================personal information
+                            ) {
 
                                 const rawPersonalInfo = new FormOperation(event.target.elements,
                                     personalInfoContainer);
@@ -1266,75 +1276,74 @@
                                   });
                                
 
-                            } else if (event.currentTarget.id ===
-                                'form_education'
-                            ) { //======================= education information
-                                const rawEducationInfo = new FormOperation(event.target
-                                    .elements, educationInfoContainer);
+                                //======================= education information
+                                } else if (event.currentTarget.id === 'form_education') 
+                                    { 
+                                    const rawEducationInfo = new FormOperation(event.target
+                                        .elements, educationInfoContainer);
 
-                                formData["educationInfo"] = rawEducationInfo.formDataPack;
+                                    formData["educationInfo"] = rawEducationInfo.formDataPack;
 
-                                // assigning data
-                                formData["educationInfo"].repackedData.forEach(function(value,
-                                    key) {
-                                    formDataTransport.append(key, value);
-                                })
+                                    // assigning data
+                                    formData["educationInfo"].repackedData.forEach(function(value,key) {
+                                        formDataTransport.append(key, value);
+                                    })
 
-                                const education_certificate = $('#education_certificate')[0];
-                                const education_certificate_file = education_certificate.files[0];
+                                    const education_certificate = $('#education_certificate')[0];
+                                    const education_certificate_file = education_certificate.files[0];
 
-                                formDataTransport.append('certificate',
-                                    education_certificate_file);
+                                    formDataTransport.append('certificate',
+                                        education_certificate_file);
 
-                                console.log(formDataTransport)
+                                    console.log(formDataTransport)
 
-                                axios.post("{% url 'doctor:update_education_info' %}",
-                                    formDataTransport, {
-                                        headers: {
-                                            'Content-Type': 'multipart/form-data',
-                                        }
-                                    }).then(function(response) {
-                                    toastContentSuccess.empty();
-                                    toastContainer = toastContainer.text(response.data[
-                                        'message']);
+                                    axios.post("{% url 'doctor:update_education_info' %}",
+                                        formDataTransport, {
+                                            headers: {
+                                                'Content-Type': 'multipart/form-data',
+                                            }
+                                        }).then(function(response) {
+                                        toastContentSuccess.empty();
+                                        toastContainer = toastContainer.text(response.data[
+                                            'message']);
 
-                                    toastContentSuccess.append(toastContainer);
-                                    const toastBootstrap = bootstrap.Toast
-                                        .getOrCreateInstance(toastSuccess)
-                                    toastBootstrap.show()
-                                    
-                                    // form reset
-                                    frmEducation[0].reset();
-                                    $('#dataTable tbody tr').remove();
-
-                                    // const educations = JSON.parse(response.data.educations);
-                                    const educations = response.data.educations
-
-                                    console.log(educations)
-
-                                    educations.forEach((data, key) => {
-
-                                        // Parse and format the passing year
-                                        const passingYear = new Date(data.passing_year);
-                                        const formattedDate = passingYear.toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric'
-                                        });
+                                        toastContentSuccess.append(toastContainer);
+                                        const toastBootstrap = bootstrap.Toast
+                                            .getOrCreateInstance(toastSuccess)
+                                        toastBootstrap.show()
                                         
-                                        $('#dataTable').append(
-                                            `<tr>
-                                                <td>${data.institute}</td>
-                                                <td>${data.specialization__title}</td>
-                                                <td>${data.duration}</td>
-                                                <td>${formattedDate}</td>
-                                                <td><a href="/media/${data.certificate}">View Certificate</a></td>
-                                                <td>${data.certificate_title}</td>
+                                        // form reset
+                                        frmEducation[0].reset();
+                                        $('#dataTable tbody tr').remove();
 
-                                                <td><button class="btn btn-danger" name="edu_id" value="${data.id}"><i class="fa-regular fa-trash-can"></button></td>
+                                        // const educations = JSON.parse(response.data.educations);
+                                        const educations = response.data.educations
 
-                                            </tr>`
-                                        );
+                                        console.log(educations)
+
+                                        educations.forEach((data, key) => {
+
+                                            // Parse and format the passing year
+                                            const passingYear = new Date(data.passing_year);
+                                            const formattedDate = passingYear.toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
+                                            });
+                                            
+                                            $('#dataTable').append(
+                                                `<tr>
+                                                    <td>${data.institute}</td>
+                                                    <td>${data.specialization__title}</td>
+                                                    <td>${data.duration}</td>
+                                                    <td>${formattedDate}</td>
+                                                    <td><a href="/media/${data.certificate}">View Certificate</a></td>
+                                                    <td>${data.certificate_title}</td>
+
+                                                    <td><button class="btn btn-danger" name="edu_id" value="${data.id}"><i class="fa-regular fa-trash-can"></button></td>
+
+                                                </tr>`
+                                            );
                                     })
                                     educationNextPage();
                                     deleteEducation();
@@ -1367,20 +1376,10 @@
 
                                     }
                                 });
-
-                                // educationInfoContainer.hide(0,e=>{
-                                //     trainingInfoContainer.show();
-                                //
-                                //     if(!formActive.get('trainingInfo')){
-                                //         formActive.set('trainingInfo',trainingInfoContainer);
-                                //         tabActiveList.set('tabTraining',tabTraining);
-                                //     }
-                                //
-                                // })
-                                // console.log(rawEducationInfo.formElements);
                                 console.log(formData);
+                            //===================== training information
                             } else if (event.currentTarget.id ===
-                                'form_training') { //===================== training information
+                                'form_training') { 
                                 //object creation
                                 const rawTrainingInfo = new FormOperation(event.target.elements,
                                     trainingInfoContainer);
@@ -1421,13 +1420,30 @@
                                     $('#dataTableTraining tbody tr').remove();
 
                                     (response.data.trainings).forEach((value, key) => {
+                                        // Parse and format the passing year
+                                        const from_date = new Date(value.from_date);
+                                        const formattedDateFromDate = from_date.toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        });
+                                        const to_date = new Date(value.to_date);
+                                        const formattedDateToDate = to_date.toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        });
                                         $('#dataTableTraining').append(
                                             `<tr>
                                             <td>${value.institute}</td>
-                                            <td>${value.specialization}</td>
-                                            <td>${value.from_date}</td>
-                                            <td>${value.to_date}</td>
+                                            <td>${value.specialization__title}</td>
+                                            <td>${formattedDateFromDate}</td>
+                                            <td>${formattedDateToDate}</td>
                                             <td>${value.training_title}</td>
+                                            <td>
+                                                <a href="/media/${value.training_certificate}">View Certificate</a>
+                                            </td>
+                                            
 
                                             <td><button class="btn btn-danger" name="training_id" value="${value.id}"><i class="fa-regular fa-trash-can"></button></td>
 
@@ -1467,8 +1483,8 @@
                                 });
 
 
-                            } else if (event.currentTarget.id ===
-                                'form_experience') { // ==================  experience info
+                            // ==================  experience info
+                            } else if (event.currentTarget.id === 'form_experience') { 
                                 //object creation
                                 const rawExperienceInfo = new FormOperation(event.target
                                     .elements);

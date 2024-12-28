@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from apps.accounts.models import Address, Education
+from apps.accounts.models import Address, Education, Training
 from apps.doctor_dashboard.models import Expert
 from .forms import AddressForm, FormEducation, FormTraining, UpdateDoctorProfile,ExpertForm
 
@@ -140,10 +140,26 @@ def update_training(request):
                 'id', 'institute', 'specialization__title', 'from_date', 'to_date', 'training_certificate','training_title'
             )
             trainings = list(training_set)
-            return JsonResponse({'message': 'training information has been updated','trainings':trainings})
+            return JsonResponse({'message': 'Training information has been updated','trainings':trainings})
         else:
             # Collect errors from both forms
             errors = form_training.errors
             return JsonResponse({'errors': errors}, status=400)
 
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@login_required
+@group_required('doctor',login_url='accounts:login')
+def delete_training(request):
+    print("here you are")
+    if request.method == 'POST':
+        training_id = request.POST.get('id')
+        print(training_id)
+        try:
+            training = Training.objects.get(id=training_id, user=request.user)
+            training.delete()
+            return JsonResponse({'message': 'Training information has been deleted successfully'})
+        except Training.DoesNotExist:
+            return JsonResponse({'error': 'Training information not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)

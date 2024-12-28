@@ -11,5 +11,6 @@ urlpatterns = [
     path('delete_education/', views.delete_education, name='delete_education'),
     # training 
     path('update_training/', views.update_training, name='update_training'),
+    path('delete_training/', views.delete_training, name='delete_training'),
 
 ]
