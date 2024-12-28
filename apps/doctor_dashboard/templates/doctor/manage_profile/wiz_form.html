@@ -518,7 +518,7 @@
 
         <!--Start Training information step   -->
         <div class="col-12 col-lg-8 form-container" id="training_info_container">
-            training
+            
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTableTraining" width="100%" cellspacing="0">
                     <thead>
@@ -528,11 +528,23 @@
                             <th>From</th>
                             <th>To</th>
                             <th>Course Title</th>
+                            <th>Certificate</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        {% for item in user.training_set.all %}
+                        <tr>
+                            <td>{{item.institute}}</td>
+                            <td>{{item.specialization__title}}</td>
+                            <td>{{item.from_date}}</td>
+                            <td>{{item.to_date}}</td>
+                            <td>{{item.training_title}}</td>
+                            <td><a href="/media/{{item.training_certificate}}">View Certificate</a></td>
+                            <td><button class="btn btn-danger" name="training_id" value=""><i class="fa-regular fa-trash-can"></i></button></td>
+                        </tr>
+                        {% endfor %}
                         {% comment %} @foreach ($user?->training as $traingInfo)
                             <tr>
                                 <td>{{ $traingInfo?->institute }}</td>
@@ -551,7 +563,7 @@
                 </table>
             </div>
             <form id="form_training" enctype="multipart/form-data" class="needs-validation" novalidate>
-
+                {% csrf_token %}
                 <div class="input-train-container row g-3">
                     <div class="col-12">
                         <label for="institute" class="form-label">Institute</label>
@@ -563,12 +575,17 @@
                         <label for="specialization" class="form-label">Specialization</label>
                         <select id="specialization" name="specialization" required class="form-select form-field"
                             aria-label="Default select example">
-                            <option value="" disabled selected>Select One</option>
-                            {% comment %} @foreach ($specializations as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach {% endcomment %}
-                                {% comment %} <option value="">{{ $value }}</option> {% endcomment %}
+                            {% for item in form_training.specialization %}
+                            {{item}}
+                            {% endfor %}
                         </select>
+                        {% if  form_training.specialization.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form_training.specialization.errors   %}
+                                    {{error}}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-12 col-lg-6">
@@ -594,6 +611,7 @@
                             id="training_title" placeholder="" required>
                     </div>
                 </div>
+                <input type="hidden" name="user" value="{{request.user.id}}">
 
                 <div class="col-6 my-3 d-grid mx-auto">
                     <button type="submit" id="btnAddMoreTrain" name="btnSaveForm" value="AddTraining"
@@ -1030,7 +1048,7 @@
                 $("#dataTable button").click((e) => {
                     let currentRow = $(e.currentTarget).parent().parent();
                     let formDataTransport = new FormData();
-                    
+
                     formDataTransport.append('id', e.currentTarget.value);
 
                     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -1246,69 +1264,7 @@
 
                                     }
                                   });
-                                /*
-                                axios.post('#',
-                                    formDataTransport, {
-                                        headers: {
-                                            'Content-Type': 'multipart/form-data',
-                                        }
-                                    }).then(function(response) {
-                                    console.log(response);
-                                    toastContentSuccess.empty();
-                                    toastContainer = toastContainer.text(response.data[
-                                        'message']);
-
-                                    toastContentSuccess.append(toastContainer);
-                                    const toastBootstrap = bootstrap.Toast
-                                        .getOrCreateInstance(toastSuccess)
-                                    toastBootstrap.show()
-                                    // alert(response.data['message']);
-                                    personalInfoContainer.hide(0, e => {
-                                        educationInfoContainer.show();
-                                        tabActiveList.set('tabPersonal',
-                                            tabPersonalInfo);
-                                        tabActiveList.set('tabEdu',
-                                            tabEducation);
-
-                                        if (!formActive.get('personalInfo')) {
-                                            formActive.set('personalInfo',
-                                                personalInfoContainer);
-                                            formActive.set('educationInfo',
-                                                educationInfoContainer);
-                                            tabActiveList.set('tabPersonal',
-                                                tabPersonalInfo);
-                                            tabActiveList.set('tabEdu',
-                                                tabEducation);
-                                        }
-                                        tabActivate();
-
-                                    })
-                                }).catch(function(error) {
-                                    console.log(error);
-                                    if (error.response.status === 422) {
-                                        let errors = error.response.data.errors;
-                                        // Clear previous error messages
-                                        toastContent.empty();
-
-                                        let ul = $("<ul>");
-                                        Object.entries(errors).forEach((value) => {
-                                            let fieldName = value[0],
-                                                errorMessage = value[1][0],
-                                                li = $("<li>").text(
-                                                    errorMessage);
-                                            console.log(fieldName,
-                                                errorMessage);
-                                            ul.append(li);
-                                        })
-
-                                        toastContent.append(ul);
-                                        const toastBootstrap = bootstrap.Toast
-                                            .getOrCreateInstance(toastLiveExample)
-                                        toastBootstrap.show()
-
-                                    }
-                                });*/
-
+                               
 
                             } else if (event.currentTarget.id ===
                                 'form_education'
@@ -1440,10 +1396,10 @@
                                 const training_certificate = $('#training_certificate')[0];
                                 const training_certificate_file = training_certificate.files[0];
 
-                                formDataTransport.append('training_certificate_file',
+                                formDataTransport.append('training_certificate',
                                     training_certificate_file);
-
-                                axios.post('#',
+                                console.log(formDataTransport)
+                                axios.post("{% url 'doctor:update_training' %}",
                                     formDataTransport, {
                                         headers: {
                                             'Content-Type': 'multipart/form-data',

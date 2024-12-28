@@ -33,8 +33,8 @@ def education_certificate_directory_path(instance, filename):
 
 # training certificate 
 def training_certificate_directory_path(instance, filename):
-    instance.username = instance.user.username
-    return generate_upload_path(instance, filename, 'employee/training_certificates')
+    # instance.username = instance.user.username
+    return generate_upload_path(instance.user, filename, 'employee/training_certificates')
 
 # Create your models here.
 
@@ -215,7 +215,8 @@ class Experience(models.Model):
 # Training info model description 
 class Training(models.Model):
     institute = models.CharField(max_length=200)
-    specialization = models.CharField(max_length=100)
+    # specialization = models.CharField(max_length=100)
+    specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE,default=0)
     from_date = models.DateField()
     to_date = models.DateField()
     training_title = models.CharField(max_length=200)
