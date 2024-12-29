@@ -12,5 +12,8 @@ urlpatterns = [
     # training 
     path('update_training/', views.update_training, name='update_training'),
     path('delete_training/', views.delete_training, name='delete_training'),
+    # experience 
+    path('update_experience/',views.update_experience,name='update_experience'),
+    path('delete_experience/',views.delete_experience,name='delete_experience'),
 
 ]

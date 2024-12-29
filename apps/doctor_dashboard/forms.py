@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models import Training, User, Education
+from apps.accounts.models import Experience, Training, User, Education
 from apps.doctor_dashboard.models import Expert, Specialization
 from apps.accounts.models import Address
 from phonenumber_field.formfields import SplitPhoneNumberField, PrefixChoiceField
@@ -107,3 +107,9 @@ class FormTraining(ModelForm):
         model = Training 
         fields="__all__"
         
+
+class FormExperience(ModelForm):
+
+    class Meta:
+        model = Experience 
+        fields= "__all__"

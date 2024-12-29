@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
-from apps.accounts.models import Address, Education, Training
+from apps.accounts.models import Address, Education, Experience, Training
 from apps.doctor_dashboard.models import Expert
-from .forms import AddressForm, FormEducation, FormTraining, UpdateDoctorProfile,ExpertForm
+from .forms import AddressForm, FormEducation, FormExperience, FormTraining, UpdateDoctorProfile,ExpertForm
 
 from django.contrib.auth.decorators import user_passes_test,login_required
 
@@ -40,6 +40,7 @@ def profile_update(request):
     address_form = AddressForm(instance=request.user.address)
     formEducation = FormEducation()
     form_training = FormTraining()
+    form_experience = FormExperience()
     # pprint.pprint(address_form)
     # pprint.pprint(form)
     # pprint.pprint(expert_info_form)
@@ -52,7 +53,8 @@ def profile_update(request):
         'form_expert_info': expert_info_form,
         'form_address' : address_form,
         'formEducation' : formEducation,
-        'form_training' : form_training
+        'form_training' : form_training,
+        'form_experience': form_experience,
     }
     return render(request,template_name,context)
 
@@ -149,10 +151,10 @@ def update_training(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
+# delete training info
 @login_required
 @group_required('doctor',login_url='accounts:login')
 def delete_training(request):
-    print("here you are")
     if request.method == 'POST':
         training_id = request.POST.get('id')
         print(training_id)
@@ -162,4 +164,36 @@ def delete_training(request):
             return JsonResponse({'message': 'Training information has been deleted successfully'})
         except Training.DoesNotExist:
             return JsonResponse({'error': 'Training information not found'}, status=404)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+# Experience block  
+@login_required
+@group_required('doctor',login_url='accounts:login')
+def update_experience(request):
+    if request.method == "POST":
+        form_experience = FormExperience(request.POST)
+        if form_experience.is_valid():
+            form_experience.save()
+            experience_set = request.user.experience_set.values()
+            experiences = list(experience_set)
+            return JsonResponse({'success': 'Experience info has been updated successfully','experiences':experiences}) 
+        else:
+            errors = form_experience.errors
+            return JsonResponse({'errors':errors},status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@login_required
+@group_required('doctor',login_url='accounts.login')
+def delete_experience(request):
+    if request.method == 'POST':
+        experience_id = request.POST.get('id')
+        print(experience_id)
+        try:
+            experience = Experience.objects.get(id=experience_id, user=request.user)
+            experience.delete()
+            return JsonResponse({'message': 'Experience information has been deleted successfully'})
+        except Experience.DoesNotExist:
+            return JsonResponse({'error': 'Experience information not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)

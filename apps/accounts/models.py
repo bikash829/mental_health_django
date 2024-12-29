@@ -202,6 +202,7 @@ class Education(models.Model):
 class Experience(models.Model):
     org_name  = models.CharField(max_length=200,verbose_name='Organization Name')
     department = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100,null=True)
     from_date = models.DateField()
     to_date = models.DateField(null=True, blank=True)
     job_status = models.CharField(max_length=10,null=True,blank=True)
