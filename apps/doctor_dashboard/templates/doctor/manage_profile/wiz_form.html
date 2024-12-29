@@ -1165,9 +1165,9 @@
             }
 
 
-            // experience handling
+            // submit final form
             btnSubmitExp.click((e) => {
-                window.location.href = "#";
+                window.location.href = "{% url 'doctor:dashboard' %}";
             });
 
             // delete information from experience
@@ -1179,7 +1179,7 @@
 
                     formDataTransport.append('id', e.currentTarget.value);
                     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                    
+
                     axios.post('{% url "doctor:delete_experience" %}', 
                     formDataTransport,
                     {
@@ -1689,7 +1689,7 @@
             "info": false
         });
 
-        // termsw and conditions ;
+        // terms and conditions ;
         $(document).ready(function() {
             // $('#staticBackdrop').modal('show');
             let termsStatus = '';
