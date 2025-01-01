@@ -8,37 +8,6 @@
 
 
 {% block content %}
-
-    <!-- Start toaster -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <!-- <img src="..." class="rounded me-2" alt="..."> -->
-                <strong class="me-auto text-danger">Warning!</strong>
-                <!-- <small>11 mins ago</small> -->
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <div id="toastContent">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- toast success -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="toastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto text-success">Alert!</strong>
-                <!-- <small>11 mins ago</small> -->
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <div id="toastContentSuccess">
-                </div>
-            </div>
-        </div>
-    </div>
-     <!-- end  toaster -->
     
     <div class="row justify-content-center" id="">
         <!-- tab area  -->
@@ -54,12 +23,7 @@
         <!-- start general information step  -->
         <div class="col-12 col-lg-10 col-xxl-8 col-xl-10 form-container" id="personal_info_container">
             <form id="form_personal_info" method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
-                {% comment %} {{form}}
-                {{form_address}}
-                {{form_expert_info}} {% endcomment %}
                 {% csrf_token %}
-                
-                
                 <div class="col-12">
                     <label for="doc_title" class="form-label">Title</label>
 
@@ -373,8 +337,8 @@
 
         <!-- educational information step   -->
         <div class="col-12 col-lg-8 col-xl-8 col-xxl-8 form-container" id="education_info_container">
+            <!-- Data table begin -->
             <div class="table-responsive">
-                education
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -405,10 +369,13 @@
                     </tbody>
                 </table>
             </div>
+            <!-- Data table End -->
             <!-- Educational Information-->
             <form id="form_education" class="needs-validation my-5" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 <div class="input-edu-container row gy-3 ">
+                    <input type="hidden" name="user" value="{{request.user.id}}">
+                    
                     <div class="col-12 group-input">
                         <label for="institute" class="form-label">Institute</label>
                         <input type="text" class="form-control form-field" name="institute" id="institute"
@@ -422,9 +389,6 @@
                         </div>
                         {% endif %}
                     </div>
-                   
-                    
-
                     <div class="col-12 group-input">
                         <label for="specialization" class="form-label">Specialization</label>
                         <select id="specialization" name="specialization" required class="form-select form-field"
@@ -486,18 +450,16 @@
                         <label for="edu_doc_title" class="form-label">Certificate Title</label>
                         <input type="text" class="form-control form-field" name="certificate_title"
                             id="edu_doc_title" placeholder="" required>
+                            {% if  formEducation.certificate_title.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in formEducation.certificate_title.errors   %}
+                                        {{error}}
+                                    {% endfor %}
+                                </div>
+                            {% endif %} 
                     </div>
-                    {% if  formEducation.certificate_title.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in formEducation.certificate_title.errors   %}
-                                {{error}}
-                            {% endfor %}
-                        </div>
-                    {% endif %} 
                     
                 </div>
-                <input type="hidden" name="user" value="{{request.user.id}}">
-
                 <div class="col-6 my-3 d-grid mx-auto">
                     <button type="submit" id="btnAddMoreEdu" name="btnSaveForm" value="saveEdu"
                         class="btn btn-outline-success"><span><i class="fa-solid fa-plus"></i> Save & add
@@ -771,7 +733,39 @@
         <!-- End Experience information step   -->
 
 
+        <!-- hidden elements -->
+       
 
+        <!-- Start toaster -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                    <strong class="me-auto text-danger">Warning!</strong>
+                    <!-- <small>11 mins ago</small> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <div id="toastContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- toast success -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="toastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto text-success">Alert!</strong>
+                    <!-- <small>11 mins ago</small> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <div id="toastContentSuccess">
+                    </div>
+                </div>
+            </div>
+        </div>
+     <!-- end  toaster -->
 {% endblock content %}
 
 <!-- Starts external scripts-->
@@ -1212,7 +1206,27 @@
                 toastBootstrap.show()
             }
 
+            // reset form error
+            function removeError(formname){
+                $(formname).find('input,textarea,select').each(function(key, element) {
+                    $(element).removeClass('is-invalid');
+                    $(element).next('.invalid-feedback').remove();
+                });
 
+            }
+
+
+            // error feedback 
+            function errorFeedback(formname,errors){
+                $("#form_education").find('input,textarea,select').each(function(key,element){
+                    if (errors.hasOwnProperty(element.name)){
+                        $(element).removeClass('is-invalid');
+                        $(element).next('.invalid-feedback').remove();
+                        $(element).addClass('is-invalid');
+                        $(element).after('<div class="invalid-feedback">' + errors[element.name][0] + '</div>');
+                    }
+                })
+            }
             //============================= form validation
             (() => {
                 'use strict'
@@ -1226,8 +1240,8 @@
                             event.stopPropagation()
                         } else { // ============ validated
                             event.preventDefault();
-                            // ==========================personal information
                             let formDataTransport = new FormData();
+                            // ==========================personal information
                             if (event.currentTarget.id === 'form_personal_info') {
                                 const rawPersonalInfo = new FormOperation(event.target.elements, personalInfoContainer);
                                 formData["personalInfo"] = rawPersonalInfo.formDataPack;
@@ -1288,7 +1302,7 @@
                                     })
                                 }).catch(function(error) {
                                     console.log(error);
-                                    if (error.response.status > 400) {
+                                    if (error.response.status >= 400) {
                                         let errors = error.response.data.errors;
                                         // Clear previous error messages
                                         toastContent.empty();
@@ -1344,6 +1358,10 @@
                                         
                                         // form reset
                                         frmEducation[0].reset();
+                                        // reset errors 
+                                        removeError('#form_education')
+
+
                                         $('#dataTable tbody tr').remove();
 
                                         // const educations = JSON.parse(response.data.educations);
@@ -1375,29 +1393,20 @@
                                         deleteEducation();
 
                                     }).catch(function(error) {
-                                    console.log(error);
-                                    if (error.response.status === 422) {
+                                    // console.log(error);
+                                    if (error.response.status == 400) {
+                                        let errors = error.response.data.errors;
+                                        // error rising
+                                        errorFeedback('#form_education',errors)
+                                        
+                                    }else if (error.response.status > 400){
                                         let errors = error.response.data.errors;
                                         // Clear previous error messages
                                         toastContent.empty();
 
-                                        console.log(Object.entries(errors));
-                                        let ul = $("<ul>");
-                                        Object.entries(errors).forEach((value) => {
-                                            let fieldName = value[0],
-                                                errorMessage = value[1][0],
-                                                li = $("<li>").text(
-                                                    errorMessage);
-                                            console.log(fieldName,
-                                                errorMessage);
-                                            ul.append(li);
-                                        })
-
-                                        toastContent.append(ul);
-                                        const toastBootstrap = bootstrap.Toast
-                                            .getOrCreateInstance(toastLiveExample)
+                                        toastContent.append(errors);
+                                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
                                         toastBootstrap.show()
-
                                     }
                                 });
                             
