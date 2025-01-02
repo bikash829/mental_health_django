@@ -104,11 +104,6 @@ class User(AbstractUser):
 
     # account completion progress 
     REQUIRED_FIELDS_BY_GROUP = {
-        # "patient": [
-        #     "username","first_name","last_name","email","marital_status","nationality","gender",
-        #     "date_of_birth","religion","profile_photo",
-        #     "blood_group","phone"
-        # ],
         "patient": [
             "username","first_name","last_name","email","nationality","gender","marital_status",
             "date_of_birth","religion","profile_photo",
@@ -124,9 +119,6 @@ class User(AbstractUser):
         ],
     }
 
-    # RELATED_MODELS_FOR_COMPLETION = [
-    #     "address", "education_set", "experience_set", "training_set"
-    # ]
     
     def get_user_type(self):
         """Returns the user's group as a type identifier."""
@@ -140,57 +132,6 @@ class User(AbstractUser):
     def profile_completion(self):
         calculator = UserProfileCompletion(self)
         return calculator.calculate_profile_completion()
-        # user_type = self.get_user_type()
-        # if not user_type:
-        #     return 0  # No group assigned or unrecognized group
-
-        # required_fields = self.REQUIRED_FIELDS_BY_GROUP.get(user_type, [])
-        # completed_fields = sum(1 for field in required_fields if getattr(self, field))
-        # total_fields = len(required_fields)
-
-        # # check if patient
-        # if user_type is 'patient':
-        #     address_fields = ['address', 'zip_code', 'city', 'state', 'country']
-        #     total_fields+=len(address_fields)
-        #     # Check Address fields
-        #     if hasattr(self, 'address'):
-        #         address = self.address
-        #         completed_fields += sum(1 for field in address_fields if getattr(address, field))
-        # elif user_type is 'doctor':
-        #     # Expert fields
-        #     if hasattr(self, 'expert'):
-        #         expert = self.expert
-        #         expert_fields = ['field1', 'field2', 'field3']  # Replace with actual fields of Expert model
-        #         total_fields += len(expert_fields)
-        #         completed_fields += sum(1 for field in expert_fields if getattr(expert, field))
-
-        #     # Education fields
-        #     if hasattr(self, 'education_set'):
-        #         education_fields = ['institute', 'specialization', 'duration']  # Replace with actual fields of Education model
-        #         for education in self.education_set.all():
-        #             total_fields += len(education_fields)
-        #             completed_fields += sum(1 for field in education_fields if getattr(education, field))
-
-        #     # Training fields
-        #     if hasattr(self, 'training_set'):
-        #         training_fields = ['program', 'organization', 'date']  # Replace with actual fields of Training model
-        #         for training in self.training_set.all():
-        #             total_fields += len(training_fields)
-        #             completed_fields += sum(1 for field in training_fields if getattr(training, field))
-
-        #     # Experience fields
-        #     if hasattr(self, 'experience_set'):
-        #         experience_fields = ['position', 'company', 'duration']  # Replace with actual fields of Experience model
-        #         for experience in self.experience_set.all():
-        #             total_fields += len(experience_fields)
-        #             completed_fields += sum(1 for field in experience_fields if getattr(experience, field))
-
-        #     # Calculate percentage
-        #     if total_fields == 0:
-        #         return 0  # Avoid division by zero
-
-        # # Calculate percentage
-        # return int((completed_fields / total_fields) * 100) if total_fields else 100
 
 
 # Address info description 
@@ -259,14 +200,6 @@ class Training(models.Model):
     def __str__(self):
         return self.institute
 
-
-# class Expert(models.Model):
-#             doc_title = models.
-#             $table->integer('doc_title',)->nullable()->comment('1=Professor Dr. ,2=Assistant Professor Dr., 3=Associate Professor Dr., 4 = Distinguished Professor Dr., 5 = Dr. ');
-#             $table->string('license_no', 50)->nullable();
-#             $table->string('license_attachment')->nullable();
-#             $table->string('license_attachment_location')->nullable();
-#             $table->foreignId('user_id')->constrained();
 class UserProfileCompletion:
     def __init__(self, user):
         self.user = user
@@ -276,8 +209,6 @@ class UserProfileCompletion:
 
         # Determine user type
         user_type = self.user.get_user_type()
-        print("===========================================usertype")
-        print(user_type)
         if not user_type:
             return 0  # No group assigned or unrecognized group
 
@@ -285,9 +216,6 @@ class UserProfileCompletion:
         required_fields = self.user.REQUIRED_FIELDS_BY_GROUP.get(user_type, [])
         total_models += len(required_fields)
         completed_models += sum(1 for field in required_fields if getattr(self.user, field, None))
-        print(total_models)
-        print("=-====================com models")
-        print(completed_models)
 
         # Role-specific checks
         if user_type == "patient":
@@ -313,54 +241,29 @@ class UserProfileCompletion:
 
     def _check_doctor_related_models(self, total_models, completed_models):
         """Check doctor-specific related models."""
-
-        # Expert fields
-        # if hasattr(self.user, 'expert'):
-        #     total_models+=1
-        #     if self.user.expert:
-        #         # expert_fields = ['doc_title', 'license_no', 'license_attachment']  # Replace with actual fields
-        #         # total_models += len(expert_fields)
-        #         # completed_models += sum(1 for field in expert_fields if getattr(self.user.expert, field, None))
-        #         completed_models +=1
-        #         print("doc title")
-        #         print(self.user.expert.doc_title)
-        #         print(self.user.expert.license_no)
         expert_fields = ['doc_title','license_no','license_attachment']
         total_models += len(expert_fields)
         completed_models += sum(1 for field in expert_fields if getattr(self.user.expert, field, None))
 
-        print("====================================total models")
-        print(total_models)
-        print("====================================total completed")
-        print(completed_models)
+        
         # Education fields
-        education_fields = ['institute', 'specialization', 'duration']
+        education_fields = ['institute', 'specialization', 'duration','passing_year','certificate','certificate_title']
         total_models +=len(education_fields)
         first_education = self.user.education_set.first()
         completed_models += sum(1 for field in education_fields if getattr(first_education, field, None))
 
-        print("====================================total models")
-        print(total_models)
-        print("====================================total completed")
-        print(completed_models)
-        if hasattr(self.user, 'education_set'):
-            education_fields = ['institute', 'specialization', 'duration']  # Replace with actual fields
-            for education in self.user.education_set.all():
-                total_models += len(education_fields)
-                completed_models += sum(1 for field in education_fields if getattr(education, field, None))
 
         # Training fields
-        if hasattr(self.user, 'training_set'):
-            training_fields = ['institute', 'specialization', 'from_date']  # Replace with actual fields
-            for training in self.user.training_set.all():
-                total_models += len(training_fields)
-                completed_models += sum(1 for field in training_fields if getattr(training, field, None))
+        training_fields = ['institute', 'specialization', 'from_date','to_date','training_title','training_certificate']
+        total_models +=len(training_fields)
+        first_training = self.user.training_set.first()
+        completed_models += sum(1 for field in training_fields if getattr(first_training, field, None))
+        
 
         # Experience fields
-        if hasattr(self.user, 'experience_set'):
-            experience_fields = ['org_name', 'department', 'designation']  # Replace with actual fields
-            for experience in self.user.experience_set.all():
-                total_models += len(experience_fields)
-                completed_models += sum(1 for field in experience_fields if getattr(experience, field, None))
-
+        experience_fields = ['org_name', 'department', 'designation','from_date']
+        total_models +=len(experience_fields)
+        first_experience = self.user.experience_set.first()
+        completed_models += sum(1 for field in experience_fields if getattr(first_experience, field, None))
+        
         return total_models, completed_models
