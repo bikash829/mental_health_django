@@ -211,14 +211,14 @@
                 
                 <div class="col-12 col-lg-6">
                     <label for="phone" class="form-label">Contact No.</label>
-                    <div class="input-group">
+                    <div class="input-group" id="phone">
                         {{form.phone}}
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
                     <label for="additional_phone" class="form-label">Additional Number</label>
-                    <div class="input-group">
+                    <div class="input-group" id="additional_phone">
                         {{form.additional_phone}}
                     </div>
                 </div>
@@ -954,14 +954,6 @@
             const tableExperience = $("#dataTableExperience");
 
 
-            // console.log(tableEducation);
-            // let test = tableEducation[0].rows;
-            // console.log(test[1]);
-            // console.log(test[1].cells.length);
-
-
-
-
 
             //==========================job validation function=================
             function jobStatusValidation(arg) {
@@ -1075,6 +1067,37 @@
             }
             // =============== end data table checker ======================
 
+            // =============== reset form error =============================
+            function removeError(formname){
+                $(formname).find('input,textarea,select').each(function(key, element) {
+                    $(element).removeClass('is-invalid');
+                    $(element).next('.invalid-feedback').remove();
+                });
+
+            }
+            // ===================== error feedback ===========================
+            function errorFeedback(formname,errors){
+                $(formname).find('input,textarea,select').each(function(key,element){
+                    
+                    if (element.name == 'phone_1' && errors.hasOwnProperty('phone')){
+                        $(element).removeClass('is-invalid')
+                        $(element).next('.invalid-feedback').remove()
+                        $(element).addClass('is-invalid')
+                        $(element).after('<div class="invalid-feedback">' + errors['phone'][0] + '</div>')
+                    }else if(element.name == 'additional_phone_1' && errors.hasOwnProperty('additional_phone')){
+                        $(element).removeClass('is-invalid');
+                        $(element).next('.invalid-feedback').remove();
+                        $(element).addClass('is-invalid');
+                        $(element).after('<div class="invalid-feedback">' + errors['additional_phone'][0] + '</div>')
+                    }else if (errors.hasOwnProperty(element.name)){
+                        $(element).removeClass('is-invalid');
+                        $(element).next('.invalid-feedback').remove();
+                        $(element).addClass('is-invalid');
+                        $(element).after('<div class="invalid-feedback">' + errors[element.name][0] + '</div>');
+                    }
+                })
+            }
+
             // checking tab activity to highlight color on the tab 
             btnEducationSubmit.click((e) => {
                 educationInfoContainer.hide(0, e => {
@@ -1115,20 +1138,6 @@
                 })
 
             }
-
-
-            btnTrainingSubmit.click((e) => {
-                trainingInfoContainer.hide(0, e => {
-                    experienceContainer.show();
-
-                    if (!formActive.get('experienceInfo')) {
-                        formActive.set('expInfo', experienceContainer);
-                        tabActiveList.set('tabExp', tabExperience);
-                    }
-
-                })
-            })
-
             // delete information from training
             function deleteTraining() { 
                 $("#dataTableTraining button").click((e) => {
@@ -1157,43 +1166,81 @@
                 })
 
             }
-
-
-            // submit final form
-            btnSubmitExp.click((e) => {
-                window.location.href = "{% url 'doctor:dashboard' %}";
-            });
-
             // delete information from experience
             function deleteExperience() { 
-                $("#dataTableExperience button").click((e) => {
+                            $("#dataTableExperience button").click((e) => {
 
-                    let currentRow = $(e.currentTarget).parent().parent();
-                    let formDataTransport = new FormData();
+                                let currentRow = $(e.currentTarget).parent().parent();
+                                let formDataTransport = new FormData();
 
-                    formDataTransport.append('id', e.currentTarget.value);
-                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                                formDataTransport.append('id', e.currentTarget.value);
+                                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                    axios.post('{% url "doctor:delete_experience" %}', 
-                    formDataTransport,
-                    {
-                        headers: {
-                            'X-CSRFToken': csrftoken
+                                axios.post('{% url "doctor:delete_experience" %}', 
+                                formDataTransport,
+                                {
+                                    headers: {
+                                        'X-CSRFToken': csrftoken
+                                    }
+                                }
+                                )
+                                    .then(function(response) {
+                                        currentRow.remove();
+                                        toastSuccessShow(response.data.message);
+                                        experienceNextPage();
+
+                                    }).catch(function(error) {
+                                        console.log(error);
+                                    });
+                            })
+
                         }
+
+            
+            btnTrainingSubmit.click((e) => {
+                trainingInfoContainer.hide(0, e => {
+                    experienceContainer.show();
+
+                    if (!formActive.get('experienceInfo')) {
+                        formActive.set('expInfo', experienceContainer);
+                        tabActiveList.set('tabExp', tabExperience);
                     }
-                    )
-                        .then(function(response) {
-                            currentRow.remove();
-                            toastSuccessShow(response.data.message);
-                            experienceNextPage();
 
-                        }).catch(function(error) {
-                            console.log(error);
-                        });
                 })
+            })
+            
+            // tab controller 
+            function tabActivate() {
+                // jQuery methods go here...
+                tabActivated(tabActiveList);
+                tabVisibility();
 
+                if (formActive.get('personalInfo')) {
+
+                    tabPersonalInfo.click(e => {
+                        switchTab(formActive, personalInfoContainer);
+                    })
+                }
+
+
+                if (formActive.get('educationInfo')) {
+                    tabEducation.click(e => {
+                        switchTab(formActive, educationInfoContainer);
+                    })
+                }
+
+                if (formActive.get('trainingInfo')) {
+                    tabTraining.click(e => {
+                        switchTab(formActive, trainingInfoContainer);
+                    })
+                }
+
+                if (formActive.get('expInfo')) {
+                    tabExperience.click(e => {
+                        switchTab(formActive, experienceContainer);
+                    })
+                }
             }
-
 
             // toast success function
             function toastSuccessShow(message) {
@@ -1206,27 +1253,7 @@
                 toastBootstrap.show()
             }
 
-            // reset form error
-            function removeError(formname){
-                $(formname).find('input,textarea,select').each(function(key, element) {
-                    $(element).removeClass('is-invalid');
-                    $(element).next('.invalid-feedback').remove();
-                });
 
-            }
-
-
-            // error feedback 
-            function errorFeedback(formname,errors){
-                $("#form_education").find('input,textarea,select').each(function(key,element){
-                    if (errors.hasOwnProperty(element.name)){
-                        $(element).removeClass('is-invalid');
-                        $(element).next('.invalid-feedback').remove();
-                        $(element).addClass('is-invalid');
-                        $(element).after('<div class="invalid-feedback">' + errors[element.name][0] + '</div>');
-                    }
-                })
-            }
             //============================= form validation
             (() => {
                 'use strict'
@@ -1304,27 +1331,10 @@
                                     console.log(error);
                                     if (error.response.status >= 400) {
                                         let errors = error.response.data.errors;
-                                        // Clear previous error messages
-                                        toastContent.empty();
-
-                                        let ul = $("<ul>");
-                                        Object.entries(errors).forEach((value) => {
-                                            let fieldName = value[0],
-                                                errorMessage = value[1][0],
-                                                li = $("<li>").text(
-                                                    errorMessage);
-                                            console.log(fieldName,
-                                                errorMessage);
-                                            ul.append(li);
-                                        })
-
-                                        toastContent.append(ul);
-                                        const toastBootstrap = bootstrap.Toast
-                                            .getOrCreateInstance(toastLiveExample)
-                                        toastBootstrap.show()
-
+                                        removeError('#form_personal_info')
+                                        errorFeedback('#form_personal_info',errors)
                                     }
-                                  });
+                                });
                                
 
                             //======================= education information
@@ -1432,15 +1442,13 @@
                                             'Content-Type': 'multipart/form-data',
                                         }
                                     }).then(function(response) {
-                                        // console.log(response);
-                                        console.log(response.data.trainings);
-
                                         toastContentSuccess.empty();
                                         toastContainer = toastContainer.text(response.data['message']);
 
                                         toastContentSuccess.append(toastContainer);
                                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastSuccess)
                                         toastBootstrap.show()
+                                        
                                         // form reset
                                         frmTraining[0].reset();
                                         $('#dataTableTraining tbody tr').remove();
@@ -1476,31 +1484,22 @@
 
                                         deleteTraining();
                                         trainingNextPage()
+                                        removeError("#form_training")
 
                                     }).catch(function(error) {
-                                        console.log(error);
-                                        if (error.response.status === 422) {
+                                        if (error.response.status === 400) {
                                             let errors = error.response.data.errors;
+                                            removeError("#form_training")
+                                            errorFeedback("#form_training",errors)
+                                            
+                                        }else if(error.response.status > 400){
+                                            console.log(error);
                                             // Clear previous error messages
                                             toastContent.empty();
 
-                                            console.log(Object.entries(errors));
-                                            let ul = $("<ul>");
-                                            Object.entries(errors).forEach((value) => {
-                                                let fieldName = value[0],
-                                                    errorMessage = value[1][0],
-                                                    li = $("<li>").text(
-                                                        errorMessage);
-                                                console.log(fieldName,
-                                                    errorMessage);
-                                                ul.append(li);
-                                            })
-
-                                            toastContent.append(ul);
-                                            const toastBootstrap = bootstrap.Toast
-                                                .getOrCreateInstance(toastLiveExample)
+                                            toastContent.append(errors);
+                                            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
                                             toastBootstrap.show()
-
                                         }
                                     });
 
@@ -1514,14 +1513,10 @@
                                 formData["experienceInfo"].repackedData.forEach(function(value,key) {
                                     formDataTransport.append(key, value);
                                 })
-                                console.log(formDataTransport)
                                 // Data manIpulation
                                 axios.post("{% url 'doctor:update_experience' %}",
                                         formDataTransport
                                     ).then(function(response) {
-                                        // console.log(response);
-                                        console.log(response);
-
                                         toastContentSuccess.empty();
                                         toastContainer = toastContainer.text(response.data['message']);
 
@@ -1530,6 +1525,16 @@
                                         toastBootstrap.show()
                                         // // form reset
                                         frmExperience[0].reset();
+                                        console.log(jobResignedDate)
+                                        if (jobResignedDate.prop('disabled')){
+                                            // Enable the field
+                                            jobResignedDate.prop('disabled', false);
+                                            // Make the field required
+                                            jobResignedDate.prop('required', true);
+                                        }
+                                        // removeError
+                                        removeError('#form_experience')
+
                                         $('#dataTableExperience tbody tr').remove();
                                         (response.data.experiences).forEach((value,key) => {
                                             // format joining date 
@@ -1567,28 +1572,18 @@
                                         experienceNextPage();
                                     }).catch(function(error) {
                                         console.log(error);
-                                        if (error.response.status === 422) {
+                                        if (error.response.status === 400) {
                                             let errors = error.response.data.errors;
+                                            errorFeedback("#form_experience",errors)
+
+                                        }else if(error.response.status > 400){
+                                            console.log(errors);
                                             // Clear previous error messages
                                             toastContent.empty();
 
-                                            console.log(Object.entries(errors));
-                                            let ul = $("<ul>");
-                                            Object.entries(errors).forEach((value) => {
-                                                let fieldName = value[0],
-                                                    errorMessage = value[1][0],
-                                                    li = $("<li>").text(
-                                                        errorMessage);
-                                                console.log(fieldName,
-                                                    errorMessage);
-                                                ul.append(li);
-                                            })
-
-                                            toastContent.append(ul);
-                                            const toastBootstrap = bootstrap.Toast
-                                                .getOrCreateInstance(toastLiveExample)
+                                            toastContent.append(errors);
+                                            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
                                             toastBootstrap.show()
-
                                         }
                                     });
                             }
@@ -1597,7 +1592,11 @@
                     }, false)
                 })
             })();
-
+            
+            // submit final form
+            btnSubmitExp.click((e) => {
+                window.location.href = "{% url 'doctor:dashboard' %}";
+            });
 
             // ===========================back to the previous page
             // education
@@ -1617,38 +1616,7 @@
             $('form').submit(() => tabActivate())
             $(document).click(() => tabActivate())
 
-            function tabActivate() {
-                // jQuery methods go here...
-                tabActivated(tabActiveList);
-                tabVisibility();
-
-                if (formActive.get('personalInfo')) {
-
-                    tabPersonalInfo.click(e => {
-                        switchTab(formActive, personalInfoContainer);
-                    })
-                }
-
-
-                if (formActive.get('educationInfo')) {
-                    tabEducation.click(e => {
-                        switchTab(formActive, educationInfoContainer);
-                    })
-                }
-
-                if (formActive.get('trainingInfo')) {
-                    tabTraining.click(e => {
-                        switchTab(formActive, trainingInfoContainer);
-                    })
-                }
-
-                if (formActive.get('expInfo')) {
-                    tabExperience.click(e => {
-                        switchTab(formActive, experienceContainer);
-                    })
-                }
-            }
-
+            
 
             /**
              * job validation
