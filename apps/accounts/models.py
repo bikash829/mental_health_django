@@ -90,7 +90,7 @@ class User(AbstractUser):
     identity_type = models.IntegerField(choices=IdentityType,null=True)
     identity_no = models.CharField(max_length=100)
     identity_proof = models.FileField(upload_to=identity_type_directory_path)
-    profile_photo = models.ImageField(upload_to=profile_photo_directory_path,default=None)
+    profile_photo = models.ImageField(upload_to=profile_photo_directory_path,default="media/profile/avatar/blank-profile-picturepng.png")
     is_verified = models.IntegerField(choices=IS_VERIFIED,null=True)
     blood_group = models.ForeignKey(BloodGroup,on_delete=models.PROTECT,null=True)
     terms = models.BooleanField(default=0)
@@ -217,6 +217,8 @@ class UserProfileCompletion:
         total_models += len(required_fields)
         completed_models += sum(1 for field in required_fields if getattr(self.user, field, None))
 
+        
+
         # Role-specific checks
         if user_type == "patient":
             total_models, completed_models = self._check_address(total_models, completed_models)
@@ -243,14 +245,17 @@ class UserProfileCompletion:
         """Check doctor-specific related models."""
         expert_fields = ['doc_title','license_no','license_attachment']
         total_models += len(expert_fields)
-        completed_models += sum(1 for field in expert_fields if getattr(self.user.expert, field, None))
+        if hasattr(self.user, 'expert'):
+            completed_models += sum(1 for field in expert_fields if getattr(self.user.expert, field, None))
 
-        
+
         # Education fields
         education_fields = ['institute', 'specialization', 'duration','passing_year','certificate','certificate_title']
         total_models +=len(education_fields)
         first_education = self.user.education_set.first()
         completed_models += sum(1 for field in education_fields if getattr(first_education, field, None))
+        
+        
 
 
         # Training fields
@@ -265,5 +270,6 @@ class UserProfileCompletion:
         total_models +=len(experience_fields)
         first_experience = self.user.experience_set.first()
         completed_models += sum(1 for field in experience_fields if getattr(first_experience, field, None))
+        
         
         return total_models, completed_models

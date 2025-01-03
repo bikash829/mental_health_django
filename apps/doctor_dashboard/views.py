@@ -197,3 +197,15 @@ def delete_experience(request):
         except Experience.DoesNotExist:
             return JsonResponse({'error': 'Experience information not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+@login_required
+@group_required('doctor',login_url="accounts.login")
+def profile(request):
+    
+    template_name = "doctor/manage_profile/profile.html"
+    context = {
+
+    }
+    return render(request,template_name,context)

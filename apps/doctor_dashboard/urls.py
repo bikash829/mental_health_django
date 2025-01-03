@@ -15,5 +15,7 @@ urlpatterns = [
     # experience 
     path('update_experience/',views.update_experience,name='update_experience'),
     path('delete_experience/',views.delete_experience,name='delete_experience'),
+    # profile
+    path('profile/',views.profile,name='profile'),
 
 ]

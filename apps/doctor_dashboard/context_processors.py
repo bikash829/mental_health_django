@@ -67,7 +67,7 @@ def nav_assets_processor(request):
             'photo_alt': 'something user',
             'designation': 'Web Developer',
             'member_from': 'Nov. 2023',
-            'profile_link': None,
+            'profile_link': reverse('doctor:profile'),
         }
      
     }
