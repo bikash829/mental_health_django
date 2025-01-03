@@ -90,7 +90,7 @@ class User(AbstractUser):
     identity_type = models.IntegerField(choices=IdentityType,null=True)
     identity_no = models.CharField(max_length=100)
     identity_proof = models.FileField(upload_to=identity_type_directory_path)
-    profile_photo = models.ImageField(upload_to=profile_photo_directory_path,default="media/profile/avatar/blank-profile-picturepng.png")
+    profile_photo = models.ImageField(upload_to=profile_photo_directory_path,default="/media/profile/avatar/blank-profile-picturepng.png") # f"{settings.MEDIA_URL}profile/avatar/blank-profile-picture.png"
     is_verified = models.IntegerField(choices=IS_VERIFIED,null=True)
     blood_group = models.ForeignKey(BloodGroup,on_delete=models.PROTECT,null=True)
     terms = models.BooleanField(default=0)
