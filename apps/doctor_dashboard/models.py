@@ -21,7 +21,7 @@ class Expert(models.Model):
         (5, 'Dr.'),
     ]
 
-    doc_title = models.IntegerField(choices=DOC_TITLE_CHOICES,null=True,blank=True,default=0 )
+    doc_title = models.IntegerField(choices=DOC_TITLE_CHOICES,null=True,blank=True,default=None )
     license_no = models.CharField(max_length=50, )
     license_attachment = models.FileField(upload_to=license_directory_path)
     

@@ -70,10 +70,10 @@
             
             <!--begin::Fullscreen Toggle-->
             <li class="nav-item"> <a class="nav-link" href="#" data-lte-toggle="fullscreen"> <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i> <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none;"></i> </a> </li> <!--end::Fullscreen Toggle--> <!--begin::User Menu Dropdown-->
-            <li class="nav-item dropdown user-menu"> <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <img src="{% static top_nav.self_info.photo %} " class="user-image rounded-circle shadow" alt="{{top_nav.self_info.photo_alt}}"> <span class="d-none d-md-inline">{{top_nav.self_info.name}}</span> </a>
+            <li class="nav-item dropdown user-menu"> <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <img src="{{top_nav.self_info.photo }} " class="user-image rounded-circle shadow" alt="{{top_nav.self_info.photo_alt}}"> <span class="d-none d-md-inline">{{top_nav.self_info.name}}</span> </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end"> 
                     <!--begin::User Image-->
-                    <li class="user-header text-bg-primary"> <img src="{% static 'dashboard/assets/img/user2-160x160.jpg' %} " class="rounded-circle shadow" alt="User Image">
+                    <li class="user-header text-bg-primary"> <img src="{{top_nav.self_info.photo}} " class="rounded-circle shadow" alt="User Image">
                         <p>
                             {{user.expert.get_doc_title_display}} {{user.full_name}} 
                             <small>Member since {{user.date_joined}}</small>

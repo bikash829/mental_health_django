@@ -43,7 +43,7 @@ class CustomLoginView(auth_views.LoginView):
             return redirect(self.get_success_url())
    
 
-
+from django.http import HttpResponseRedirect
 @login_required
 def change_profile_photo(request):
     if request.method == "POST":
@@ -53,7 +53,8 @@ def change_profile_photo(request):
         else:
             error_messages = "\n".join([error for errors in form.errors.values() for error in errors])
             messages.error(request,error_messages)
-        return redirect('patient:profile')
+        # return redirect('patient:profile')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def user_registration(request):
@@ -75,7 +76,7 @@ def user_registration(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            user.is_verified = 2
+            # user.is_verified = 2
             role = form.cleaned_data.get('role')
             try: 
                 group = Group.objects.get(name=role)
@@ -130,7 +131,7 @@ def activate(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
-        user.is_verified = True
+        # user.is_verified = True
         user.save()
         messages.success(request,"Your account has been verified")
         return redirect('accounts:login')

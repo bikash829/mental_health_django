@@ -3,7 +3,7 @@
 
 
 {% block content %}
-
+{% include "modals/profile_photo.html" %}
 <section class="profile segment-margin">
     <div class="col-12 pb-4">
         <x-admin.progress.account_progress :progress="$progress" />
@@ -12,12 +12,12 @@
     <div class="row justify-content-center">
         <div class="col-md-3 col-lg-3 align-self-center">
             
-            <img src="{{user.profile_photo.name}}" class="img-fluid rounded" alt="...">
+            <img src="{{user.profile_photo.url}}" class="img-fluid rounded" alt="...">
             <p class="text-center"><a href="#" data-bs-toggle="modal" data-bs-target="#user_profile_image">Upload
                     Photo</a></p>
 
         </div>
-        <h3 class="text-center mb-3"> {{ user.expert.get_doc_title_display }} {{user.full_name}}</h3>
+        <h3 class="text-center mb-3"> {{ user.expert.get_doc_title_display|default_if_none:'' }} {{user.full_name}}</h3>
 
 
         <div class="accordion" id="accordionPanelsStayOpenExample">
