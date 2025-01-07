@@ -209,3 +209,16 @@ def profile(request):
 
     }
     return render(request,template_name,context)
+
+@login_required
+@group_required('doctor',login_url="accounts.login")
+def request_verification(request):
+    if request.method == 'GET':
+        user = request.user
+        user.is_verified  = 3
+        user.save()
+        return JsonResponse({'status': 200})
+    else:
+        return render({ 'message': 'Invalid request method',},status=400)
+
+

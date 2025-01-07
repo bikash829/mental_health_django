@@ -18,6 +18,7 @@ def mark_active_sidebar_items(items, current_path):
     return items, any_active
 
 def get_sidebar_items(request):
+    # Admin sidebar
     sidebar_items = [
         {
             'name': 'Dashboard',
@@ -112,15 +113,14 @@ def get_sidebar_items(request):
             'icon': 'fa-solid fa-envelope',
         },
     ]
-
-
     # Doctor sidebar
     doctor_sidebar_items = [
         {
             'name': 'Dashboard',
             'url': reverse('doctor:dashboard'),
             'icon': 'bi bi-speedometer',
-        },{
+        },
+        {
             'divider_header': 'Appointments',
             'url': None,
         },
@@ -135,11 +135,6 @@ def get_sidebar_items(request):
             'icon': 'fa-solid fa-hourglass-end',
         },
         {
-            'name': 'Noboard',
-            'url': reverse('dashboard:noboard'),
-            'icon': 'bi bi-speedometer',
-        },
-        {
             'divider_header': 'Doctor Schedules',
             'url': None,
         },
@@ -149,8 +144,33 @@ def get_sidebar_items(request):
             'icon': 'fa-solid fa-calendar-check',
         },
         {
-            'divider_header': 'Users',
+            'divider_header': 'Manage Accounts',
             'url': None,
+        },
+        {
+            'name': 'My Profile',
+            'url': None,
+            'icon': 'fa-solid fa-user',
+        },
+        {
+            'name': 'Edit Profile',
+            'url': None,
+            'icon': 'fa-solid fa-user-edit',
+        },
+        {
+            'name': 'Edit Bio',
+            'url': None,
+            'icon': 'fa-solid fa-info-circle',
+        },
+        {
+            'name': 'Change Password',
+            'url': None,
+            'icon': 'fa-solid fa-key',
+        },
+        {
+            'name': 'Change Email',
+            'url': None,
+            'icon': 'fa-solid fa-envelope',
         },
         {
             'divider_header': 'Community',
@@ -159,7 +179,7 @@ def get_sidebar_items(request):
         {
             'name': 'Community Forum',
             'url': None,
-            'icon': 'fa-solid fa-users'
+            'icon': 'fa-solid fa-users',
         },
     ]
     # counselor sidebar
@@ -197,7 +217,7 @@ def get_sidebar_items(request):
             'icon': 'fa-solid fa-calendar-check',
         },
         {
-            'divider_header': 'Users',
+            'divider_header': 'Manage Accounts',
             'url': None,
         },
         {
@@ -217,7 +237,7 @@ def get_sidebar_items(request):
         sidebar_items, _ = mark_active_sidebar_items(doctor_sidebar_items, request.path)
     elif request.user.groups.filter(name='counselor').exists():
         sidebar_items, _ = mark_active_sidebar_items(counselor_sidebar_items, request.path)
-    elif request.user.groups.filter(name='admin').exists():
+    elif request.user.is_superuser:
         sidebar_items, _ = mark_active_sidebar_items(sidebar_items, request.path)
     # else:
     #     sidebar_items, _ = []

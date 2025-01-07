@@ -269,3 +269,69 @@
         </div> <!--end::Container-->
     </div> <!--end::App Content-->
 {% endblock content %}
+
+{% block push_scripts %}
+<script>
+    $(document).ready(function() {
+        $('#btnRequestForVerification').click(function() {
+            Swal.fire({
+                title: "Do you want sent request to review your account as a doctor?",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{% url "doctor:request_verification" %}',
+                        type: 'GET',
+                        success: function(response) {
+                            console.log(response)
+                            if (response.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Request Sent',
+                                    text: 'Your verification request has been sent to the admin.',
+                                }).then(() => {
+                                    location.reload(); // Reload the page after clicking "OK"
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'There was an error sending your request. Please try again later.',
+                                });
+                            }
+                        }
+                    });
+                }
+              });
+            {% comment %} /*
+            $.ajax({
+                url: '{% url "doctor:request_verification" %}',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Request Sent',
+                            text: 'Your verification request has been sent to the admin.',
+                        });
+                        $('#verificationStatus').text('Your request has been sent to the admin. Please wait for the approval.');
+                        $('#btnRequestForVerification').hide();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'There was an error sending your request. Please try again later.',
+                        });
+                    }
+                }
+            });
+            */ {% endcomment %}
+        });
+    });
+</script>
+{% endblock push_scripts %}

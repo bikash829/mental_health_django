@@ -72,7 +72,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.dashboard.context_processors.sidebar_items', # aside items 
-                'apps.doctor_dashboard.context_processors.nav_assets_processor',  # dashboard nav
+                # 'apps.doctor_dashboard.context_processors.nav_assets_processor',  # dashboard nav
             ],
         },
     },

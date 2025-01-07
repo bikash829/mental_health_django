@@ -23,12 +23,15 @@ class CustomLoginView(auth_views.LoginView):
             user = self.request.user
             if user.groups.filter(name='doctor').exists():
                 return redirect('doctor:dashboard')
+            elif user.is_superuser:
+                return redirect('admin_dashboard:welcome')
             elif user.groups.filter(name='patient').exists():
                 return redirect('patient:profile')
             else:
                 return redirect(self.get_success_url())
         return super().dispatch(request, *args, **kwargs)
 
+    """First login attempt"""
     def form_valid(self, form):
         """Security check complete. Log the user in."""
         login(self.request, form.get_user())
@@ -37,6 +40,8 @@ class CustomLoginView(auth_views.LoginView):
         user = self.request.user
         if user.groups.filter(name='doctor').exists():
             return redirect('doctor:dashboard')
+        elif user.is_superuser:
+            return redirect('admin_dashboard:welcome')
         elif user.groups.filter(name='patient').exists():
             return redirect('patient:profile')
         else:

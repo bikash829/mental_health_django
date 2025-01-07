@@ -17,5 +17,6 @@ urlpatterns = [
     path('delete_experience/',views.delete_experience,name='delete_experience'),
     # profile
     path('profile/',views.profile,name='profile'),
+    path('request-for-approval/',views.request_verification,name='request_verification'),
 
 ]

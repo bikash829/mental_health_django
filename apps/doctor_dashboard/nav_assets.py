@@ -1,6 +1,8 @@
 from django.urls import reverse
 
-def nav_assets_processor(request):
+def nav_assets(request):
+    # if request.user.groups.filter(name='doctor') != 'doctor':
+    #     return {}
     nav_assets={
         'start_menu_items':[
             {
@@ -64,7 +66,7 @@ def nav_assets_processor(request):
         'self_info':{
             'name': request.user.full_name,
             # 'photo': 'dashboard/assets/img/user2-160x160.jpg',
-            'photo': request.user.profile_photo.url,
+            'photo':request.user.profile_photo.url,
             'photo_alt': 'something user',
             'designation': 'Web Developer',
             'member_from': 'Nov. 2023',
@@ -73,5 +75,5 @@ def nav_assets_processor(request):
      
     }
 
-    return {'top_nav': nav_assets}
+    return  nav_assets
 
