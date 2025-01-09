@@ -24,7 +24,7 @@ class CustomLoginView(auth_views.LoginView):
             if user.groups.filter(name='doctor').exists():
                 return redirect('doctor:dashboard')
             elif user.is_superuser:
-                return redirect('admin_dashboard:welcome')
+                return redirect('admin_dashboard:dashboard')
             elif user.groups.filter(name='patient').exists():
                 return redirect('patient:profile')
             else:
@@ -41,7 +41,7 @@ class CustomLoginView(auth_views.LoginView):
         if user.groups.filter(name='doctor').exists():
             return redirect('doctor:dashboard')
         elif user.is_superuser:
-            return redirect('admin_dashboard:welcome')
+            return redirect('admin_dashboard:dashboard')
         elif user.groups.filter(name='patient').exists():
             return redirect('patient:profile')
         else:

@@ -22,7 +22,7 @@ def get_sidebar_items(request):
     sidebar_items = [
         {
             'name': 'Dashboard',
-            'url': reverse('dashboard:dashboard'),
+            'url': reverse('admin_dashboard:dashboard'),
             'icon': 'bi bi-speedometer',
         },
         {
