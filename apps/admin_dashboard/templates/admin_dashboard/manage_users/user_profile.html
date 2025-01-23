@@ -1,0 +1,258 @@
+{% extends "dashboard/layouts/base.html" %}
+{% block title %} {{user_details.groups.all|join:','}} profile {% endblock title %}
+
+
+{% block content %}
+<div>
+    <div class="row justify-content-center">
+        {% if user_details.is_active %}
+            <div class="alert alert-success" role="alert">
+                <span>Account Status : <span class="strong">Active <i class="fa-solid fa-circle-check"></i></span></span>
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                <span>Account Status : <span class="strong">Inactive <i class="fa-solid fa-user-slash"></i></span></span>
+            </div>
+        {% endif %}
+        {%if user_details.is_blocked %}
+            <div class="alert alert-danger" role="alert">
+                <span>Account Status : <span class="strong">Blocked <i class="fa-solid fa-user-lock"></i></span></span>
+            </div>
+            
+        {% endif %}
+
+
+        <div class="col-md-3 col-lg-3 align-self-center">
+            <img src="{{user_details.profile_photo.url}}" class="img-fluid rounded" alt="user avatar">
+            {% comment %} {{-- <p class="text-center"><a href="#" data-bs-toggle="modal" data-bs-target="#user_profile_image">Upload Photo</a></p> --}} {% endcomment %}
+        </div>
+        <h3 class="text-muted text-center pt-2">{{ user_details.full_name }}</h3>
+
+
+        <!-- Basic Inof -->
+        {% include 'admin_dashboard/components/user_profile/basic_info.html' %} 
+
+        {% if user_details.groups.first.name != 'patient' %}
+            {% include 'admin_dashboard/components/user_profile/skill_experiences.html' %} 
+        {% else %}
+            <div class="accordion" id="accordionPanelsStayOpenExampleOne">
+                <h2 class="pt-5 ms-3">Appointments And Reports Info</h2>
+                <!-- Education -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#education" aria-expanded="false" aria-controls="education">
+                            Reports
+                        </button>
+                    </h2>
+                    <div id="education" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-2">
+
+                                previous reporst goes here
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#training" aria-expanded="false" aria-controls="training">
+                            Current Appointments
+                        </button>
+                    </h2>
+                    <div id="training" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-2">
+
+                                Appointments goes here
+
+                            </div>
+                            <!-- <div class="d-grid pt-2 g-3 col-6 mx-auto">
+                    <button class="btn btn-primary" type="button">Edit</button>
+                   </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiences -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#experience" aria-expanded="false" aria-controls="experience">
+                            Past Appointments
+                        </button>
+                    </h2>
+                    <div id="experience" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-2">
+
+                                past appointments goes here
+
+                            </div>
+                            <!-- <div class="d-grid pt-2 g-3 col-6 mx-auto">
+                    <button class="btn btn-primary" type="button">Edit</button>
+                   </div> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+
+        {% comment %} {{-- counselor link  --}}
+        @if ($user->getRoleNames()[0] == 'Counselor')
+            <div class="accordion" id="accordionPanelsStayOpenExampleFour">
+                <h2 class="pt-5 ">Contact Link</h2>
+                {{-- schedule  --}}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#contact_link" aria-expanded="false" aria-controls="contact_link">
+                            Contact Link
+                        </button>
+                    </h2>
+                    <div id="contact_link" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-2">
+
+                                <a href="{{ $user->contact_link }}">Request to join call</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        @endif {% endcomment %}
+
+        {% if user_details.groups.first.name == 'doctor' %}
+            <div class="accordion" id="accordionPanelsStayOpenExampleTwo">
+                <h2 class="pt-5">Appointments Schedule</h2>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#schedule" aria-expanded="false" aria-controls="schedule">
+                            Schedule Info
+                        </button>
+                    </h2>
+                    <div id="schedule" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-2 g-lg-3">
+                                {% comment %} {% for data in doctorSchedule %}
+                                    <div class="col">
+                                        <a class="text-dark text-decoration-none" href="{% url 'patient.appointment.set' data.id %}">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="">{{ data.department.doctor_department }}</h6>
+                                                    <span>Appointment Date</span>
+                                                    <h3 class="">{{ data.set_date }}</h3>
+                                                    <p class="">
+                                                        {% if data.patient_qty > 0 %}
+                                                            Limit: {{ data.patient_qty }}
+                                                        {% else %}
+                                                            <span class="text-danger">Appointment Limit: full</span>
+                                                        {% endif %}
+                                                    </p>
+                                                    <h5>Fee: {{ data.patient_fee }}</h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %} {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if user_details.groups.first.name != 'patient' %}
+            <div class="accordion" id="accordionPanelsStayOpenExampleThree">
+                <h2 class="pt-5">User Feedback</h2>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#user_feedback" aria-expanded="false" aria-controls="user_feedback">
+                            User Feedback
+                        </button>
+                    </h2>
+                    <div id="user_feedback" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-2">
+                                {% if user_details.is_authenticated and user_details.groups.first.name == 'patient' %}
+                                    <div class="m3-">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#feedbackModal">
+                                            Leave Feedback
+                                        </button>
+                                    </div>
+                                {% endif %}
+                                <h3>User feedback</h3>
+                                {% for feedback in user_details.received_feedbacks.all %}
+                                    <div class="card mt-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ feedback.user_details.first_name }} {{ feedback.user_details.last_name }}</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">Rating: {{ feedback.rating_point }}</h6>
+                                            <p class="card-text">{{ feedback.feedback }}</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Leave Feedback
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Feedback form goes here -->
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user_details.id }}">
+                    <input type="hidden" name="expert_id" value="{{ user_details.id }}">
+                    <div class="form-group">
+                        <label for="rating_point">Rating (0-5)</label>
+                        <input type="number" id="rating_point" name="rating_point" min="0" max="5"
+                            class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback">Feedback</label>
+                        <textarea placeholder="How was the expert" id="feedback" name="feedback" class="form-control" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block push_scripts %}
+{% endblock push_scripts %}

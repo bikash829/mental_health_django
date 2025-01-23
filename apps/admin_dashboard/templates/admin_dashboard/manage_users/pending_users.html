@@ -1,0 +1,117 @@
+{% extends "dashboard/layouts/base.html" %}
+{% block title %} Pending Users {% endblock title %}
+
+
+{% block content %}
+    <!--begin::App Content Header-->
+    <div class="app-content-header"> 
+        <!--begin::Container-->
+        <div class="container-fluid"> 
+            
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="mb-0">Pending User List</h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard:dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Pending User List
+                        </li>
+                    </ol>
+                </div>
+            </div> <!--end::Row-->
+        </div> <!--end::Container-->
+    </div> <!--end::App Content Header--> 
+    <!--begin::App Content-->
+    <div class="app-content"> <!--begin::Container-->
+        <div class="container-fluid"> <!--begin::Row-->
+            <div class="row"> <!--begin::Col-->
+                <table id="tableData" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID#</th>
+                            <th>Name</th>
+                            <th>username</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in user_list %}
+                            <tr>
+                                <td>{{item.id}}</td>
+                                <td>{{item.full_name}}</td>
+                                <td>{{item.username}}</td>
+                                <td>{{item.email}}</td>
+                                <td>{{''}}</td>
+                                <td>{{item.groups.all|join:", "}}</td>
+                                <td>{{item.phone}}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                {% comment %} <form action="{% url 'admin_dashboard:view_profile_details' %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="id" value="{{item.id}}">
+                                                    <button type="submit" class="dropdown-item"> <span class="text-info">View <i class="fa-solid fa-eye"></i></span></button>
+                                                </form> {% endcomment %}
+                                                <a class="dropdown-item" href="{% url 'admin_dashboard:show_profile_details' pk=item.id %}"> <span class="text-info">View <i class="fa-solid fa-eye"></i></span></a>
+                                            </li>
+                                            <li>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="id" value="{{item.id}}">
+                                                    <button type="submit" class="dropdown-item"> <span class="text-success">Accept <i class="fa-solid fa-user-check"></i></span></button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="id" value="{{item.id}}">
+                                                    <button type="submit" class="dropdown-item"><span class="text-danger">Reject <i class="fa-solid fa-user-slash"></i></span></button>
+                                                </form>
+                                            </li>
+                                            
+                                        </ul>
+                                      </div>
+                                      
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID#</th>
+                            <th>Name</th>
+                            <th>username</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> <!--end::Row-->
+        </div> <!--end::Container-->
+    </div> <!--end::App Content-->
+{% endblock content %}
+
+{% block push_scripts %}
+<script>
+    $(document).ready(function() {
+        $('#tableData').DataTable( {
+            responsive: true
+        } );
+    });
+</script>
+{% endblock push_scripts %}

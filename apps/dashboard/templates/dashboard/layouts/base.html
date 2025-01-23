@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
 
+    <!-- Data table -->
+    <link rel="stylesheet" href="{% static 'vendor/datatable/dataTables.dataTables.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/datatable/responsive.dataTables.min.css' %}" />
+
     <link rel="stylesheet" href="{% static 'vendor/fontawesome-free-6.6.0-web/css/all.min.css' %}">
     <!-- sweet alert2 -->
     <link rel="stylesheet" href="{% static 'vendor/sweetalert2/sweetalert2.min.css' %}">
@@ -163,6 +167,11 @@
     </script> <!-- jsvectormap -->
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script> <!-- jsvectormap -->
+    
+    <!-- datatable -->
+    <script src="{% static 'vendor/datatable/dataTables.js' %}"></script>
+    <script src="{% static 'vendor/datatable/dataTables.responsive.min.js' %}"></script>
+
     <!-- sweetalert2 -->
     <script src="{% static 'vendor/sweetalert2/sweetalert2.all.min.js' %}"></script>
     
@@ -276,8 +285,6 @@
         sparkline3.render();
     </script> 
     <!--end::Script-->
-
-
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
         const Default = {

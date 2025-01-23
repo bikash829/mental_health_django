@@ -1,0 +1,154 @@
+<div class="accordion" id="accordionExample">
+    <h2 class="">Personal Information</h2>
+    <!-- Basic Information -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Basic Information
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" >
+        <div class="accordion-body">
+            <div class="row g-3">
+                <div class="col-6">
+                    <label class="text-muted">Full Name: </label>
+                    <span><strong> {{ user_details.full_name }}</strong></span>
+                </div>
+                <div class="col-6">
+                    <label class="text-muted">Role: </label>
+                    <span><strong> {{ user_details.groups.all|join:',' }}</strong></span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Date Of Birth: </label>
+                    <span>{{ user_details.date_of_birth }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Gender: </label>
+                    <span>{{ user_details.get_gender_display }}</span>
+                </div>
+
+                {% comment %} {{-- <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">blood group : </label>
+                    <span>{{''}}</span>
+
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Religion: </label>
+                    <span>{{ucfirst($user?->religion) }}</span>
+                </div> --}} {% endcomment %}
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Nationality: </label>
+                    <span>{{ user_details.nationality }}</span>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Language Preference: </label>
+                    <span>{{ '' }}</span>
+                </div>
+
+            </div>
+            <div class="d-grid pt-2 col-6 mx-auto">
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Information -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+           Address
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" >
+        <div class="accordion-body">
+            <div class="row g-2">
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Address: </label>
+                    <span>{{ user_details.address.address }}</span>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Address 2: </label>
+                    <span>{{ user_details.address.address2 }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">City :</label>
+                    <span>{{ user_details.address.city }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">State: </label>
+                    <span>{{ user_details.address.state }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Zip-Code: </label>
+                    <span>{{ user_details.address.zip_code }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Country: </label>
+                    <span>{{ user_details.address.country }}</span>
+                </div>
+            </div>
+            <div class="d-grid pt-2 col-6 mx-auto">
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Contact Info
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" >
+        <div class="accordion-body">
+            <div class="row g-2">
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Mobile: </label>
+                    <span>{{ user_details.phone }}</span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted">Email Address: </label>
+                    <span>{{ user_details.email }}</span>
+                </div>
+                {% if user_details.additional_phone %}
+                    <div class="col-md-6 col-lg-6">
+                        <label class="text-muted">Mobile: </label>
+                        <span>{{ user_details.additional_phone }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted"></label>
+                    <span></span>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted"></label>
+                    <span></span>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted"></label>
+                    <span></span>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted"></label>
+                    <span></span>
+                </div>
+
+                <div class="col-md-6 col-lg-6">
+                    <label class="text-muted"></label>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

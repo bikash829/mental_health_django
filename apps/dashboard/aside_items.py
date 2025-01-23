@@ -64,7 +64,7 @@ def get_sidebar_items(request):
             'children':[
                 {
                     'name': 'Pending Experts',
-                    'url': None,
+                    'url': reverse('admin_dashboard:pending_users'),
                     'icon': 'fa-solid fa-hourglass-end',
                 },
                 {
